@@ -1,0 +1,164 @@
+PROGRAM xsim03
+VAR
+	Car1X : INT := 925; (* Red car *)
+	Car1Y : INT := 740; (**)
+	Car1Width : INT := 100; (**)
+	Car1Height : INT := 230; (**)
+	Car2X : INT := 420; (* Blue car *)
+	Car2Y : INT := 511; (**)
+	Car2Width : INT := 230; (**)
+	Car2Height : INT := 100; (**)
+	Car3X : INT := 1160; (* Green car *)
+	Car3Y : INT := 366; (**)
+	Car3Width : INT := 230; (**)
+	Car3Height : INT := 100; (**)
+	Car4X : INT := 775; (* Yellow car *)
+	Car4Y : INT := 0; (**)
+	Car4Width : INT := 100; (**)
+	Car4Height : INT := 230; (**)
+	Speed : INT := 1; (**)
+	vCarCrash : BOOL; (**)
+	vReset : BOOL; (**)
+	xExplosion : INT; (**)
+	yExplosion : INT; (**)
+	Car3Car4Coll : CollisionDetection; (**)
+	Car3Car1Coll : CollisionDetection; (**)
+	Car2Car1Coll : CollisionDetection; (**)
+	Car2Car4Coll : CollisionDetection; (**)
+	MoveCar1 : MoveSprite; (**)
+	MoveCar2 : MoveSprite; (**)
+	MoveCar3 : MoveSprite; (**)
+	MoveCar4 : MoveSprite; (**)
+END_VAR
+STCODE
+(* Collision detection *)
+(* Car3 and Car 4 *)
+Car3Car4Coll(
+	xcor1:= Car3X, 
+	ycor1:= Car3Y, 
+	height1:= Car3Height, 
+	width1:= Car3Width, 
+	xcor2:= Car4X, 
+	ycor2:= Car4Y, 
+	height2:= Car4Height, 
+	width2:= Car4Width);
+(* Car3 and Car 1 *)
+Car3Car1Coll(
+	xcor1:= Car3X, 
+	ycor1:= Car3Y, 
+	height1:= Car3Height, 
+	width1:= Car3Width, 
+	xcor2:= Car1X, 
+	ycor2:= Car1Y, 
+	height2:= Car1Height, 
+	width2:= Car1Width);
+(* Car2 and Car 4 *)
+Car2Car4Coll(
+	xcor1:= Car2X, 
+	ycor1:= Car2Y, 
+	height1:= Car2Height, 
+	width1:= Car2Width, 
+	xcor2:= Car4X, 
+	ycor2:= Car4Y, 
+	height2:= Car4Height, 
+	width2:= Car4Width);
+(* Car2 and Car 1 *)
+Car2Car1Coll(
+	xcor1:= Car2X, 
+	ycor1:= Car2Y, 
+	height1:= Car2Height, 
+	width1:= Car2Width, 
+	xcor2:= Car1X, 
+	ycor2:= Car1Y, 
+	height2:= Car1Height, 
+	width2:= Car1Width);
+
+IF Car3Car4Coll.isCollision OR Car3Car1Coll.isCollision OR Car2Car4Coll.isCollision OR Car2Car1Coll.isCollision THEN
+	vCarCrash := TRUE;
+ELSE
+	vCarCrash := FALSE;	
+END_IF
+
+(* Explosion graphic *)
+IF Car3Car4Coll.isCollision THEN
+	xExplosion := Car3X;
+	yExplosion := Car3Y;
+ELSIF Car3Car1Coll.isCollision THEN
+	xExplosion := Car3X;
+	yExplosion := Car3Y;
+ELSIF Car2Car4Coll.isCollision THEN
+	xExplosion := Car2X + Car2Width;
+	yExplosion := Car2Y;
+ELSIF Car2Car1Coll.isCollision THEN
+	xExplosion := Car2X + Car2Width;
+	yExplosion := Car2Y;
+ELSE
+	xExplosion := 2000;
+	yExplosion := 2000;
+END_IF
+
+(* Car movements *)
+IF  vCarCrash THEN
+	//wait
+	IF vReset THEN
+		(* Reset to start position *)
+		Car1X:= 925;
+		Car1Y:= 740;
+		Car2X:= 420;
+		Car2Y:= 511;
+		Car3X:= 1160;
+		Car3Y:= 366;
+		Car4X:= 775;
+		Car4Y:= 0;
+	END_IF
+ELSE
+	(* Define what cars do depending on lights *)
+	(* car moves if its green for him or he is past the traffic ligght but stops at the traffic light if its red, or yellow.*)
+	IF xgv03.TLight4Green OR Car1Y - 740 < 0 OR Car1Y - 740 > Speed THEN
+		MoveCar1(
+		xCor:= Car1X, 
+		yCor:= Car1Y, 
+		xScreen:= 1830, 
+		yScreen:= 930,
+		SpriteWidth:= Car1Width, 
+		SpriteHeight:= Car1Height, 
+		ySpeed:= -Speed, 
+		xSpeed:= 0 );
+	END_IF;
+	IF xgv03.TLight2Green OR Car2X - 420 < 0 OR Car2X - 420 > Speed THEN
+		MoveCar2(
+		xCor:= Car2X, 
+		yCor:= Car2Y, 
+		xScreen:= 1830, 
+		yScreen:= 930,
+		SpriteWidth:= Car2Width, 
+		SpriteHeight:= Car2Height,  
+		ySpeed:= 0, 
+		xSpeed:= Speed );
+	END_IF;
+	IF xgv03.TLight1Green OR Car3X - 1160 < 0 OR Car3X - 1160 > Speed THEN
+		MoveCar3(
+		xCor:= Car3X, 
+		yCor:= Car3Y, 
+		xScreen:= 1830, 
+		yScreen:= 930,
+		SpriteWidth:= Car3Width, 
+		SpriteHeight:= Car3Height,  
+		ySpeed:= 0, 
+		xSpeed:= -Speed );
+	END_IF;
+	IF xgv03.TLight3Green OR Car4Y - 0 < 0 OR Car4Y - 0 > Speed THEN
+		MoveCar4(
+		xCor:= Car4X, 
+		yCor:= Car4Y, 
+		xScreen:= 1830, 
+		yScreen:= 930,
+		SpriteWidth:= Car4Width, 
+		SpriteHeight:= Car4Height,  
+		ySpeed:= Speed, 
+		xSpeed:= 0 );
+	END_IF;
+END_IF
+
+
+END_STCODE

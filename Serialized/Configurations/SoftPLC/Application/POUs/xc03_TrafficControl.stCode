@@ -11,124 +11,125 @@ VAR
 	vPeriodTime : TIME := TIME#1m25s0ms; (**)
 	vElapsedTime : TIME; (**)
 END_VAR
-STCODE
-
-TactTimer(IN:=TRUE, PT:=vPeriodTime, ET => vElapsedTime);
-IF TactTimer.Q THEN
-	TactTimer(IN:=FALSE);
-END_IF
-(* Direction Up, Down traffic light *)
-xgv03.TLight3Red := vElapsedTime <= T#5S OR vElapsedTime >= T#37S AND vElapsedTime <= T#85S;
-xgv03.TLight3Yellow := vElapsedTime > T#3S AND vElapsedTime <= T#5S OR vElapsedTime >= T#35S AND vElapsedTime <= T#37S;
-xgv03.TLight3Green := vElapsedTime >= T#5S AND vElapsedTime <= T#35S;
-
-(* Mirror the other side of the Up, Down direction *)
-xgv03.TLight4Red := xgv03.TLight3Red;
-xgv03.TLight4Yellow := xgv03.TLight3Yellow;
-xgv03.TLight4Green := xgv03.TLight3Green;
-
-(* Direction Left, Right traffic light *)
-xgv03.TLight2Red := vElapsedTime >= T#0S AND vElapsedTime <= T#39S OR vElapsedTime >= T#71S AND vElapsedTime <= T#85S;
-xgv03.TLight2Yellow := vElapsedTime > T#37S AND vElapsedTime <= T#39S OR vElapsedTime >= T#69S AND vElapsedTime <= T#71S;
-xgv03.TLight2Green := vElapsedTime >= T#39S AND vElapsedTime <= T#69S;
-
-(* Mirror the other side of the Left, Right direction *)
-xgv03.TLight1Red := xgv03.TLight2Red;
-xgv03.TLight1Yellow := xgv03.TLight2Yellow;
-xgv03.TLight1Green := xgv03.TLight2Green;
-(*CASE vSequence OF
-	0:
-	(* Starting sequence, direction Up, Down *)
-	TimerA
-	Task03GVL.TLight1Red := TRUE;
+IMPLEMENTATION
 	
-END_CASE
-CASE vSequenceA OF
-	0: TimerA(IN:=FALSE,PT:=T#20S);
-	Task03GVL.TLight1Yellow:= FALSE;
-	Task03GVL.TLight1Red:= FALSE;
-	Task03GVL.TLight1Green:= TimerA.Q;
-	Task03GVL.TLight2Green := Task03GVL.TLight1Green;
-	IF NOT TimerA.Q THEN
-		TimerA(IN:=TRUE);
-		vSequenceA:=1;
+	TactTimer(IN:=TRUE, PT:=vPeriodTime, ET => vElapsedTime);
+	IF TactTimer.Q THEN
+		TactTimer(IN:=FALSE);
 	END_IF
-	1: TimerA(IN:=FALSE,PT:=T#4S);
-	Task03GVL.TLight1Red:= FALSE;
-	Task03GVL.TLight1Green:= FALSE;
-	Task03GVL.TLight1Yellow:= TimerA.Q;
-	Task03GVL.TLight2Yellow := Task03GVL.TLight1Yellow;
-	IF NOT TimerA.Q THEN
-		TimerA(IN:=TRUE);
-		vSequenceA:=2;
-	END_IF
-		2: TimerA(IN:=FALSE,PT:=T#30S);
-	Task03GVL.TLight1Green:= FALSE;
-	Task03GVL.TLight1Yellow:= FALSE;
-	Task03GVL.TLight1Red:= TimerA.Q;
-	Task03GVL.TLight2Red := Task03GVL.TLight1Red;
-	IF NOT TimerA.Q THEN
-		TimerA(IN:=TRUE);
-		vSequenceA:=3;
-	END_IF
-		3: TimerA(IN:=FALSE,PT:=T#4S);
-	Task03GVL.TLight1Green:= FALSE;
-	Task03GVL.TLight1Red:= TimerA.Q;
-	Task03GVL.TLight1Yellow:= TimerA.Q;
-	Task03GVL.TLight2Red := Task03GVL.TLight1Red;
-	Task03GVL.TLight2Yellow := Task03GVL.TLight1Yellow;
-	IF NOT TimerA.Q THEN
-		TimerA(IN:=TRUE);
-		vSequenceA:=0;
-		IF vSequenceB=6 THEN
-		vSequenceB:=3;	
+	(* Direction Up, Down traffic light *)
+	xgv03.TLight3Red := vElapsedTime <= T#5S OR vElapsedTime >= T#37S AND vElapsedTime <= T#85S;
+	xgv03.TLight3Yellow := vElapsedTime > T#3S AND vElapsedTime <= T#5S OR vElapsedTime >= T#35S AND vElapsedTime <= T#37S;
+	xgv03.TLight3Green := vElapsedTime >= T#5S AND vElapsedTime <= T#35S;
+	
+	(* Mirror the other side of the Up, Down direction *)
+	xgv03.TLight4Red := xgv03.TLight3Red;
+	xgv03.TLight4Yellow := xgv03.TLight3Yellow;
+	xgv03.TLight4Green := xgv03.TLight3Green;
+	
+	(* Direction Left, Right traffic light *)
+	xgv03.TLight2Red := vElapsedTime >= T#0S AND vElapsedTime <= T#39S OR vElapsedTime >= T#71S AND vElapsedTime <= T#85S;
+	xgv03.TLight2Yellow := vElapsedTime > T#37S AND vElapsedTime <= T#39S OR vElapsedTime >= T#69S AND vElapsedTime <= T#71S;
+	xgv03.TLight2Green := vElapsedTime >= T#39S AND vElapsedTime <= T#69S;
+	
+	(* Mirror the other side of the Left, Right direction *)
+	xgv03.TLight1Red := xgv03.TLight2Red;
+	xgv03.TLight1Yellow := xgv03.TLight2Yellow;
+	xgv03.TLight1Green := xgv03.TLight2Green;
+	(*CASE vSequence OF
+		0:
+		(* Starting sequence, direction Up, Down *)
+		TimerA
+		Task03GVL.TLight1Red := TRUE;
+		
+	END_CASE
+	CASE vSequenceA OF
+		0: TimerA(IN:=FALSE,PT:=T#20S);
+		Task03GVL.TLight1Yellow:= FALSE;
+		Task03GVL.TLight1Red:= FALSE;
+		Task03GVL.TLight1Green:= TimerA.Q;
+		Task03GVL.TLight2Green := Task03GVL.TLight1Green;
+		IF NOT TimerA.Q THEN
+			TimerA(IN:=TRUE);
+			vSequenceA:=1;
+		END_IF
+		1: TimerA(IN:=FALSE,PT:=T#4S);
+		Task03GVL.TLight1Red:= FALSE;
+		Task03GVL.TLight1Green:= FALSE;
+		Task03GVL.TLight1Yellow:= TimerA.Q;
+		Task03GVL.TLight2Yellow := Task03GVL.TLight1Yellow;
+		IF NOT TimerA.Q THEN
+			TimerA(IN:=TRUE);
+			vSequenceA:=2;
+		END_IF
+			2: TimerA(IN:=FALSE,PT:=T#30S);
+		Task03GVL.TLight1Green:= FALSE;
+		Task03GVL.TLight1Yellow:= FALSE;
+		Task03GVL.TLight1Red:= TimerA.Q;
+		Task03GVL.TLight2Red := Task03GVL.TLight1Red;
+		IF NOT TimerA.Q THEN
+			TimerA(IN:=TRUE);
+			vSequenceA:=3;
+		END_IF
+			3: TimerA(IN:=FALSE,PT:=T#4S);
+		Task03GVL.TLight1Green:= FALSE;
+		Task03GVL.TLight1Red:= TimerA.Q;
+		Task03GVL.TLight1Yellow:= TimerA.Q;
+		Task03GVL.TLight2Red := Task03GVL.TLight1Red;
+		Task03GVL.TLight2Yellow := Task03GVL.TLight1Yellow;
+		IF NOT TimerA.Q THEN
+			TimerA(IN:=TRUE);
+			vSequenceA:=0;
+			IF vSequenceB=6 THEN
+			vSequenceB:=3;	
+			END_IF
+			
+		END_IF
+	END_CASE
+	
+	CASE vSequenceB OF
+		0: TimerB(IN:=FALSE,PT:=T#4S);
+		Task03GVL.TLight3Green:= FALSE;
+		Task03GVL.TLight3Red:= TimerB.Q;
+		Task03GVL.TLight3Yellow:= TimerB.Q;
+		Task03GVL.TLight4Red := Task03GVL.TLight3Red;
+		Task03GVL.TLight4Yellow := Task03GVL.TLight3Yellow;
+		IF NOT TimerB.Q THEN
+			TimerB(IN:=TRUE);
+			vSequenceB:=1;
 		END_IF
 		
-	END_IF
-END_CASE
-
-CASE vSequenceB OF
-	0: TimerB(IN:=FALSE,PT:=T#4S);
-	Task03GVL.TLight3Green:= FALSE;
-	Task03GVL.TLight3Red:= TimerB.Q;
-	Task03GVL.TLight3Yellow:= TimerB.Q;
-	Task03GVL.TLight4Red := Task03GVL.TLight3Red;
-	Task03GVL.TLight4Yellow := Task03GVL.TLight3Yellow;
-	IF NOT TimerB.Q THEN
-		TimerB(IN:=TRUE);
-		vSequenceB:=1;
-	END_IF
-	
-	1: TimerB(IN:=FALSE,PT:=T#20S);
-	Task03GVL.TLight3Yellow:= FALSE;
-	Task03GVL.TLight3Red:= FALSE;
-	Task03GVL.TLight3Green:= TimerB.Q;
-	Task03GVL.TLight4Green := Task03GVL.TLight3Green;
-	IF NOT TimerB.Q THEN
-		TimerB(IN:=TRUE);
-		vSequenceB:=2;
-	END_IF
-	
-	2: TimerB(IN:=FALSE,PT:=T#4S);
-	Task03GVL.TLight3Red:= FALSE;
-	Task03GVL.TLight3Green:= FALSE;
-	Task03GVL.TLight3Yellow:= TimerB.Q;
-	Task03GVL.TLight4Yellow := Task03GVL.TLight3Yellow;
-	IF NOT TimerB.Q THEN
-		TimerB(IN:=TRUE);
-		vSequenceB:=3;
-	END_IF
-	
-		3: TimerB(IN:=FALSE,PT:=T#30S);
-	Task03GVL.TLight3Green:= FALSE;
-	Task03GVL.TLight3Yellow:= FALSE;
-	Task03GVL.TLight3Red:= TimerB.Q;
-	Task03GVL.TLight4Red := Task03GVL.TLight3Red;
-	IF NOT TimerB.Q THEN
-		TimerB(IN:=TRUE);
-		vSequenceB:=0;
-	END_IF
+		1: TimerB(IN:=FALSE,PT:=T#20S);
+		Task03GVL.TLight3Yellow:= FALSE;
+		Task03GVL.TLight3Red:= FALSE;
+		Task03GVL.TLight3Green:= TimerB.Q;
+		Task03GVL.TLight4Green := Task03GVL.TLight3Green;
+		IF NOT TimerB.Q THEN
+			TimerB(IN:=TRUE);
+			vSequenceB:=2;
+		END_IF
 		
-END_CASE
-END_IF;*)
-END_STCODE
+		2: TimerB(IN:=FALSE,PT:=T#4S);
+		Task03GVL.TLight3Red:= FALSE;
+		Task03GVL.TLight3Green:= FALSE;
+		Task03GVL.TLight3Yellow:= TimerB.Q;
+		Task03GVL.TLight4Yellow := Task03GVL.TLight3Yellow;
+		IF NOT TimerB.Q THEN
+			TimerB(IN:=TRUE);
+			vSequenceB:=3;
+		END_IF
+		
+			3: TimerB(IN:=FALSE,PT:=T#30S);
+		Task03GVL.TLight3Green:= FALSE;
+		Task03GVL.TLight3Yellow:= FALSE;
+		Task03GVL.TLight3Red:= TimerB.Q;
+		Task03GVL.TLight4Red := Task03GVL.TLight3Red;
+		IF NOT TimerB.Q THEN
+			TimerB(IN:=TRUE);
+			vSequenceB:=0;
+		END_IF
+			
+	END_CASE
+	END_IF;*)
+
+END_IMPLEMENTATION

@@ -11,25 +11,25 @@ VAR_IN_OUT
 	xCor : INT := 0; (**)
 	yCor : INT := 0; (**)
 END_VAR
-STCODE
-(* Reseting the position if sprite goes off screen *)
-(* If moving left to right *)
-IF xCor >= xScreen  AND xSpeed > 0 THEN
-	xCor := -SpriteWidth;
-(* If moving right to left *)
-ELSIF xCor <= -SpriteWidth AND xSpeed < 0 THEN
-	xCor := xScreen;	
-END_IF
-(* If moving from up, down *)
-IF yCor >= yScreen AND ySpeed > 0 THEN
-	yCor := -SpriteHeight;
-(* If moving from down, up *)
-ELSIF yCor < -SpriteHeight AND ySpeed < 0 THEN
-	yCor := yScreen;	
-END_IF
+IMPLEMENTATION
+	(* Reseting the position if sprite goes off screen *)
+	(* If moving left to right *)
+	IF xCor >= xScreen  AND xSpeed > 0 THEN
+		xCor := -SpriteWidth;
+	(* If moving right to left *)
+	ELSIF xCor <= -SpriteWidth AND xSpeed < 0 THEN
+		xCor := xScreen;	
+	END_IF
+	(* If moving from up, down *)
+	IF yCor >= yScreen AND ySpeed > 0 THEN
+		yCor := -SpriteHeight;
+	(* If moving from down, up *)
+	ELSIF yCor < -SpriteHeight AND ySpeed < 0 THEN
+		yCor := yScreen;	
+	END_IF
+	
+	(* Actual moving of the coordinates *)
+	xCor := xCor + xSpeed;
+	yCor := yCor + ySpeed;
 
-(* Actual moving of the coordinates *)
-xCor := xCor + xSpeed;
-yCor := yCor + ySpeed;
-
-END_STCODE
+END_IMPLEMENTATION

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="600"
+   height="600"
+   viewBox="0 0 158.75001 158.75"
+   version="1.1"
+   id="svg4524"
+   sodipodi:docname="crossroad.svg"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)">
+  <defs
+     id="defs4518" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.6"
+     inkscape:cx="188.19502"
+     inkscape:cy="429.80463"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="1366"
+     inkscape:window-height="715"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata4521">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-138.25001)">
+    <rect
+       style="fill-opacity:1;stroke-width:0.26458332"
+       id="rect5069"
+       width="52.916668"
+       height="52.916668"
+       x="0"
+       y="138.25002"
+       ry="0" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#rect5069"
+       id="use5125"
+       transform="translate(105.83333,-6.5303548e-6)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#rect5069"
+       id="use5127"
+       transform="translate(105.83333,105.83333)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#rect5069"
+       id="use5129"
+       transform="translate(0,105.83333)"
+       width="100%"
+       height="100%" />
+    <g
+       id="g5196"
+       transform="translate(0,0.66146849)">
+      <rect
+         y="237.46875"
+         x="26.458334"
+         height="5.2916665"
+         width="19.84375"
+         id="rect5131"
+         style="fill-opacity:1;stroke-width:0.23665051" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(0,-6.6145732)"
+         id="use5133"
+         xlink:href="#rect5131"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(0,-13.229172)"
+         id="use5174"
+         xlink:href="#rect5131"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(-6.3578288e-7,-19.84374)"
+         id="use5176"
+         xlink:href="#rect5131"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(-6.3578289e-7,-26.458323)"
+         id="use5178"
+         xlink:href="#rect5131"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(-6.3578289e-7,-33.072907)"
+         id="use5182"
+         xlink:href="#rect5131"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(-6.3578289e-7,-39.68749)"
+         id="use5184"
+         xlink:href="#rect5131"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(-6.3578289e-7,-46.302073)"
+         id="use5186"
+         xlink:href="#rect5131"
+         y="0"
+         x="0" />
+    </g>
+    <use
+       x="0"
+       y="0"
+       xlink:href="#g5196"
+       id="use5215"
+       transform="translate(85.989583)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#use5215"
+       id="use5217"
+       transform="rotate(90,122.36979,174.63021)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#use5217"
+       id="use5219"
+       transform="translate(0,85.98959)"
+       width="100%"
+       height="100%" />
+    <rect
+       style="fill-opacity:1;stroke-width:0.26458332"
+       id="rect5221"
+       width="19.84375"
+       height="2.6458333"
+       x="0"
+       y="216.30209" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#rect5221"
+       id="use5223"
+       transform="translate(138.90625)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#use5223"
+       id="use5225"
+       transform="rotate(-90,79.374995,217.62502)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#use5225"
+       id="use5227"
+       transform="translate(0,138.90624)"
+       width="100%"
+       height="100%" />
+  </g>
+</svg>

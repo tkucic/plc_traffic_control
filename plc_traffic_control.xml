@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
-  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP16" creationDateTime="2021-03-16T20:51:38.1579004" />
-  <contentHeader name="Traffic control simulator" version="1.0" modificationDateTime="2021-03-16T20:51:22.921324" organization="TK Automation" author="Toni Kucic">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP16" creationDateTime="2021-03-16T21:32:26.1374961" />
+  <contentHeader name="Traffic control simulator" version="1.0" modificationDateTime="2021-03-16T21:32:19.4256521" organization="TK Automation" author="Toni Kucic">
     <coordinateInfo>
       <fbd>
         <scaling x="1" y="1" />
@@ -336,6 +336,43 @@ yCor := yCor + ySpeed;
           </data>
         </addData>
       </pou>
+      <pou name="isSpriteColliding" pouType="function">
+        <interface>
+          <returnType>
+            <BOOL />
+          </returnType>
+          <inputVars>
+            <variable name="sprite1">
+              <type>
+                <derived name="Sprite" />
+              </type>
+            </variable>
+            <variable name="sprite2">
+              <type>
+                <derived name="Sprite" />
+              </type>
+            </variable>
+          </inputVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">
+IF sprite1.actX &lt; (sprite2.actX + sprite2.init.width) AND
+   (sprite1.actX + sprite1.init.width) &gt; sprite2.actX AND
+   sprite1.actY &lt; (sprite2.actY + sprite2.init.height) AND
+  ( sprite1.init.height + sprite1.actY) &gt; sprite2.actY THEN
+   isSpriteColliding := TRUE;
+ELSE
+	isSpriteColliding := FALSE;
+END_IF</xhtml>
+          </ST>
+        </body>
+        <addData>
+          <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+            <ObjectId>d815f5ac-8dbf-4260-ad60-1105e7b065ec</ObjectId>
+          </data>
+        </addData>
+      </pou>
       <pou name="Sprite" pouType="functionBlock">
         <interface>
           <inputVars>
@@ -402,6 +439,16 @@ yCor := yCor + ySpeed;
                 <xhtml xmlns="http://www.w3.org/1999/xhtml">Flag to say it has arrived at its destination</xhtml>
               </documentation>
             </variable>
+            <variable name="actX">
+              <type>
+                <INT />
+              </type>
+            </variable>
+            <variable name="actY">
+              <type>
+                <INT />
+              </type>
+            </variable>
           </outputVars>
           <localVars>
             <variable name="vInit">
@@ -463,9 +510,13 @@ ELSIF vSpriteDef.y &lt; -vSpriteDef.height THEN
 	vSpriteDef.y := vSpriteDef.screenHeight;	
 END_IF
 
-(*Report x,y for use*)
+(*x, y will be used to connect to absoulte movements of the graphic element*)
 x := vSpriteDef.x - init.x;
-y := vSpriteDef.y - init.y;</xhtml>
+y := vSpriteDef.y - init.y;
+
+(*ActX and ActY will be used in the logic for e.g. object collision detection*)
+actX := vSpriteDef.x;
+actY := vSpriteDef.y;</xhtml>
           </ST>
         </body>
         <addData>
@@ -1758,41 +1809,62 @@ END_IF
                         <simpleValue value="0" />
                       </initialValue>
                     </variable>
+                    <variable name="vCollision">
+                      <type>
+                        <BOOL />
+                      </type>
+                    </variable>
+                    <variable name="vCrashFlagX">
+                      <type>
+                        <INT />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="-200" />
+                      </initialValue>
+                    </variable>
+                    <variable name="vCrashFlagY">
+                      <type>
+                        <INT />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="-200" />
+                      </initialValue>
+                    </variable>
                   </localVars>
                 </interface>
                 <body>
                   <ST>
-                    <xhtml xmlns="http://www.w3.org/1999/xhtml">
-(*Just move the cars forward*)
-carC1HR.moveX := -1;
-carC1HL.moveX := 1;
-carC1VD.moveY := -1;
-carC1VU.moveY := 1;
-carC2VD.moveY := -1;
-carC2VU.moveY := 1;
-
-(*Just move the pedestrian forward*)
-pedC1VU.moveY := 1;
-pedC1VD.moveY := -1;
-pedC2VU.moveY := 1;
-pedC2VD.moveY := -1;
-pedC1HL.moveX := 1;
-pedC2HR.moveX := -1;
-
-// Update sprites
-carC1HR();
-carC1HL();
-carC1VD();
-carC1VU();
-carC2VD();
-carC2VU();
-pedC1VU();
-pedC1VD();
-pedC2VU();
-pedC2VD();
-pedC1HL();
-pedC2HR();
-
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml">IF NOT vCollision THEN
+	(*Just move the cars forward*)
+	carC1HR.moveX := -1;
+	carC1HL.moveX := 1;
+	carC1VD.moveY := -1;
+	carC1VU.moveY := 1;
+	carC2VD.moveY := -1;
+	carC2VU.moveY := 1;
+	
+	(*Just move the pedestrian forward*)
+	pedC1VU.moveY := 1;
+	pedC1VD.moveY := -1;
+	pedC2VU.moveY := 1;
+	pedC2VD.moveY := -1;
+	pedC1HL.moveX := 1;
+	pedC2HR.moveX := -1;
+	
+	// Update sprites
+	carC1HR();
+	carC1HL();
+	carC1VD();
+	carC1VU();
+	carC2VD();
+	carC2VU();
+	pedC1VU();
+	pedC1VD();
+	pedC2VU();
+	pedC2VD();
+	pedC1HL();
+	pedC2HR();
+END_IF
 (*Turn on the lights randomly*)
 vCounter := vCounter + 1;
 IF vCounter &gt; 40 THEN
@@ -1892,7 +1964,17 @@ Cross2PedDLR.TimeToSequenceChange := vCounter;
 
 Cross2PedDRL.GreenLight := vCounter &gt; 0;
 Cross2PedDRL.RedLight := vCounter &gt; 20;
-Cross2PedDRL.TimeToSequenceChange := vCounter;</xhtml>
+Cross2PedDRL.TimeToSequenceChange := vCounter;
+
+(*Check for collisions. Must be at the end due to the sprite fb need to be initialized*)
+vCollision := isSpriteColliding(carC1VU, pedC1HL);
+IF vCollision THEN
+	vCrashFlagX := carC1VU.actX;
+	vCrashFlagY := pedC1HL.actY;
+ELSE
+	vCrashFlagX := -200;
+	vCrashFlagY := -200;
+END_IF</xhtml>
                   </ST>
                 </body>
                 <addData>
@@ -2035,6 +2117,7 @@ Cross2PedDRL.TimeToSequenceChange := vCounter;</xhtml>
         <Object Name="CollisionDetection" ObjectId="90212427-8455-4030-88e5-8bce90b1fa00" />
         <Object Name="MoveSprite" ObjectId="efe1e0d8-4162-41ed-bb90-87826e90fc6b" />
         <Object Name="Project Information" ObjectId="11c0fc3a-9bcf-4dd8-ac38-efb93363e521" />
+        <Object Name="isSpriteColliding" ObjectId="d815f5ac-8dbf-4260-ad60-1105e7b065ec" />
         <Object Name="Sprite" ObjectId="75fe69fa-9c1b-4c2e-a08e-ab7d20dc4f5c" />
         <Object Name="SpriteDef_typ" ObjectId="dd2e24dd-3e1f-4233-8c8b-e6d621ed9666" />
       </ProjectStructure>

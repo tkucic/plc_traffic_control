@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
-  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP16" creationDateTime="2021-03-14T16:13:54.7615185" />
-  <contentHeader name="Traffic control simulator" version="1.0" modificationDateTime="2021-03-14T16:09:56.2863625" organization="TK Automation" author="Toni Kucic">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP16" creationDateTime="2021-03-16T20:51:38.1579004" />
+  <contentHeader name="Traffic control simulator" version="1.0" modificationDateTime="2021-03-16T20:51:22.921324" organization="TK Automation" author="Toni Kucic">
     <coordinateInfo>
       <fbd>
         <scaling x="1" y="1" />
@@ -26,7 +26,75 @@
     </addData>
   </contentHeader>
   <types>
-    <dataTypes />
+    <dataTypes>
+      <dataType name="SpriteDef_typ">
+        <baseType>
+          <struct>
+            <variable name="x">
+              <type>
+                <INT />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Initial position of the sprite</xhtml>
+              </documentation>
+            </variable>
+            <variable name="y">
+              <type>
+                <INT />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Initial position of the sprite</xhtml>
+              </documentation>
+            </variable>
+            <variable name="speed">
+              <type>
+                <INT />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Initial speed of the sprite</xhtml>
+              </documentation>
+            </variable>
+            <variable name="width">
+              <type>
+                <INT />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Sprites width</xhtml>
+              </documentation>
+            </variable>
+            <variable name="height">
+              <type>
+                <INT />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Sprites height</xhtml>
+              </documentation>
+            </variable>
+            <variable name="screenWidth">
+              <type>
+                <INT />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Screen width</xhtml>
+              </documentation>
+            </variable>
+            <variable name="screenHeight">
+              <type>
+                <INT />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Screen height</xhtml>
+              </documentation>
+            </variable>
+          </struct>
+        </baseType>
+        <addData>
+          <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+            <ObjectId>dd2e24dd-3e1f-4233-8c8b-e6d621ed9666</ObjectId>
+          </data>
+        </addData>
+      </dataType>
+    </dataTypes>
     <pous>
       <pou name="CollisionDetection" pouType="functionBlock">
         <interface>
@@ -268,6 +336,144 @@ yCor := yCor + ySpeed;
           </data>
         </addData>
       </pou>
+      <pou name="Sprite" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="init">
+              <type>
+                <derived name="SpriteDef_typ" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Sprite initialization pars</xhtml>
+              </documentation>
+            </variable>
+            <variable name="goTo">
+              <type>
+                <array>
+                  <dimension lower="0" upper="1" />
+                  <baseType>
+                    <INT />
+                  </baseType>
+                </array>
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Sprite moves to x,y destination</xhtml>
+              </documentation>
+            </variable>
+            <variable name="moveX">
+              <type>
+                <INT />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Moves the sprite by given ammount on the X axis</xhtml>
+              </documentation>
+            </variable>
+            <variable name="moveY">
+              <type>
+                <INT />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Moves the sprite by given ammount on the Y axis</xhtml>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="x">
+              <type>
+                <INT />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">X position of the sprite</xhtml>
+              </documentation>
+            </variable>
+            <variable name="y">
+              <type>
+                <INT />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Y position of the sprite</xhtml>
+              </documentation>
+            </variable>
+            <variable name="atDestination">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Flag to say it has arrived at its destination</xhtml>
+              </documentation>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="vInit">
+              <type>
+                <BOOL />
+              </type>
+              <initialValue>
+                <simpleValue value="TRUE" />
+              </initialValue>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Initialization flag</xhtml>
+              </documentation>
+            </variable>
+            <variable name="vSpriteDef">
+              <type>
+                <derived name="SpriteDef_typ" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Used sprite definition</xhtml>
+              </documentation>
+            </variable>
+            <variable name="vActualX">
+              <type>
+                <INT />
+              </type>
+            </variable>
+            <variable name="vActualY">
+              <type>
+                <INT />
+              </type>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">(*Initialize sprite on first scan*)
+IF vInit THEN
+	vSpriteDef := init;
+	vInit := FALSE;
+END_IF
+
+(* Actual moving of the coordinates *)
+vSpriteDef.x := vSpriteDef.x + moveX;
+vSpriteDef.y := vSpriteDef.y + moveY;
+
+(* Reseting the position if sprite goes off screen *)
+(* If moving left to right *)
+IF vSpriteDef.x &gt; vSpriteDef.screenWidth THEN
+	vSpriteDef.x := -vSpriteDef.width;
+(* If moving right to left *)
+ELSIF vSpriteDef.x &lt; -vSpriteDef.width THEN
+	vSpriteDef.x := vSpriteDef.screenWidth;	
+END_IF
+(* If moving from up, down *)
+IF vSpriteDef.y &gt; vSpriteDef.screenHeight THEN
+	vSpriteDef.y := -vSpriteDef.height;
+(* If moving from down, up *)
+ELSIF vSpriteDef.y &lt; -vSpriteDef.height THEN
+	vSpriteDef.y := vSpriteDef.screenHeight;	
+END_IF
+
+(*Report x,y for use*)
+x := vSpriteDef.x - init.x;
+y := vSpriteDef.y - init.y;</xhtml>
+          </ST>
+        </body>
+        <addData>
+          <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+            <ObjectId>75fe69fa-9c1b-4c2e-a08e-ab7d20dc4f5c</ObjectId>
+          </data>
+        </addData>
+      </pou>
     </pous>
   </types>
   <instances>
@@ -292,7 +498,7 @@ yCor := yCor + ySpeed;
             </addData>
           </task>
           <task name="xsim03" interval="PT0.005S" priority="1">
-            <pouInstance name="xsim03" typeName="">
+            <pouInstance name="simulator" typeName="">
               <documentation>
                 <xhtml xmlns="http://www.w3.org/1999/xhtml" />
               </documentation>
@@ -305,23 +511,6 @@ yCor := yCor + ySpeed;
               </data>
               <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
                 <ObjectId>c932c134-12d7-42e6-b914-4e02f89670bf</ObjectId>
-              </data>
-            </addData>
-          </task>
-          <task name="xc03_Task" interval="PT0.05S" priority="1">
-            <pouInstance name="xc03_TrafficControl" typeName="">
-              <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml" />
-              </documentation>
-            </pouInstance>
-            <addData>
-              <data name="http://www.3s-software.com/plcopenxml/tasksettings" handleUnknown="implementation">
-                <TaskSettings KindOfTask="Cyclic" Interval="t#50ms" WithinSPSTimeSlicing="true">
-                  <Watchdog Enabled="false" TimeUnit="ms" Sensitivity="1" />
-                </TaskSettings>
-              </data>
-              <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
-                <ObjectId>99ee3542-719b-4cde-8cf7-54a7ea62a49a</ObjectId>
               </data>
             </addData>
           </task>
@@ -453,6 +642,62 @@ yCor := yCor + ySpeed;
             </addData>
           </globalVars>
           <addData>
+            <data name="http://www.3s-software.com/plcopenxml/datatype" handleUnknown="implementation">
+              <dataType name="trafficLightCars">
+                <baseType>
+                  <struct>
+                    <variable name="RedLamp">
+                      <type>
+                        <BOOL />
+                      </type>
+                    </variable>
+                    <variable name="YellowLamp">
+                      <type>
+                        <BOOL />
+                      </type>
+                    </variable>
+                    <variable name="GreenLamp">
+                      <type>
+                        <BOOL />
+                      </type>
+                    </variable>
+                  </struct>
+                </baseType>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+                    <ObjectId>6c9cfcbc-87cf-42f1-a329-51e332d1b9d8</ObjectId>
+                  </data>
+                </addData>
+              </dataType>
+            </data>
+            <data name="http://www.3s-software.com/plcopenxml/datatype" handleUnknown="implementation">
+              <dataType name="trafficLightPed">
+                <baseType>
+                  <struct>
+                    <variable name="RedLight">
+                      <type>
+                        <BOOL />
+                      </type>
+                    </variable>
+                    <variable name="GreenLight">
+                      <type>
+                        <BOOL />
+                      </type>
+                    </variable>
+                    <variable name="TimeToSequenceChange">
+                      <type>
+                        <INT />
+                      </type>
+                    </variable>
+                  </struct>
+                </baseType>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+                    <ObjectId>ed37e448-fe2e-4c3e-bcbe-421400098762</ObjectId>
+                  </data>
+                </addData>
+              </dataType>
+            </data>
             <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
               <pou name="xc03_TrafficControl" pouType="program">
                 <interface>
@@ -1006,6 +1251,657 @@ END_IF
                 </addData>
               </pou>
             </data>
+            <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
+              <pou name="simulator" pouType="program">
+                <interface>
+                  <localVars>
+                    <variable name="carC1HR">
+                      <type>
+                        <derived name="Sprite" />
+                      </type>
+                      <initialValue>
+                        <structValue>
+                          <value member="init">
+                            <structValue>
+                              <value member="screenHeight">
+                                <simpleValue value="720" />
+                              </value>
+                              <value member="screenWidth">
+                                <simpleValue value="1980" />
+                              </value>
+                              <value member="height">
+                                <simpleValue value="80" />
+                              </value>
+                              <value member="width">
+                                <simpleValue value="200" />
+                              </value>
+                              <value member="x">
+                                <simpleValue value="568" />
+                              </value>
+                              <value member="y">
+                                <simpleValue value="264" />
+                              </value>
+                            </structValue>
+                          </value>
+                        </structValue>
+                      </initialValue>
+                    </variable>
+                    <variable name="carC1HL">
+                      <type>
+                        <derived name="Sprite" />
+                      </type>
+                      <initialValue>
+                        <structValue>
+                          <value member="init">
+                            <structValue>
+                              <value member="screenHeight">
+                                <simpleValue value="720" />
+                              </value>
+                              <value member="screenWidth">
+                                <simpleValue value="1980" />
+                              </value>
+                              <value member="height">
+                                <simpleValue value="80" />
+                              </value>
+                              <value member="width">
+                                <simpleValue value="200" />
+                              </value>
+                              <value member="x">
+                                <simpleValue value="-50" />
+                              </value>
+                              <value member="y">
+                                <simpleValue value="370" />
+                              </value>
+                            </structValue>
+                          </value>
+                        </structValue>
+                      </initialValue>
+                    </variable>
+                    <variable name="carC1VU">
+                      <type>
+                        <derived name="Sprite" />
+                      </type>
+                      <initialValue>
+                        <structValue>
+                          <value member="init">
+                            <structValue>
+                              <value member="screenHeight">
+                                <simpleValue value="720" />
+                              </value>
+                              <value member="screenWidth">
+                                <simpleValue value="1980" />
+                              </value>
+                              <value member="height">
+                                <simpleValue value="200" />
+                              </value>
+                              <value member="width">
+                                <simpleValue value="80" />
+                              </value>
+                              <value member="x">
+                                <simpleValue value="270" />
+                              </value>
+                              <value member="y">
+                                <simpleValue value="-50" />
+                              </value>
+                            </structValue>
+                          </value>
+                        </structValue>
+                      </initialValue>
+                    </variable>
+                    <variable name="carC1VD">
+                      <type>
+                        <derived name="Sprite" />
+                      </type>
+                      <initialValue>
+                        <structValue>
+                          <value member="init">
+                            <structValue>
+                              <value member="screenHeight">
+                                <simpleValue value="720" />
+                              </value>
+                              <value member="screenWidth">
+                                <simpleValue value="1980" />
+                              </value>
+                              <value member="height">
+                                <simpleValue value="200" />
+                              </value>
+                              <value member="width">
+                                <simpleValue value="80" />
+                              </value>
+                              <value member="x">
+                                <simpleValue value="372" />
+                              </value>
+                              <value member="y">
+                                <simpleValue value="565" />
+                              </value>
+                            </structValue>
+                          </value>
+                        </structValue>
+                      </initialValue>
+                    </variable>
+                    <variable name="carC2VU">
+                      <type>
+                        <derived name="Sprite" />
+                      </type>
+                      <initialValue>
+                        <structValue>
+                          <value member="init">
+                            <structValue>
+                              <value member="screenHeight">
+                                <simpleValue value="720" />
+                              </value>
+                              <value member="screenWidth">
+                                <simpleValue value="1980" />
+                              </value>
+                              <value member="height">
+                                <simpleValue value="200" />
+                              </value>
+                              <value member="width">
+                                <simpleValue value="80" />
+                              </value>
+                              <value member="x">
+                                <simpleValue value="1528" />
+                              </value>
+                              <value member="y">
+                                <simpleValue value="-50" />
+                              </value>
+                            </structValue>
+                          </value>
+                        </structValue>
+                      </initialValue>
+                    </variable>
+                    <variable name="carC2VD">
+                      <type>
+                        <derived name="Sprite" />
+                      </type>
+                      <initialValue>
+                        <structValue>
+                          <value member="init">
+                            <structValue>
+                              <value member="screenHeight">
+                                <simpleValue value="720" />
+                              </value>
+                              <value member="screenWidth">
+                                <simpleValue value="1980" />
+                              </value>
+                              <value member="height">
+                                <simpleValue value="200" />
+                              </value>
+                              <value member="width">
+                                <simpleValue value="80" />
+                              </value>
+                              <value member="x">
+                                <simpleValue value="1631" />
+                              </value>
+                              <value member="y">
+                                <simpleValue value="580" />
+                              </value>
+                            </structValue>
+                          </value>
+                        </structValue>
+                      </initialValue>
+                    </variable>
+                    <variable name="pedC1VU">
+                      <type>
+                        <derived name="Sprite" />
+                      </type>
+                      <initialValue>
+                        <structValue>
+                          <value member="init">
+                            <structValue>
+                              <value member="screenHeight">
+                                <simpleValue value="720" />
+                              </value>
+                              <value member="screenWidth">
+                                <simpleValue value="1980" />
+                              </value>
+                              <value member="height">
+                                <simpleValue value="50" />
+                              </value>
+                              <value member="width">
+                                <simpleValue value="50" />
+                              </value>
+                              <value member="x">
+                                <simpleValue value="171" />
+                              </value>
+                              <value member="y">
+                                <simpleValue value="7" />
+                              </value>
+                            </structValue>
+                          </value>
+                        </structValue>
+                      </initialValue>
+                    </variable>
+                    <variable name="pedC1VD">
+                      <type>
+                        <derived name="Sprite" />
+                      </type>
+                      <initialValue>
+                        <structValue>
+                          <value member="init">
+                            <structValue>
+                              <value member="screenHeight">
+                                <simpleValue value="720" />
+                              </value>
+                              <value member="screenWidth">
+                                <simpleValue value="1980" />
+                              </value>
+                              <value member="height">
+                                <simpleValue value="50" />
+                              </value>
+                              <value member="width">
+                                <simpleValue value="50" />
+                              </value>
+                              <value member="x">
+                                <simpleValue value="486" />
+                              </value>
+                              <value member="y">
+                                <simpleValue value="657" />
+                              </value>
+                            </structValue>
+                          </value>
+                        </structValue>
+                      </initialValue>
+                    </variable>
+                    <variable name="pedC2VU">
+                      <type>
+                        <derived name="Sprite" />
+                      </type>
+                      <initialValue>
+                        <structValue>
+                          <value member="init">
+                            <structValue>
+                              <value member="screenHeight">
+                                <simpleValue value="720" />
+                              </value>
+                              <value member="screenWidth">
+                                <simpleValue value="1980" />
+                              </value>
+                              <value member="height">
+                                <simpleValue value="50" />
+                              </value>
+                              <value member="width">
+                                <simpleValue value="50" />
+                              </value>
+                              <value member="x">
+                                <simpleValue value="1427" />
+                              </value>
+                              <value member="y">
+                                <simpleValue value="2" />
+                              </value>
+                            </structValue>
+                          </value>
+                        </structValue>
+                      </initialValue>
+                    </variable>
+                    <variable name="pedC2VD">
+                      <type>
+                        <derived name="Sprite" />
+                      </type>
+                      <initialValue>
+                        <structValue>
+                          <value member="init">
+                            <structValue>
+                              <value member="screenHeight">
+                                <simpleValue value="720" />
+                              </value>
+                              <value member="screenWidth">
+                                <simpleValue value="1980" />
+                              </value>
+                              <value member="height">
+                                <simpleValue value="50" />
+                              </value>
+                              <value member="width">
+                                <simpleValue value="50" />
+                              </value>
+                              <value member="x">
+                                <simpleValue value="1742" />
+                              </value>
+                              <value member="y">
+                                <simpleValue value="654" />
+                              </value>
+                            </structValue>
+                          </value>
+                        </structValue>
+                      </initialValue>
+                    </variable>
+                    <variable name="pedC1HL">
+                      <type>
+                        <derived name="Sprite" />
+                      </type>
+                      <initialValue>
+                        <structValue>
+                          <value member="init">
+                            <structValue>
+                              <value member="screenHeight">
+                                <simpleValue value="720" />
+                              </value>
+                              <value member="screenWidth">
+                                <simpleValue value="1980" />
+                              </value>
+                              <value member="height">
+                                <simpleValue value="50" />
+                              </value>
+                              <value member="width">
+                                <simpleValue value="50" />
+                              </value>
+                              <value member="x">
+                                <simpleValue value="9" />
+                              </value>
+                              <value member="y">
+                                <simpleValue value="491" />
+                              </value>
+                            </structValue>
+                          </value>
+                        </structValue>
+                      </initialValue>
+                    </variable>
+                    <variable name="pedC2HR">
+                      <type>
+                        <derived name="Sprite" />
+                      </type>
+                      <initialValue>
+                        <structValue>
+                          <value member="init">
+                            <structValue>
+                              <value member="screenHeight">
+                                <simpleValue value="720" />
+                              </value>
+                              <value member="screenWidth">
+                                <simpleValue value="1980" />
+                              </value>
+                              <value member="height">
+                                <simpleValue value="50" />
+                              </value>
+                              <value member="width">
+                                <simpleValue value="50" />
+                              </value>
+                              <value member="x">
+                                <simpleValue value="1916" />
+                              </value>
+                              <value member="y">
+                                <simpleValue value="174" />
+                              </value>
+                            </structValue>
+                          </value>
+                        </structValue>
+                      </initialValue>
+                    </variable>
+                    <variable name="Cross1CarU">
+                      <type>
+                        <derived name="trafficLightCars" />
+                      </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Lamps</xhtml>
+                      </documentation>
+                    </variable>
+                    <variable name="Cross1CarD">
+                      <type>
+                        <derived name="trafficLightCars" />
+                      </type>
+                    </variable>
+                    <variable name="Cross1CarL">
+                      <type>
+                        <derived name="trafficLightCars" />
+                      </type>
+                    </variable>
+                    <variable name="Cross1CarR">
+                      <type>
+                        <derived name="trafficLightCars" />
+                      </type>
+                    </variable>
+                    <variable name="Cross2CarU">
+                      <type>
+                        <derived name="trafficLightCars" />
+                      </type>
+                    </variable>
+                    <variable name="Cross2CarD">
+                      <type>
+                        <derived name="trafficLightCars" />
+                      </type>
+                    </variable>
+                    <variable name="Cross2CarL">
+                      <type>
+                        <derived name="trafficLightCars" />
+                      </type>
+                    </variable>
+                    <variable name="Cross2CarR">
+                      <type>
+                        <derived name="trafficLightCars" />
+                      </type>
+                    </variable>
+                    <variable name="Cross1PedLUD">
+                      <type>
+                        <derived name="trafficLightPed" />
+                      </type>
+                    </variable>
+                    <variable name="Cross1PedLDU">
+                      <type>
+                        <derived name="trafficLightPed" />
+                      </type>
+                    </variable>
+                    <variable name="Cross1PedRUD">
+                      <type>
+                        <derived name="trafficLightPed" />
+                      </type>
+                    </variable>
+                    <variable name="Cross1PedRDU">
+                      <type>
+                        <derived name="trafficLightPed" />
+                      </type>
+                    </variable>
+                    <variable name="Cross1PedULR">
+                      <type>
+                        <derived name="trafficLightPed" />
+                      </type>
+                    </variable>
+                    <variable name="Cross1PedURL">
+                      <type>
+                        <derived name="trafficLightPed" />
+                      </type>
+                    </variable>
+                    <variable name="Cross1PedDLR">
+                      <type>
+                        <derived name="trafficLightPed" />
+                      </type>
+                    </variable>
+                    <variable name="Cross1PedDRL">
+                      <type>
+                        <derived name="trafficLightPed" />
+                      </type>
+                    </variable>
+                    <variable name="Cross2PedLUD">
+                      <type>
+                        <derived name="trafficLightPed" />
+                      </type>
+                    </variable>
+                    <variable name="Cross2PedLDU">
+                      <type>
+                        <derived name="trafficLightPed" />
+                      </type>
+                    </variable>
+                    <variable name="Cross2PedRUD">
+                      <type>
+                        <derived name="trafficLightPed" />
+                      </type>
+                    </variable>
+                    <variable name="Cross2PedRDU">
+                      <type>
+                        <derived name="trafficLightPed" />
+                      </type>
+                    </variable>
+                    <variable name="Cross2PedULR">
+                      <type>
+                        <derived name="trafficLightPed" />
+                      </type>
+                    </variable>
+                    <variable name="Cross2PedURL">
+                      <type>
+                        <derived name="trafficLightPed" />
+                      </type>
+                    </variable>
+                    <variable name="Cross2PedDLR">
+                      <type>
+                        <derived name="trafficLightPed" />
+                      </type>
+                    </variable>
+                    <variable name="Cross2PedDRL">
+                      <type>
+                        <derived name="trafficLightPed" />
+                      </type>
+                    </variable>
+                    <variable name="vCounter">
+                      <type>
+                        <INT />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="0" />
+                      </initialValue>
+                    </variable>
+                  </localVars>
+                </interface>
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml">
+(*Just move the cars forward*)
+carC1HR.moveX := -1;
+carC1HL.moveX := 1;
+carC1VD.moveY := -1;
+carC1VU.moveY := 1;
+carC2VD.moveY := -1;
+carC2VU.moveY := 1;
+
+(*Just move the pedestrian forward*)
+pedC1VU.moveY := 1;
+pedC1VD.moveY := -1;
+pedC2VU.moveY := 1;
+pedC2VD.moveY := -1;
+pedC1HL.moveX := 1;
+pedC2HR.moveX := -1;
+
+// Update sprites
+carC1HR();
+carC1HL();
+carC1VD();
+carC1VU();
+carC2VD();
+carC2VU();
+pedC1VU();
+pedC1VD();
+pedC2VU();
+pedC2VD();
+pedC1HL();
+pedC2HR();
+
+(*Turn on the lights randomly*)
+vCounter := vCounter + 1;
+IF vCounter &gt; 40 THEN
+	vCounter := 0;
+END_IF
+Cross1CarU.GreenLamp := (vCounter &gt; 0);
+Cross1CarU.RedLamp := (vCounter &gt; 10);
+Cross1CarU.YellowLamp := (vCounter &gt; 20);
+
+Cross1CarD.GreenLamp := (vCounter &gt; 0);
+Cross1CarD.RedLamp := (vCounter &gt; 10);
+Cross1CarD.YellowLamp := (vCounter &gt; 20);
+
+Cross1CarL.GreenLamp := (vCounter &gt; 0);
+Cross1CarL.RedLamp := (vCounter &gt; 10);
+Cross1CarL.YellowLamp := (vCounter &gt; 20);
+
+Cross1CarR.GreenLamp := (vCounter &gt; 0);
+Cross1CarR.RedLamp := (vCounter &gt; 10);
+Cross1CarR.YellowLamp := (vCounter &gt; 20);
+
+Cross2CarU.GreenLamp := (vCounter &gt; 0);
+Cross2CarU.RedLamp := (vCounter &gt; 10);
+Cross2CarU.YellowLamp := (vCounter &gt; 20);
+
+Cross2CarD.GreenLamp := (vCounter &gt; 0);
+Cross2CarD.RedLamp := (vCounter &gt; 10);
+Cross2CarD.YellowLamp := (vCounter &gt; 20);
+
+Cross2CarL.GreenLamp := (vCounter &gt; 0);
+Cross2CarL.RedLamp := (vCounter &gt; 10);
+Cross2CarL.YellowLamp := (vCounter &gt; 20);
+
+Cross2CarR.GreenLamp := (vCounter &gt; 0);
+Cross2CarR.RedLamp := (vCounter &gt; 10);
+Cross2CarR.YellowLamp := (vCounter &gt; 20);
+
+Cross1PedLUD.GreenLight := vCounter &gt; 0;
+Cross1PedLUD.RedLight := vCounter &gt; 20;
+Cross1PedLUD.TimeToSequenceChange := vCounter;
+
+Cross1PedLDU.GreenLight := vCounter &gt; 0;
+Cross1PedLDU.RedLight := vCounter &gt; 20;
+Cross1PedLDU.TimeToSequenceChange := vCounter;
+
+Cross1PedRUD.GreenLight := vCounter &gt; 0;
+Cross1PedRUD.RedLight := vCounter &gt; 20;
+Cross1PedRUD.TimeToSequenceChange := vCounter;
+
+Cross1PedRDU.GreenLight := vCounter &gt; 0;
+Cross1PedRDU.RedLight := vCounter &gt; 20;
+Cross1PedRDU.TimeToSequenceChange := vCounter;
+
+Cross1PedULR.GreenLight := vCounter &gt; 0;
+Cross1PedULR.RedLight := vCounter &gt; 20;
+Cross1PedULR.TimeToSequenceChange := vCounter;
+
+Cross1PedURL.GreenLight := vCounter &gt; 0;
+Cross1PedURL.RedLight := vCounter &gt; 20;
+Cross1PedURL.TimeToSequenceChange := vCounter;
+
+Cross1PedDLR.GreenLight := vCounter &gt; 0;
+Cross1PedDLR.RedLight := vCounter &gt; 20;
+Cross1PedDLR.TimeToSequenceChange := vCounter;
+
+Cross1PedDRL.GreenLight := vCounter &gt; 0;
+Cross1PedDRL.RedLight := vCounter &gt; 20;
+Cross1PedDRL.TimeToSequenceChange := vCounter;
+
+Cross2PedLUD.GreenLight := vCounter &gt; 0;
+Cross2PedLUD.RedLight := vCounter &gt; 20;
+Cross2PedLUD.TimeToSequenceChange := vCounter;
+
+Cross2PedLDU.GreenLight := vCounter &gt; 0;
+Cross2PedLDU.RedLight := vCounter &gt; 20;
+Cross2PedLDU.TimeToSequenceChange := vCounter;
+
+Cross2PedRUD.GreenLight := vCounter &gt; 0;
+Cross2PedRUD.RedLight := vCounter &gt; 20;
+Cross2PedRUD.TimeToSequenceChange := vCounter;
+
+Cross2PedRDU.GreenLight := vCounter &gt; 0;
+Cross2PedRDU.RedLight := vCounter &gt; 20;
+Cross2PedRDU.TimeToSequenceChange := vCounter;
+
+Cross2PedULR.GreenLight := vCounter &gt; 0;
+Cross2PedULR.RedLight := vCounter &gt; 20;
+Cross2PedULR.TimeToSequenceChange := vCounter;
+
+Cross2PedURL.GreenLight := vCounter &gt; 0;
+Cross2PedURL.RedLight := vCounter &gt; 20;
+Cross2PedURL.TimeToSequenceChange := vCounter;
+
+Cross2PedDLR.GreenLight := vCounter &gt; 0;
+Cross2PedDLR.RedLight := vCounter &gt; 20;
+Cross2PedDLR.TimeToSequenceChange := vCounter;
+
+Cross2PedDRL.GreenLight := vCounter &gt; 0;
+Cross2PedDRL.RedLight := vCounter &gt; 20;
+Cross2PedDRL.TimeToSequenceChange := vCounter;</xhtml>
+                  </ST>
+                </body>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+                    <ObjectId>58484771-4ae7-4686-b08a-b3c90c27b274</ObjectId>
+                  </data>
+                </addData>
+              </pou>
+            </data>
             <data name="http://www.3s-software.com/plcopenxml/libraries" handleUnknown="implementation">
               <Libraries>
                 <Library Name="#Standard" Namespace="Standard" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="false" LinkAllContent="false" DefaultResolution="Standard, * (System)" />
@@ -1016,8 +1912,6 @@ END_IF
                 </Library>
                 <Library Name="#Standard64" Namespace="Standard64" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="false" LinkAllContent="false" DefaultResolution="Standard64, * (System)" />
                 <Library Name="#VisuDialogs" Namespace="VisuDialogs" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="false" LinkAllContent="false" DefaultResolution="VisuDialogs, * (System)" />
-                <Library Name="#IoStandard" Namespace="IoStandard" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="true" DefaultResolution="IoStandard, 3.5.13.0 (System)" />
-                <Library Name="#3SLicense" Namespace="_3S_LICENSE" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="3SLicense, 0.0.0.0 (3S - Smart Software Solutions GmbH)" ResolverGuid="97c3b452-d9fa-4ac2-9d0c-3d420aa6d95b" />
                 <Library Name="#BreakpointLogging" Namespace="BPLog" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="Breakpoint Logging Functions, 3.5.5.0 (3S - Smart Software Solutions GmbH)" />
                 <Library Name="#System_VisuElems" Namespace="VisuElems" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElems, 3.5.16.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
                 <Library Name="#System_VisuElemMeter" Namespace="VisuElemMeter" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemMeter, 3.5.16.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
@@ -1040,6 +1934,9 @@ END_IF
                 <Library Name="#System_VisuElemsDateTime" Namespace="VisuElemsDateTime" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemsDateTime, 3.5.16.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
                 <Library Name="#System_VisuElemXYChart" Namespace="VisuElemXYChart" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="VisuElemXYChart, 3.5.16.0 (System)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
                 <Library Name="#system_visuinputs" Namespace="visuinputs" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="visuinputs, 3.5.16.0 (system)" ResolverGuid="2717eb6a-dd07-4c66-8d8d-cacebd7b18ae" />
+                <Library Name="#IoStandard" Namespace="IoStandard" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="true" DefaultResolution="IoStandard, 3.5.16.0 (System)" />
+                <Library Name="#3SLicense" Namespace="_3S_LICENSE" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="3SLicense, 0.0.0.0 (3S - Smart Software Solutions GmbH)" ResolverGuid="97c3b452-d9fa-4ac2-9d0c-3d420aa6d95b" />
+                <Library Name="#CAA Device Diagnosis" Namespace="DED" HideWhenReferencedAsDependency="false" PublishSymbolsInContainer="false" SystemLibrary="true" LinkAllContent="false" DefaultResolution="CAA Device Diagnosis, 3.5.15.0 (CAA Technical Workgroup)" />
                 <addData>
                   <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
                     <ObjectId>29e9a39f-d9e1-4ae5-8462-7b18ca48243c</ObjectId>
@@ -1123,19 +2020,23 @@ END_IF
             </Folder>
             <Object Name="VISU_TASK" ObjectId="36dd8743-addf-4031-9feb-dce731836678" />
             <Object Name="xsim03" ObjectId="c932c134-12d7-42e6-b914-4e02f89670bf" />
-            <Object Name="xc03_Task" ObjectId="99ee3542-719b-4cde-8cf7-54a7ea62a49a" />
             <Folder Name="IO">
               <Object Name="xgv03" ObjectId="45b9d55d-90d0-48a9-8d7e-2af6e1714d26" />
             </Folder>
             <Folder Name="Simulator">
               <Object Name="xsim03" ObjectId="e8cc3a31-36c9-4946-a8e8-c5e86e24c67e" />
+              <Object Name="simulator" ObjectId="58484771-4ae7-4686-b08a-b3c90c27b274" />
             </Folder>
+            <Object Name="trafficLightCars" ObjectId="6c9cfcbc-87cf-42f1-a329-51e332d1b9d8" />
+            <Object Name="trafficLightPed" ObjectId="ed37e448-fe2e-4c3e-bcbe-421400098762" />
           </Object>
         </Object>
         <Object Name="Library Manager" ObjectId="497477f5-d561-4978-840d-bbcb3520b9e4" />
         <Object Name="CollisionDetection" ObjectId="90212427-8455-4030-88e5-8bce90b1fa00" />
         <Object Name="MoveSprite" ObjectId="efe1e0d8-4162-41ed-bb90-87826e90fc6b" />
         <Object Name="Project Information" ObjectId="11c0fc3a-9bcf-4dd8-ac38-efb93363e521" />
+        <Object Name="Sprite" ObjectId="75fe69fa-9c1b-4c2e-a08e-ab7d20dc4f5c" />
+        <Object Name="SpriteDef_typ" ObjectId="dd2e24dd-3e1f-4233-8c8b-e6d621ed9666" />
       </ProjectStructure>
     </data>
   </addData>

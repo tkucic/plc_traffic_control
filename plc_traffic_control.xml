@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
-  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP16" creationDateTime="2021-03-16T21:32:26.1374961" />
-  <contentHeader name="Traffic control simulator" version="1.0" modificationDateTime="2021-03-16T21:32:19.4256521" organization="TK Automation" author="Toni Kucic">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP16" creationDateTime="2021-03-20T20:12:35.3535748" />
+  <contentHeader name="Traffic control simulator" version="1.0" modificationDateTime="2021-03-20T20:11:53.2546118" organization="TK Automation" author="Toni Kucic">
     <coordinateInfo>
       <fbd>
         <scaling x="1" y="1" />
@@ -96,246 +96,6 @@
       </dataType>
     </dataTypes>
     <pous>
-      <pou name="CollisionDetection" pouType="functionBlock">
-        <interface>
-          <inputVars>
-            <variable name="xcor1">
-              <type>
-                <REAL />
-              </type>
-              <initialValue>
-                <simpleValue value="0" />
-              </initialValue>
-              <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> X Coordinate of object 1 </xhtml>
-              </documentation>
-            </variable>
-            <variable name="ycor1">
-              <type>
-                <REAL />
-              </type>
-              <initialValue>
-                <simpleValue value="0" />
-              </initialValue>
-              <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Y Coordinate of object 1 </xhtml>
-              </documentation>
-            </variable>
-            <variable name="height1">
-              <type>
-                <REAL />
-              </type>
-              <initialValue>
-                <simpleValue value="0" />
-              </initialValue>
-              <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Height of object 1 </xhtml>
-              </documentation>
-            </variable>
-            <variable name="width1">
-              <type>
-                <REAL />
-              </type>
-              <initialValue>
-                <simpleValue value="0" />
-              </initialValue>
-              <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Width of object 1 </xhtml>
-              </documentation>
-            </variable>
-            <variable name="xcor2">
-              <type>
-                <REAL />
-              </type>
-              <initialValue>
-                <simpleValue value="0" />
-              </initialValue>
-              <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> X Coordinate of object 2 </xhtml>
-              </documentation>
-            </variable>
-            <variable name="ycor2">
-              <type>
-                <REAL />
-              </type>
-              <initialValue>
-                <simpleValue value="0" />
-              </initialValue>
-              <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Y Coordinate of object 2 </xhtml>
-              </documentation>
-            </variable>
-            <variable name="height2">
-              <type>
-                <REAL />
-              </type>
-              <initialValue>
-                <simpleValue value="0" />
-              </initialValue>
-              <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Height of object 1 </xhtml>
-              </documentation>
-            </variable>
-            <variable name="width2">
-              <type>
-                <REAL />
-              </type>
-              <initialValue>
-                <simpleValue value="0" />
-              </initialValue>
-              <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Width of object 1 </xhtml>
-              </documentation>
-            </variable>
-          </inputVars>
-          <outputVars>
-            <variable name="isCollision">
-              <type>
-                <BOOL />
-              </type>
-              <initialValue>
-                <simpleValue value="FALSE" />
-              </initialValue>
-            </variable>
-          </outputVars>
-        </interface>
-        <body>
-          <ST>
-            <xhtml xmlns="http://www.w3.org/1999/xhtml">IF xcor1 &lt; (xcor2 + width2) AND
-   (xcor1 + width1) &gt; xcor2 AND
-   ycor1 &lt; (ycor2 + height2) AND
-  ( height1 + ycor1) &gt; ycor2 THEN
-   isCollision := TRUE;
-ELSE
-	isCollision := FALSE;
-END_IF</xhtml>
-          </ST>
-        </body>
-        <addData>
-          <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
-            <ObjectId>90212427-8455-4030-88e5-8bce90b1fa00</ObjectId>
-          </data>
-        </addData>
-      </pou>
-      <pou name="MoveSprite" pouType="functionBlock">
-        <interface>
-          <inOutVars>
-            <variable name="xCor">
-              <type>
-                <INT />
-              </type>
-              <initialValue>
-                <simpleValue value="0" />
-              </initialValue>
-            </variable>
-            <variable name="yCor">
-              <type>
-                <INT />
-              </type>
-              <initialValue>
-                <simpleValue value="0" />
-              </initialValue>
-            </variable>
-          </inOutVars>
-          <inputVars>
-            <variable name="xScreen">
-              <type>
-                <INT />
-              </type>
-              <initialValue>
-                <simpleValue value="0" />
-              </initialValue>
-              <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Width of the screen </xhtml>
-              </documentation>
-            </variable>
-            <variable name="yScreen">
-              <type>
-                <INT />
-              </type>
-              <initialValue>
-                <simpleValue value="0" />
-              </initialValue>
-              <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Height of the screen </xhtml>
-              </documentation>
-            </variable>
-            <variable name="SpriteWidth">
-              <type>
-                <INT />
-              </type>
-              <initialValue>
-                <simpleValue value="0" />
-              </initialValue>
-              <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Width of the sprite </xhtml>
-              </documentation>
-            </variable>
-            <variable name="SpriteHeight">
-              <type>
-                <INT />
-              </type>
-              <initialValue>
-                <simpleValue value="0" />
-              </initialValue>
-              <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Height of the sprite </xhtml>
-              </documentation>
-            </variable>
-            <variable name="ySpeed">
-              <type>
-                <INT />
-              </type>
-              <initialValue>
-                <simpleValue value="0" />
-              </initialValue>
-              <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Control up or down movement with +- </xhtml>
-              </documentation>
-            </variable>
-            <variable name="xSpeed">
-              <type>
-                <INT />
-              </type>
-              <initialValue>
-                <simpleValue value="0" />
-              </initialValue>
-              <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Control left or right movement with +- </xhtml>
-              </documentation>
-            </variable>
-          </inputVars>
-        </interface>
-        <body>
-          <ST>
-            <xhtml xmlns="http://www.w3.org/1999/xhtml">(* Reseting the position if sprite goes off screen *)
-(* If moving left to right *)
-IF xCor &gt;= xScreen  AND xSpeed &gt; 0 THEN
-	xCor := -SpriteWidth;
-(* If moving right to left *)
-ELSIF xCor &lt;= -SpriteWidth AND xSpeed &lt; 0 THEN
-	xCor := xScreen;	
-END_IF
-(* If moving from up, down *)
-IF yCor &gt;= yScreen AND ySpeed &gt; 0 THEN
-	yCor := -SpriteHeight;
-(* If moving from down, up *)
-ELSIF yCor &lt; -SpriteHeight AND ySpeed &lt; 0 THEN
-	yCor := yScreen;	
-END_IF
-
-(* Actual moving of the coordinates *)
-xCor := xCor + xSpeed;
-yCor := yCor + ySpeed;
-</xhtml>
-          </ST>
-        </body>
-        <addData>
-          <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
-            <ObjectId>efe1e0d8-4162-41ed-bb90-87826e90fc6b</ObjectId>
-          </data>
-        </addData>
-      </pou>
       <pou name="isSpriteColliding" pouType="function">
         <interface>
           <returnType>
@@ -549,6 +309,11 @@ actY := vSpriteDef.y;</xhtml>
             </addData>
           </task>
           <task name="xsim03" interval="PT0.005S" priority="1">
+            <pouInstance name="main" typeName="">
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+              </documentation>
+            </pouInstance>
             <pouInstance name="simulator" typeName="">
               <documentation>
                 <xhtml xmlns="http://www.w3.org/1999/xhtml" />
@@ -565,7 +330,7 @@ actY := vSpriteDef.y;</xhtml>
               </data>
             </addData>
           </task>
-          <globalVars name="xgv03">
+          <globalVars name="gIO">
             <variable name="cfgPeriodTime">
               <type>
                 <TIME />
@@ -585,100 +350,196 @@ actY := vSpriteDef.y;</xhtml>
                 <simpleValue value="0" />
               </initialValue>
             </variable>
-            <variable name="TLight1Red">
+            <variable name="Cross1CarU">
               <type>
-                <BOOL />
+                <derived name="trafficLightCars" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> DIGITAL OUTPUT	Activate red light traffic light 1 </xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light - Crossroad 1 - Cars going up to down</xhtml>
               </documentation>
             </variable>
-            <variable name="TLight1Yellow">
+            <variable name="Cross1CarD">
               <type>
-                <BOOL />
+                <derived name="trafficLightCars" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> DIGITAL OUTPUT	Activate yellow light traffic light 1 </xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light - Crossroad 1 - Cars going down to up</xhtml>
               </documentation>
             </variable>
-            <variable name="TLight1Green">
+            <variable name="Cross1CarL">
               <type>
-                <BOOL />
+                <derived name="trafficLightCars" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> DIGITAL OUTPUT	Activate green light traffic light 1 </xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light - Crossroad 1 - Cars going left to right</xhtml>
               </documentation>
             </variable>
-            <variable name="TLight2Red">
+            <variable name="Cross1CarR">
               <type>
-                <BOOL />
+                <derived name="trafficLightCars" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> DIGITAL OUTPUT	Activate red light traffic light 2 </xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light - Crossroad 1 - Cars going right to left</xhtml>
               </documentation>
             </variable>
-            <variable name="TLight2Yellow">
+            <variable name="Cross2CarU">
               <type>
-                <BOOL />
+                <derived name="trafficLightCars" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> DIGITAL OUTPUT	Activate yellow light traffic light 2 </xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car light - Crossroad 2 - Cars going up to down</xhtml>
               </documentation>
             </variable>
-            <variable name="TLight2Green">
+            <variable name="Cross2CarD">
               <type>
-                <BOOL />
+                <derived name="trafficLightCars" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> DIGITAL OUTPUT	Activate green light traffic light 2 </xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car light - Crossroad 2 - Cars going down to up</xhtml>
               </documentation>
             </variable>
-            <variable name="TLight3Red">
+            <variable name="Cross2CarL">
               <type>
-                <BOOL />
+                <derived name="trafficLightCars" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> DIGITAL OUTPUT	Activate red light traffic light 3 </xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car light - Crossroad 2 - Cars going left to right</xhtml>
               </documentation>
             </variable>
-            <variable name="TLight3Yellow">
+            <variable name="Cross2CarR">
               <type>
-                <BOOL />
+                <derived name="trafficLightCars" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> DIGITAL OUTPUT	Activate yellow light traffic light 3 </xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car light - Crossroad 2 - Cars going right to left</xhtml>
               </documentation>
             </variable>
-            <variable name="TLight3Green">
+            <variable name="Cross1PedLUD">
               <type>
-                <BOOL />
+                <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> DIGITAL OUTPUT	Activate green light traffic light 3 </xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going up to down on left side</xhtml>
               </documentation>
             </variable>
-            <variable name="TLight4Red">
+            <variable name="Cross1PedLDU">
               <type>
-                <BOOL />
+                <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> DIGITAL OUTPUT	Activate red light traffic light 4 </xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going down to up on left side</xhtml>
               </documentation>
             </variable>
-            <variable name="TLight4Yellow">
+            <variable name="Cross1PedRUD">
               <type>
-                <BOOL />
+                <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> DIGITAL OUTPUT	Activate yellow light traffic light 4 </xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going up to down on right side</xhtml>
               </documentation>
             </variable>
-            <variable name="TLight4Green">
+            <variable name="Cross1PedRDU">
               <type>
-                <BOOL />
+                <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml"> DIGITAL OUTPUT	Activate green light traffic light 4 </xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going down to up on right side</xhtml>
+              </documentation>
+            </variable>
+            <variable name="Cross1PedULR">
+              <type>
+                <derived name="trafficLightPed" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going left to right on upper side</xhtml>
+              </documentation>
+            </variable>
+            <variable name="Cross1PedURL">
+              <type>
+                <derived name="trafficLightPed" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going right to left on upper side</xhtml>
+              </documentation>
+            </variable>
+            <variable name="Cross1PedDLR">
+              <type>
+                <derived name="trafficLightPed" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going left to right on lower side</xhtml>
+              </documentation>
+            </variable>
+            <variable name="Cross1PedDRL">
+              <type>
+                <derived name="trafficLightPed" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going right to left on lower side</xhtml>
+              </documentation>
+            </variable>
+            <variable name="Cross2PedLUD">
+              <type>
+                <derived name="trafficLightPed" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going up to down on left side</xhtml>
+              </documentation>
+            </variable>
+            <variable name="Cross2PedLDU">
+              <type>
+                <derived name="trafficLightPed" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going down to up on left side</xhtml>
+              </documentation>
+            </variable>
+            <variable name="Cross2PedRUD">
+              <type>
+                <derived name="trafficLightPed" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going up to down on right side</xhtml>
+              </documentation>
+            </variable>
+            <variable name="Cross2PedRDU">
+              <type>
+                <derived name="trafficLightPed" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going down to up on right side</xhtml>
+              </documentation>
+            </variable>
+            <variable name="Cross2PedULR">
+              <type>
+                <derived name="trafficLightPed" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going left to right on upper side</xhtml>
+              </documentation>
+            </variable>
+            <variable name="Cross2PedURL">
+              <type>
+                <derived name="trafficLightPed" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going right to left on upper side</xhtml>
+              </documentation>
+            </variable>
+            <variable name="Cross2PedDLR">
+              <type>
+                <derived name="trafficLightPed" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going left to right on lower side</xhtml>
+              </documentation>
+            </variable>
+            <variable name="Cross2PedDRL">
+              <type>
+                <derived name="trafficLightPed" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going right to left on lower side</xhtml>
               </documentation>
             </variable>
             <addData>
@@ -750,7 +611,7 @@ actY := vSpriteDef.y;</xhtml>
               </dataType>
             </data>
             <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
-              <pou name="xc03_TrafficControl" pouType="program">
+              <pou name="main" pouType="program">
                 <interface>
                   <localVars>
                     <variable name="vSequenceA">
@@ -825,479 +686,66 @@ IF TactTimer.Q THEN
 	TactTimer(IN:=FALSE);
 END_IF
 (* Direction Up, Down traffic light *)
-xgv03.TLight3Red := vElapsedTime &lt;= T#5S OR vElapsedTime &gt;= T#37S AND vElapsedTime &lt;= T#85S;
-xgv03.TLight3Yellow := vElapsedTime &gt; T#3S AND vElapsedTime &lt;= T#5S OR vElapsedTime &gt;= T#35S AND vElapsedTime &lt;= T#37S;
-xgv03.TLight3Green := vElapsedTime &gt;= T#5S AND vElapsedTime &lt;= T#35S;
+gIO.Cross1CarU.RedLamp := vElapsedTime &lt;= T#5S OR vElapsedTime &gt;= T#37S AND vElapsedTime &lt;= T#85S;
+gIO.Cross1CarU.YellowLamp := vElapsedTime &gt; T#3S AND vElapsedTime &lt;= T#5S OR vElapsedTime &gt;= T#35S AND vElapsedTime &lt;= T#37S;
+gIO.Cross1CarU.GreenLamp := vElapsedTime &gt;= T#5S AND vElapsedTime &lt;= T#35S;
 
 (* Mirror the other side of the Up, Down direction *)
-xgv03.TLight4Red := xgv03.TLight3Red;
-xgv03.TLight4Yellow := xgv03.TLight3Yellow;
-xgv03.TLight4Green := xgv03.TLight3Green;
+gIO.Cross1CarD := gIO.Cross1CarU;
+gIO.Cross2CarD := gIO.Cross1CarU;
+gIO.Cross2CarU := gIO.Cross1CarU;
 
 (* Direction Left, Right traffic light *)
-xgv03.TLight2Red := vElapsedTime &gt;= T#0S AND vElapsedTime &lt;= T#39S OR vElapsedTime &gt;= T#71S AND vElapsedTime &lt;= T#85S;
-xgv03.TLight2Yellow := vElapsedTime &gt; T#37S AND vElapsedTime &lt;= T#39S OR vElapsedTime &gt;= T#69S AND vElapsedTime &lt;= T#71S;
-xgv03.TLight2Green := vElapsedTime &gt;= T#39S AND vElapsedTime &lt;= T#69S;
+gIO.Cross1CarL.RedLamp := vElapsedTime &gt;= T#0S AND vElapsedTime &lt;= T#39S OR vElapsedTime &gt;= T#71S AND vElapsedTime &lt;= T#85S;
+gIO.Cross1CarL.YellowLamp := vElapsedTime &gt; T#37S AND vElapsedTime &lt;= T#39S OR vElapsedTime &gt;= T#69S AND vElapsedTime &lt;= T#71S;
+gIO.Cross1CarL.GreenLamp := vElapsedTime &gt;= T#39S AND vElapsedTime &lt;= T#69S;
 
 (* Mirror the other side of the Left, Right direction *)
-xgv03.TLight1Red := xgv03.TLight2Red;
-xgv03.TLight1Yellow := xgv03.TLight2Yellow;
-xgv03.TLight1Green := xgv03.TLight2Green;
-(*CASE vSequence OF
-	0:
-	(* Starting sequence, direction Up, Down *)
-	TimerA
-	Task03GVL.TLight1Red := TRUE;
-	
-END_CASE
-CASE vSequenceA OF
-	0: TimerA(IN:=FALSE,PT:=T#20S);
-	Task03GVL.TLight1Yellow:= FALSE;
-	Task03GVL.TLight1Red:= FALSE;
-	Task03GVL.TLight1Green:= TimerA.Q;
-	Task03GVL.TLight2Green := Task03GVL.TLight1Green;
-	IF NOT TimerA.Q THEN
-		TimerA(IN:=TRUE);
-		vSequenceA:=1;
-	END_IF
-	1: TimerA(IN:=FALSE,PT:=T#4S);
-	Task03GVL.TLight1Red:= FALSE;
-	Task03GVL.TLight1Green:= FALSE;
-	Task03GVL.TLight1Yellow:= TimerA.Q;
-	Task03GVL.TLight2Yellow := Task03GVL.TLight1Yellow;
-	IF NOT TimerA.Q THEN
-		TimerA(IN:=TRUE);
-		vSequenceA:=2;
-	END_IF
-		2: TimerA(IN:=FALSE,PT:=T#30S);
-	Task03GVL.TLight1Green:= FALSE;
-	Task03GVL.TLight1Yellow:= FALSE;
-	Task03GVL.TLight1Red:= TimerA.Q;
-	Task03GVL.TLight2Red := Task03GVL.TLight1Red;
-	IF NOT TimerA.Q THEN
-		TimerA(IN:=TRUE);
-		vSequenceA:=3;
-	END_IF
-		3: TimerA(IN:=FALSE,PT:=T#4S);
-	Task03GVL.TLight1Green:= FALSE;
-	Task03GVL.TLight1Red:= TimerA.Q;
-	Task03GVL.TLight1Yellow:= TimerA.Q;
-	Task03GVL.TLight2Red := Task03GVL.TLight1Red;
-	Task03GVL.TLight2Yellow := Task03GVL.TLight1Yellow;
-	IF NOT TimerA.Q THEN
-		TimerA(IN:=TRUE);
-		vSequenceA:=0;
-		IF vSequenceB=6 THEN
-		vSequenceB:=3;	
-		END_IF
-		
-	END_IF
-END_CASE
+gIO.Cross1CarR := gIO.Cross1CarL;
+gIO.Cross2CarR := gIO.Cross1CarL;
+gIO.Cross2CarL := gIO.Cross1CarL;
 
-CASE vSequenceB OF
-	0: TimerB(IN:=FALSE,PT:=T#4S);
-	Task03GVL.TLight3Green:= FALSE;
-	Task03GVL.TLight3Red:= TimerB.Q;
-	Task03GVL.TLight3Yellow:= TimerB.Q;
-	Task03GVL.TLight4Red := Task03GVL.TLight3Red;
-	Task03GVL.TLight4Yellow := Task03GVL.TLight3Yellow;
-	IF NOT TimerB.Q THEN
-		TimerB(IN:=TRUE);
-		vSequenceB:=1;
-	END_IF
-	
-	1: TimerB(IN:=FALSE,PT:=T#20S);
-	Task03GVL.TLight3Yellow:= FALSE;
-	Task03GVL.TLight3Red:= FALSE;
-	Task03GVL.TLight3Green:= TimerB.Q;
-	Task03GVL.TLight4Green := Task03GVL.TLight3Green;
-	IF NOT TimerB.Q THEN
-		TimerB(IN:=TRUE);
-		vSequenceB:=2;
-	END_IF
-	
-	2: TimerB(IN:=FALSE,PT:=T#4S);
-	Task03GVL.TLight3Red:= FALSE;
-	Task03GVL.TLight3Green:= FALSE;
-	Task03GVL.TLight3Yellow:= TimerB.Q;
-	Task03GVL.TLight4Yellow := Task03GVL.TLight3Yellow;
-	IF NOT TimerB.Q THEN
-		TimerB(IN:=TRUE);
-		vSequenceB:=3;
-	END_IF
-	
-		3: TimerB(IN:=FALSE,PT:=T#30S);
-	Task03GVL.TLight3Green:= FALSE;
-	Task03GVL.TLight3Yellow:= FALSE;
-	Task03GVL.TLight3Red:= TimerB.Q;
-	Task03GVL.TLight4Red := Task03GVL.TLight3Red;
-	IF NOT TimerB.Q THEN
-		TimerB(IN:=TRUE);
-		vSequenceB:=0;
-	END_IF
-		
-END_CASE
-END_IF;*)</xhtml>
+(*Pedestrians*)
+(*If left &lt;-&gt; right cars are going. Up &lt;-&gt; down pedestrians stop. Else go*)
+IF gIO.Cross1CarL.GreenLamp OR gIO.Cross1CarL.YellowLamp  THEN
+	gIO.Cross1PedLDU.RedLight := TRUE;
+	gIO.Cross1PedLDU.GreenLight := FALSE;
+
+ELSIF gIO.Cross1CarL.RedLamp THEN
+	gIO.Cross1PedLDU.RedLight := FALSE;
+	gIO.Cross1PedLDU.GreenLight := TRUE;
+END_IF
+(*Just copy all of the up and downs as they behave the same*)
+gIO.Cross1PedLUD := gIO.Cross1PedLDU;
+gIO.Cross1PedRUD := gIO.Cross1PedLDU;
+gIO.Cross1PedRDU := gIO.Cross1PedLDU;
+gIO.Cross2PedLDU := gIO.Cross1PedLDU;
+gIO.Cross2PedLUD := gIO.Cross1PedLDU;
+gIO.Cross2PedRUD := gIO.Cross1PedLDU;
+gIO.Cross2PedRDU := gIO.Cross1PedLDU;
+
+(*If up &lt;-&gt; Down cars are going. Left &lt;-&gt; right pedestrians stop. Else go*)
+IF gIO.Cross1CarU.GreenLamp OR gIO.Cross1CarU.YellowLamp THEN
+	gIO.Cross1PedULR.RedLight := TRUE;
+	gIO.Cross1PedULR.GreenLight := FALSE;
+
+ELSIF gIO.Cross1CarU.RedLamp THEN
+	gIO.Cross1PedULR.RedLight := FALSE;
+	gIO.Cross1PedULR.GreenLight := TRUE;
+END_IF
+(*Just copy all of the lefts and rights as they behave the same*)
+gIO.Cross1PedURL := gIO.Cross1PedULR;
+gIO.Cross1PedDLR := gIO.Cross1PedULR;
+gIO.Cross1PedDRL := gIO.Cross1PedULR;
+gIO.Cross2PedULR := gIO.Cross1PedULR;
+gIO.Cross2PedURL := gIO.Cross1PedULR;
+gIO.Cross2PedDLR := gIO.Cross1PedULR;
+gIO.Cross2PedDRL := gIO.Cross1PedULR;</xhtml>
                   </ST>
                 </body>
                 <addData>
                   <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
-                    <ObjectId>e7eb72fd-dd19-4d64-b3b3-1d670977a2d9</ObjectId>
-                  </data>
-                </addData>
-              </pou>
-            </data>
-            <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
-              <pou name="xsim03" pouType="program">
-                <interface>
-                  <localVars>
-                    <variable name="Car1X">
-                      <type>
-                        <INT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="925" />
-                      </initialValue>
-                      <documentation>
-                        <xhtml xmlns="http://www.w3.org/1999/xhtml"> Red car </xhtml>
-                      </documentation>
-                    </variable>
-                    <variable name="Car1Y">
-                      <type>
-                        <INT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="740" />
-                      </initialValue>
-                    </variable>
-                    <variable name="Car1Width">
-                      <type>
-                        <INT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="100" />
-                      </initialValue>
-                    </variable>
-                    <variable name="Car1Height">
-                      <type>
-                        <INT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="230" />
-                      </initialValue>
-                    </variable>
-                    <variable name="Car2X">
-                      <type>
-                        <INT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="420" />
-                      </initialValue>
-                      <documentation>
-                        <xhtml xmlns="http://www.w3.org/1999/xhtml"> Blue car </xhtml>
-                      </documentation>
-                    </variable>
-                    <variable name="Car2Y">
-                      <type>
-                        <INT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="511" />
-                      </initialValue>
-                    </variable>
-                    <variable name="Car2Width">
-                      <type>
-                        <INT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="230" />
-                      </initialValue>
-                    </variable>
-                    <variable name="Car2Height">
-                      <type>
-                        <INT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="100" />
-                      </initialValue>
-                    </variable>
-                    <variable name="Car3X">
-                      <type>
-                        <INT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="1160" />
-                      </initialValue>
-                      <documentation>
-                        <xhtml xmlns="http://www.w3.org/1999/xhtml"> Green car </xhtml>
-                      </documentation>
-                    </variable>
-                    <variable name="Car3Y">
-                      <type>
-                        <INT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="366" />
-                      </initialValue>
-                    </variable>
-                    <variable name="Car3Width">
-                      <type>
-                        <INT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="230" />
-                      </initialValue>
-                    </variable>
-                    <variable name="Car3Height">
-                      <type>
-                        <INT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="100" />
-                      </initialValue>
-                    </variable>
-                    <variable name="Car4X">
-                      <type>
-                        <INT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="775" />
-                      </initialValue>
-                      <documentation>
-                        <xhtml xmlns="http://www.w3.org/1999/xhtml"> Yellow car </xhtml>
-                      </documentation>
-                    </variable>
-                    <variable name="Car4Y">
-                      <type>
-                        <INT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="0" />
-                      </initialValue>
-                    </variable>
-                    <variable name="Car4Width">
-                      <type>
-                        <INT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="100" />
-                      </initialValue>
-                    </variable>
-                    <variable name="Car4Height">
-                      <type>
-                        <INT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="230" />
-                      </initialValue>
-                    </variable>
-                    <variable name="Speed">
-                      <type>
-                        <INT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="1" />
-                      </initialValue>
-                    </variable>
-                    <variable name="vCarCrash">
-                      <type>
-                        <BOOL />
-                      </type>
-                    </variable>
-                    <variable name="vReset">
-                      <type>
-                        <BOOL />
-                      </type>
-                    </variable>
-                    <variable name="xExplosion">
-                      <type>
-                        <INT />
-                      </type>
-                    </variable>
-                    <variable name="yExplosion">
-                      <type>
-                        <INT />
-                      </type>
-                    </variable>
-                    <variable name="Car3Car4Coll">
-                      <type>
-                        <derived name="CollisionDetection" />
-                      </type>
-                    </variable>
-                    <variable name="Car3Car1Coll">
-                      <type>
-                        <derived name="CollisionDetection" />
-                      </type>
-                    </variable>
-                    <variable name="Car2Car1Coll">
-                      <type>
-                        <derived name="CollisionDetection" />
-                      </type>
-                    </variable>
-                    <variable name="Car2Car4Coll">
-                      <type>
-                        <derived name="CollisionDetection" />
-                      </type>
-                    </variable>
-                    <variable name="MoveCar1">
-                      <type>
-                        <derived name="MoveSprite" />
-                      </type>
-                    </variable>
-                    <variable name="MoveCar2">
-                      <type>
-                        <derived name="MoveSprite" />
-                      </type>
-                    </variable>
-                    <variable name="MoveCar3">
-                      <type>
-                        <derived name="MoveSprite" />
-                      </type>
-                    </variable>
-                    <variable name="MoveCar4">
-                      <type>
-                        <derived name="MoveSprite" />
-                      </type>
-                    </variable>
-                  </localVars>
-                </interface>
-                <body>
-                  <ST>
-                    <xhtml xmlns="http://www.w3.org/1999/xhtml">(* Collision detection *)
-(* Car3 and Car 4 *)
-Car3Car4Coll(
-	xcor1:= Car3X, 
-	ycor1:= Car3Y, 
-	height1:= Car3Height, 
-	width1:= Car3Width, 
-	xcor2:= Car4X, 
-	ycor2:= Car4Y, 
-	height2:= Car4Height, 
-	width2:= Car4Width);
-(* Car3 and Car 1 *)
-Car3Car1Coll(
-	xcor1:= Car3X, 
-	ycor1:= Car3Y, 
-	height1:= Car3Height, 
-	width1:= Car3Width, 
-	xcor2:= Car1X, 
-	ycor2:= Car1Y, 
-	height2:= Car1Height, 
-	width2:= Car1Width);
-(* Car2 and Car 4 *)
-Car2Car4Coll(
-	xcor1:= Car2X, 
-	ycor1:= Car2Y, 
-	height1:= Car2Height, 
-	width1:= Car2Width, 
-	xcor2:= Car4X, 
-	ycor2:= Car4Y, 
-	height2:= Car4Height, 
-	width2:= Car4Width);
-(* Car2 and Car 1 *)
-Car2Car1Coll(
-	xcor1:= Car2X, 
-	ycor1:= Car2Y, 
-	height1:= Car2Height, 
-	width1:= Car2Width, 
-	xcor2:= Car1X, 
-	ycor2:= Car1Y, 
-	height2:= Car1Height, 
-	width2:= Car1Width);
-
-IF Car3Car4Coll.isCollision OR Car3Car1Coll.isCollision OR Car2Car4Coll.isCollision OR Car2Car1Coll.isCollision THEN
-	vCarCrash := TRUE;
-ELSE
-	vCarCrash := FALSE;	
-END_IF
-
-(* Explosion graphic *)
-IF Car3Car4Coll.isCollision THEN
-	xExplosion := Car3X;
-	yExplosion := Car3Y;
-ELSIF Car3Car1Coll.isCollision THEN
-	xExplosion := Car3X;
-	yExplosion := Car3Y;
-ELSIF Car2Car4Coll.isCollision THEN
-	xExplosion := Car2X + Car2Width;
-	yExplosion := Car2Y;
-ELSIF Car2Car1Coll.isCollision THEN
-	xExplosion := Car2X + Car2Width;
-	yExplosion := Car2Y;
-ELSE
-	xExplosion := 2000;
-	yExplosion := 2000;
-END_IF
-
-(* Car movements *)
-IF  vCarCrash THEN
-	//wait
-	IF vReset THEN
-		(* Reset to start position *)
-		Car1X:= 925;
-		Car1Y:= 740;
-		Car2X:= 420;
-		Car2Y:= 511;
-		Car3X:= 1160;
-		Car3Y:= 366;
-		Car4X:= 775;
-		Car4Y:= 0;
-	END_IF
-ELSE
-	(* Define what cars do depending on lights *)
-	(* car moves if its green for him or he is past the traffic ligght but stops at the traffic light if its red, or yellow.*)
-	IF xgv03.TLight4Green OR Car1Y - 740 &lt; 0 OR Car1Y - 740 &gt; Speed THEN
-		MoveCar1(
-		xCor:= Car1X, 
-		yCor:= Car1Y, 
-		xScreen:= 1830, 
-		yScreen:= 930,
-		SpriteWidth:= Car1Width, 
-		SpriteHeight:= Car1Height, 
-		ySpeed:= -Speed, 
-		xSpeed:= 0 );
-	END_IF;
-	IF xgv03.TLight2Green OR Car2X - 420 &lt; 0 OR Car2X - 420 &gt; Speed THEN
-		MoveCar2(
-		xCor:= Car2X, 
-		yCor:= Car2Y, 
-		xScreen:= 1830, 
-		yScreen:= 930,
-		SpriteWidth:= Car2Width, 
-		SpriteHeight:= Car2Height,  
-		ySpeed:= 0, 
-		xSpeed:= Speed );
-	END_IF;
-	IF xgv03.TLight1Green OR Car3X - 1160 &lt; 0 OR Car3X - 1160 &gt; Speed THEN
-		MoveCar3(
-		xCor:= Car3X, 
-		yCor:= Car3Y, 
-		xScreen:= 1830, 
-		yScreen:= 930,
-		SpriteWidth:= Car3Width, 
-		SpriteHeight:= Car3Height,  
-		ySpeed:= 0, 
-		xSpeed:= -Speed );
-	END_IF;
-	IF xgv03.TLight3Green OR Car4Y - 0 &lt; 0 OR Car4Y - 0 &gt; Speed THEN
-		MoveCar4(
-		xCor:= Car4X, 
-		yCor:= Car4Y, 
-		xScreen:= 1830, 
-		yScreen:= 930,
-		SpriteWidth:= Car4Width, 
-		SpriteHeight:= Car4Height,  
-		ySpeed:= Speed, 
-		xSpeed:= 0 );
-	END_IF;
-END_IF
-
-</xhtml>
-                  </ST>
-                </body>
-                <addData>
-                  <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
-                    <ObjectId>e8cc3a31-36c9-4946-a8e8-c5e86e24c67e</ObjectId>
+                    <ObjectId>4d91704b-07a3-4bb1-8388-5c8d07f74044</ObjectId>
                   </data>
                 </addData>
               </pou>
@@ -1832,149 +1280,542 @@ END_IF
                     </variable>
                   </localVars>
                 </interface>
-                <body>
-                  <ST>
-                    <xhtml xmlns="http://www.w3.org/1999/xhtml">IF NOT vCollision THEN
-	(*Just move the cars forward*)
-	carC1HR.moveX := -1;
-	carC1HL.moveX := 1;
-	carC1VD.moveY := -1;
-	carC1VU.moveY := 1;
-	carC2VD.moveY := -1;
-	carC2VU.moveY := 1;
-	
-	(*Just move the pedestrian forward*)
-	pedC1VU.moveY := 1;
-	pedC1VD.moveY := -1;
-	pedC2VU.moveY := 1;
-	pedC2VD.moveY := -1;
-	pedC1HL.moveX := 1;
-	pedC2HR.moveX := -1;
-	
-	// Update sprites
-	carC1HR();
-	carC1HL();
-	carC1VD();
-	carC1VU();
-	carC2VD();
-	carC2VU();
-	pedC1VU();
-	pedC1VD();
-	pedC2VU();
-	pedC2VD();
-	pedC1HL();
-	pedC2HR();
+                <actions>
+                  <action name="CHECK_COLLISSIONS">
+                    <body>
+                      <ST>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">(*Check for collisions between each car with another car and pedestrian*)
+vCollision := FALSE;
+(*Collission car -&gt; car*)
+IF isSpriteColliding(carC1HR, carC1HL) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HR.actX;
+	vCrashFlagY := carC1HL.actY;
 END_IF
-(*Turn on the lights randomly*)
-vCounter := vCounter + 1;
-IF vCounter &gt; 40 THEN
-	vCounter := 0;
+IF isSpriteColliding(carC1HR, carC1VU) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HR.actX;
+	vCrashFlagY := carC1VU.actY;
 END_IF
-Cross1CarU.GreenLamp := (vCounter &gt; 0);
-Cross1CarU.RedLamp := (vCounter &gt; 10);
-Cross1CarU.YellowLamp := (vCounter &gt; 20);
+IF isSpriteColliding(carC1HR, carC1VD) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HR.actX;
+	vCrashFlagY := carC1VD.actY;
+END_IF
+IF isSpriteColliding(carC1HR, carC2VD) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HR.actX;
+	vCrashFlagY := carC2VD.actY;
+END_IF
+IF isSpriteColliding(carC1HR, carC2VU) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HR.actX;
+	vCrashFlagY := carC2VU.actY;
+END_IF
+IF isSpriteColliding(carC1HL, carC1VU) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HL.actX;
+	vCrashFlagY := carC1VU.actY;
+END_IF
+IF isSpriteColliding(carC1HL, carC1VD) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HL.actX;
+	vCrashFlagY := carC1VD.actY;
+END_IF
+IF isSpriteColliding(carC1HL, carC2VU) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HL.actX;
+	vCrashFlagY := carC2VU.actY;
+END_IF
+IF isSpriteColliding(carC1HL, carC2VD) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HL.actX;
+	vCrashFlagY := carC2VD.actY;
+END_IF
+IF isSpriteColliding(carC1VU, carC1VD) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1VU.actX;
+	vCrashFlagY := carC1VD.actY;
+END_IF
+IF isSpriteColliding(carC1VU, carC2VD) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1VU.actX;
+	vCrashFlagY := carC2VD.actY;
+END_IF
+IF isSpriteColliding(carC1VU, carC2VU) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1VU.actX;
+	vCrashFlagY := carC2VU.actY;
+END_IF
+IF isSpriteColliding(carC1VD, carC2VD) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1VD.actX;
+	vCrashFlagY := carC2VD.actY;
+END_IF
+IF isSpriteColliding(carC1VD, carC2VU) THEN
+	vCollision := TRUE; 
+	vCrashFlagX := carC1VD.actX;
+	vCrashFlagY := carC2VU.actY;
+END_IF
+IF isSpriteColliding(carC2VD, carC2VU) THEN
+	vCollision := TRUE; 
+	vCrashFlagX := carC2VD.actX;
+	vCrashFlagY := carC2VU.actY;
+END_IF
 
-Cross1CarD.GreenLamp := (vCounter &gt; 0);
-Cross1CarD.RedLamp := (vCounter &gt; 10);
-Cross1CarD.YellowLamp := (vCounter &gt; 20);
+(*Check collission car -&gt; pedestrian*)
+IF isSpriteColliding(carC1HR, pedC1HL) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HR.actX;
+	vCrashFlagY := pedC1HL.actY;
+END_IF
+IF isSpriteColliding(carC1HR, pedC1VU) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HR.actX;
+	vCrashFlagY := pedC1VU.actY;
+END_IF
+IF isSpriteColliding(carC1HR, pedC1VD) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HR.actX;
+	vCrashFlagY := pedC1VD.actY;
+END_IF
+IF isSpriteColliding(carC1HR, pedC2VU) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HR.actX;
+	vCrashFlagY := pedC2VU.actY;
+END_IF
+IF isSpriteColliding(carC1HR, pedC2VD) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HR.actX;
+	vCrashFlagY := pedC2VD.actY;
+END_IF
+IF isSpriteColliding(carC1HR, pedC2HR) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HR.actX;
+	vCrashFlagY := pedC1HL.actY;
+END_IF
 
-Cross1CarL.GreenLamp := (vCounter &gt; 0);
-Cross1CarL.RedLamp := (vCounter &gt; 10);
-Cross1CarL.YellowLamp := (vCounter &gt; 20);
 
-Cross1CarR.GreenLamp := (vCounter &gt; 0);
-Cross1CarR.RedLamp := (vCounter &gt; 10);
-Cross1CarR.YellowLamp := (vCounter &gt; 20);
+IF isSpriteColliding(carC1HL, pedC1HL) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HL.actX;
+	vCrashFlagY := pedC1HL.actY;
+END_IF
+IF isSpriteColliding(carC1HL, pedC1VU) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HL.actX;
+	vCrashFlagY := pedC1VU.actY;
+END_IF
+IF isSpriteColliding(carC1HL, pedC1VD) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HL.actX;
+	vCrashFlagY := pedC1VD.actY;
+END_IF
+IF isSpriteColliding(carC1HL, pedC2VU) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HL.actX;
+	vCrashFlagY := pedC2VU.actY;
+END_IF
+IF isSpriteColliding(carC1HL, pedC2VD) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HL.actX;
+	vCrashFlagY := pedC2VD.actY;
+END_IF
+IF isSpriteColliding(carC1HL, pedC2HR) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1HL.actX;
+	vCrashFlagY := pedC1HL.actY;
+END_IF
 
-Cross2CarU.GreenLamp := (vCounter &gt; 0);
-Cross2CarU.RedLamp := (vCounter &gt; 10);
-Cross2CarU.YellowLamp := (vCounter &gt; 20);
 
-Cross2CarD.GreenLamp := (vCounter &gt; 0);
-Cross2CarD.RedLamp := (vCounter &gt; 10);
-Cross2CarD.YellowLamp := (vCounter &gt; 20);
-
-Cross2CarL.GreenLamp := (vCounter &gt; 0);
-Cross2CarL.RedLamp := (vCounter &gt; 10);
-Cross2CarL.YellowLamp := (vCounter &gt; 20);
-
-Cross2CarR.GreenLamp := (vCounter &gt; 0);
-Cross2CarR.RedLamp := (vCounter &gt; 10);
-Cross2CarR.YellowLamp := (vCounter &gt; 20);
-
-Cross1PedLUD.GreenLight := vCounter &gt; 0;
-Cross1PedLUD.RedLight := vCounter &gt; 20;
-Cross1PedLUD.TimeToSequenceChange := vCounter;
-
-Cross1PedLDU.GreenLight := vCounter &gt; 0;
-Cross1PedLDU.RedLight := vCounter &gt; 20;
-Cross1PedLDU.TimeToSequenceChange := vCounter;
-
-Cross1PedRUD.GreenLight := vCounter &gt; 0;
-Cross1PedRUD.RedLight := vCounter &gt; 20;
-Cross1PedRUD.TimeToSequenceChange := vCounter;
-
-Cross1PedRDU.GreenLight := vCounter &gt; 0;
-Cross1PedRDU.RedLight := vCounter &gt; 20;
-Cross1PedRDU.TimeToSequenceChange := vCounter;
-
-Cross1PedULR.GreenLight := vCounter &gt; 0;
-Cross1PedULR.RedLight := vCounter &gt; 20;
-Cross1PedULR.TimeToSequenceChange := vCounter;
-
-Cross1PedURL.GreenLight := vCounter &gt; 0;
-Cross1PedURL.RedLight := vCounter &gt; 20;
-Cross1PedURL.TimeToSequenceChange := vCounter;
-
-Cross1PedDLR.GreenLight := vCounter &gt; 0;
-Cross1PedDLR.RedLight := vCounter &gt; 20;
-Cross1PedDLR.TimeToSequenceChange := vCounter;
-
-Cross1PedDRL.GreenLight := vCounter &gt; 0;
-Cross1PedDRL.RedLight := vCounter &gt; 20;
-Cross1PedDRL.TimeToSequenceChange := vCounter;
-
-Cross2PedLUD.GreenLight := vCounter &gt; 0;
-Cross2PedLUD.RedLight := vCounter &gt; 20;
-Cross2PedLUD.TimeToSequenceChange := vCounter;
-
-Cross2PedLDU.GreenLight := vCounter &gt; 0;
-Cross2PedLDU.RedLight := vCounter &gt; 20;
-Cross2PedLDU.TimeToSequenceChange := vCounter;
-
-Cross2PedRUD.GreenLight := vCounter &gt; 0;
-Cross2PedRUD.RedLight := vCounter &gt; 20;
-Cross2PedRUD.TimeToSequenceChange := vCounter;
-
-Cross2PedRDU.GreenLight := vCounter &gt; 0;
-Cross2PedRDU.RedLight := vCounter &gt; 20;
-Cross2PedRDU.TimeToSequenceChange := vCounter;
-
-Cross2PedULR.GreenLight := vCounter &gt; 0;
-Cross2PedULR.RedLight := vCounter &gt; 20;
-Cross2PedULR.TimeToSequenceChange := vCounter;
-
-Cross2PedURL.GreenLight := vCounter &gt; 0;
-Cross2PedURL.RedLight := vCounter &gt; 20;
-Cross2PedURL.TimeToSequenceChange := vCounter;
-
-Cross2PedDLR.GreenLight := vCounter &gt; 0;
-Cross2PedDLR.RedLight := vCounter &gt; 20;
-Cross2PedDLR.TimeToSequenceChange := vCounter;
-
-Cross2PedDRL.GreenLight := vCounter &gt; 0;
-Cross2PedDRL.RedLight := vCounter &gt; 20;
-Cross2PedDRL.TimeToSequenceChange := vCounter;
-
-(*Check for collisions. Must be at the end due to the sprite fb need to be initialized*)
-vCollision := isSpriteColliding(carC1VU, pedC1HL);
-IF vCollision THEN
+IF isSpriteColliding(carC1VU, pedC1HL) THEN
+	vCollision := TRUE;
 	vCrashFlagX := carC1VU.actX;
 	vCrashFlagY := pedC1HL.actY;
-ELSE
+END_IF
+IF isSpriteColliding(carC1VU, pedC1VU) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1VU.actX;
+	vCrashFlagY := pedC1VU.actY;
+END_IF
+IF isSpriteColliding(carC1VU, pedC1VD) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1VU.actX;
+	vCrashFlagY := pedC1VD.actY;
+END_IF
+IF isSpriteColliding(carC1VU, pedC2VU) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1VU.actX;
+	vCrashFlagY := pedC2VU.actY;
+END_IF
+IF isSpriteColliding(carC1VU, pedC2VD) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1VU.actX;
+	vCrashFlagY := pedC2VD.actY;
+END_IF
+IF isSpriteColliding(carC1VU, pedC2HR) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1VU.actX;
+	vCrashFlagY := pedC1HL.actY;
+END_IF
+
+
+IF isSpriteColliding(carC1VD, pedC1HL) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1VD.actX;
+	vCrashFlagY := pedC1HL.actY;
+END_IF
+IF isSpriteColliding(carC1VD, pedC1VU) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1VD.actX;
+	vCrashFlagY := pedC1VU.actY;
+END_IF
+IF isSpriteColliding(carC1VD, pedC1VD) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1VD.actX;
+	vCrashFlagY := pedC1VD.actY;
+END_IF
+IF isSpriteColliding(carC1VD, pedC2VU) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1VD.actX;
+	vCrashFlagY := pedC2VU.actY;
+END_IF
+IF isSpriteColliding(carC1VD, pedC2VD) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1VD.actX;
+	vCrashFlagY := pedC2VD.actY;
+END_IF
+IF isSpriteColliding(carC1VD, pedC2HR) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC1VD.actX;
+	vCrashFlagY := pedC1HL.actY;
+END_IF
+
+
+IF isSpriteColliding(carC2VU, pedC1HL) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC2VU.actX;
+	vCrashFlagY := pedC1HL.actY;
+END_IF
+IF isSpriteColliding(carC2VU, pedC1VU) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC2VU.actX;
+	vCrashFlagY := pedC1VU.actY;
+END_IF
+IF isSpriteColliding(carC2VU, pedC1VD) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC2VU.actX;
+	vCrashFlagY := pedC1VD.actY;
+END_IF
+IF isSpriteColliding(carC2VU, pedC2VU) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC2VU.actX;
+	vCrashFlagY := pedC2VU.actY;
+END_IF
+IF isSpriteColliding(carC2VU, pedC2VD) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC2VU.actX;
+	vCrashFlagY := pedC2VD.actY;
+END_IF
+IF isSpriteColliding(carC2VU, pedC2HR) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC2VU.actX;
+	vCrashFlagY := pedC1HL.actY;
+END_IF
+
+
+IF isSpriteColliding(carC2VD, pedC1HL) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC2VD.actX;
+	vCrashFlagY := pedC1HL.actY;
+END_IF
+IF isSpriteColliding(carC2VD, pedC1VU) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC2VD.actX;
+	vCrashFlagY := pedC1VU.actY;
+END_IF
+IF isSpriteColliding(carC2VD, pedC1VD) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC2VD.actX;
+	vCrashFlagY := pedC1VD.actY;
+END_IF
+IF isSpriteColliding(carC2VD, pedC2VU) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC2VD.actX;
+	vCrashFlagY := pedC2VU.actY;
+END_IF
+IF isSpriteColliding(carC2VD, pedC2VD) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC2VD.actX;
+	vCrashFlagY := pedC2VD.actY;
+END_IF
+IF isSpriteColliding(carC2VD, pedC2HR) THEN
+	vCollision := TRUE;
+	vCrashFlagX := carC2VD.actX;
+	vCrashFlagY := pedC1HL.actY;
+END_IF
+
+(*Hide the crash flag if there is no collission*)
+IF NOT vCollision THEN
 	vCrashFlagX := -200;
 	vCrashFlagY := -200;
+END_IF
+</xhtml>
+                      </ST>
+                    </body>
+                    <addData>
+                      <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+                        <ObjectId>06df541c-fc0f-4e5f-8864-eeec453b0732</ObjectId>
+                      </data>
+                    </addData>
+                  </action>
+                  <action name="MOVE_CARS">
+                    <body>
+                      <ST>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">(*Car C1 HL. Moves from left to right, stops at the crossroads and moves if only green is lit*)
+IF carC1HL.actX = -49 THEN
+	IF (Cross1CarL.GreenLamp AND NOT (Cross1CarL.RedLamp OR Cross1CarL.YellowLamp)) THEN
+		carC1HL.moveX := 1;
+	ELSE
+		carC1HL.moveX := 0;
+	END_IF
+ELSIF carC1HL.actX = 1211 THEN
+	IF (Cross2CarL.GreenLamp AND NOT (Cross2CarL.RedLamp OR Cross2CarL.YellowLamp)) THEN
+		carC1HL.moveX := 1;
+	ELSE
+		carC1HL.moveX := 0;
+	END_IF
+ELSE
+	carC1HL.moveX := 1;
+END_IF
+
+(*Car C1 HR. Moves from right to left, stops at the crossroads and moves if only green is lit*)
+IF carC1HR.actX = 567 THEN
+	IF (Cross1CarR.GreenLamp AND NOT (Cross1CarR.RedLamp OR Cross1CarR.YellowLamp)) THEN
+		carC1HR.moveX := -1;
+	ELSE
+		carC1HR.moveX := 0;
+	END_IF
+ELSIF carC1HR.actX = 1829 THEN
+	IF (Cross2CarR.GreenLamp AND NOT (Cross2CarR.RedLamp OR Cross2CarR.YellowLamp)) THEN
+		carC1HR.moveX := -1;
+	ELSE
+		carC1HR.moveX := 0;
+	END_IF
+ELSE
+	carC1HR.moveX := -1;
+END_IF
+(*Car C1 VU. Moves from up to down, stops at the crossroads and moves if only green is lit*)
+IF carC1VU.actY = -49 THEN
+	IF (Cross1CarU.GreenLamp AND NOT (Cross1CarU.RedLamp OR Cross1CarU.YellowLamp)) THEN
+		carC1VU.moveY := 1;
+	ELSE
+		carC1VU.moveY := 0;
+	END_IF
+ELSE
+	carC1VU.moveY := 1;
+END_IF
+(*Car C2 VU. Moves from up to down, stops at the crossroads and moves if only green is lit*)
+IF carC2VU.actY = -49 THEN
+	IF (Cross2CarU.GreenLamp AND NOT (Cross2CarU.RedLamp OR Cross2CarU.YellowLamp)) THEN
+		carC2VU.moveY := 1;
+	ELSE
+		carC2VU.moveY := 0;
+	END_IF
+ELSE
+	carC2VU.moveY := 1;
+END_IF
+(*Car C1 VD. Moves from down to up, stops at the crossroads and moves if only green is lit*)
+IF carC1VD.actY = 564 THEN
+	IF (Cross1CarD.GreenLamp AND NOT (Cross1CarD.RedLamp OR Cross1CarD.YellowLamp)) THEN
+		carC1VD.moveY := -1;
+	ELSE
+		carC1VD.moveY := 0;
+	END_IF
+ELSE
+	carC1VD.moveY := -1;
+END_IF
+(*Car C2 VD. Moves from down to up, stops at the crossroads and moves if only green is lit*)
+IF carC2VD.actY = 564 THEN
+	IF (Cross2CarD.GreenLamp AND NOT (Cross2CarD.RedLamp OR Cross2CarD.YellowLamp)) THEN
+		carC2VD.moveY := -1;
+	ELSE
+		carC2VD.moveY := 0;
+	END_IF
+ELSE
+	carC2VD.moveY := -1;
 END_IF</xhtml>
+                      </ST>
+                    </body>
+                    <addData>
+                      <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+                        <ObjectId>ed37403c-0a24-46dc-b7c0-a282de63709a</ObjectId>
+                      </data>
+                    </addData>
+                  </action>
+                  <action name="MOVE_PEDESTRIANS">
+                    <body>
+                      <ST>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">(*Pedestrian C1 VU. Moves from up to down, stops at the crossroads and moves if only green is lit*)
+IF pedC1VU.actY = 180 THEN
+	IF Cross1PedLUD.GreenLight AND NOT Cross1PedLUD.RedLight THEN
+		pedC1VU.moveY := 1;
+	ELSE
+		pedC1VU.moveY := 0;
+	END_IF
+ELSE
+	pedC1VU.moveY := 1;
+END_IF
+(*Pedestrian C2 VU. Moves from up to down, stops at the crossroads and moves if only green is lit*)
+IF pedC2VU.actY = 180 THEN
+	IF Cross2PedLUD.GreenLight AND NOT Cross2PedLUD.RedLight THEN
+		pedC2VU.moveY := 1;
+	ELSE
+		pedC2VU.moveY := 0;
+	END_IF
+ELSE
+	pedC2VU.moveY := 1;
+END_IF
+(*Pedestrian C1 VD. Moves from down to up, stops at the crossroads and moves if only green is lit*)
+IF pedC1VD.actY = 480 THEN
+	IF Cross1PedLDU.GreenLight AND NOT Cross1PedLDU.RedLight THEN
+		pedC1VD.moveY := -1;
+	ELSE
+		pedC1VD.moveY := 0;
+	END_IF
+ELSE
+	pedC1VD.moveY := -1;
+END_IF
+(*Pedestrian C1 VD. Moves from down to up, stops at the crossroads and moves if only green is lit*)
+IF pedC2VD.actY = 480 THEN
+	IF Cross2PedLDU.GreenLight AND NOT Cross2PedLDU.RedLight THEN
+		pedC2VD.moveY := -1;
+	ELSE
+		pedC2VD.moveY := 0;
+	END_IF
+ELSE
+	pedC2VD.moveY := -1;
+END_IF
+(*Pedestrian C1 HL. Moves from left to right, stops at the crossroads and moves if only green is lit*)
+IF pedC1HL.actX = 190 THEN
+	IF Cross1PedDLR.GreenLight AND NOT Cross1PedDLR.RedLight THEN
+		pedC1HL.moveX := 1;
+	ELSE
+		pedC1HL.moveX := 0;
+	END_IF
+ELSIF pedC1HL.actX = 1450 THEN
+	IF Cross2PedDLR.GreenLight AND NOT Cross2PedDLR.RedLight THEN
+		pedC1HL.moveX := 1;
+	ELSE
+		pedC1HL.moveX := 0;
+	END_IF
+ELSE
+	pedC1HL.moveX := 1;
+END_IF
+(*Pedestrian C1 HR. Moves from right to left, stops at the crossroads and moves if only green is lit*)
+IF pedC2HR.actX = 1740 THEN
+	IF Cross2PedURL.GreenLight AND NOT Cross2PedURL.RedLight THEN
+		pedC2HR.moveX := -1;
+	ELSE
+		pedC2HR.moveX := 0;
+	END_IF
+ELSIF pedC2HR.actX = 480 THEN
+	IF Cross1PedURL.GreenLight AND NOT Cross1PedURL.RedLight THEN
+		pedC2HR.moveX := -1;
+	ELSE
+		pedC2HR.moveX := 0;
+	END_IF
+ELSE
+	pedC2HR.moveX := -1;
+END_IF</xhtml>
+                      </ST>
+                    </body>
+                    <addData>
+                      <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+                        <ObjectId>6192887b-548d-4f46-a96d-80ca823e2952</ObjectId>
+                      </data>
+                    </addData>
+                  </action>
+                  <action name="UPDATE_OBJECTS">
+                    <body>
+                      <ST>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">// Update sprites
+carC1HR();
+carC1HL();
+carC1VD();
+carC1VU();
+carC2VD();
+carC2VU();
+pedC1VU();
+pedC1VD();
+pedC2VU();
+pedC2VD();
+pedC1HL();
+pedC2HR();</xhtml>
+                      </ST>
+                    </body>
+                    <addData>
+                      <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+                        <ObjectId>eea3e191-f523-4da2-a41f-bcb86b3fec17</ObjectId>
+                      </data>
+                    </addData>
+                  </action>
+                  <action name="CONTROL_LIGHTS">
+                    <body>
+                      <ST>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Cross1CarU := gIO.Cross1CarU;
+Cross1CarD := gIO.Cross1CarD;
+Cross1CarL := gIO.Cross1CarL;
+Cross1CarR := gIO.Cross1CarR;
+
+Cross2CarU := gIO.Cross2CarU;
+Cross2CarD := gIO.Cross2CarD;
+Cross2CarL := gIO.Cross2CarL;
+Cross2CarR := gIO.Cross2CarR;
+
+Cross1PedLUD := gIO.Cross1PedLUD;
+Cross1PedLDU := gIO.Cross1PedLDU;
+Cross1PedRUD := gIO.Cross1PedRUD;
+Cross1PedRDU := gIO.Cross1PedRDU;
+
+Cross1PedULR := gIO.Cross1PedULR;
+Cross1PedURL := gIO.Cross1PedURL;
+Cross1PedDLR := gIO.Cross1PedDLR;
+Cross1PedDRL := gIO.Cross1PedDRL;
+
+Cross2PedLUD := gIO.Cross2PedLUD;
+Cross2PedLDU := gIO.Cross2PedLDU;
+Cross2PedRUD := gIO.Cross2PedRUD;
+Cross2PedRDU := gIO.Cross2PedRDU;
+
+Cross2PedULR := gIO.Cross2PedULR;
+Cross2PedURL := gIO.Cross2PedURL;
+Cross2PedDLR := gIO.Cross2PedDLR;
+Cross2PedDRL := gIO.Cross2PedDRL;</xhtml>
+                      </ST>
+                    </body>
+                    <addData>
+                      <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+                        <ObjectId>d6856cd7-1759-4a2c-b510-e9b300223c02</ObjectId>
+                      </data>
+                    </addData>
+                  </action>
+                </actions>
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml">
+MOVE_CARS();
+MOVE_PEDESTRIANS();
+
+(*Freeze situation if a collission has occured*)
+IF NOT vCollision THEN
+	UPDATE_OBJECTS();
+	CONTROL_LIGHTS();
+END_IF
+CHECK_COLLISSIONS();
+
+
+</xhtml>
                   </ST>
                 </body>
                 <addData>
@@ -2097,25 +1938,22 @@ END_IF</xhtml>
         <Object Name="SoftPLC" ObjectId="83075d4d-9f61-4b3f-9b20-72bffe864b6d">
           <Object Name="Application" ObjectId="e86a3aad-ca93-4d44-88a5-66019f089c92">
             <Object Name="Library Manager" ObjectId="29e9a39f-d9e1-4ae5-8462-7b18ca48243c" />
-            <Folder Name="Control">
-              <Object Name="xc03_TrafficControl" ObjectId="e7eb72fd-dd19-4d64-b3b3-1d670977a2d9" />
-            </Folder>
             <Object Name="VISU_TASK" ObjectId="36dd8743-addf-4031-9feb-dce731836678" />
             <Object Name="xsim03" ObjectId="c932c134-12d7-42e6-b914-4e02f89670bf" />
-            <Folder Name="IO">
-              <Object Name="xgv03" ObjectId="45b9d55d-90d0-48a9-8d7e-2af6e1714d26" />
-            </Folder>
-            <Folder Name="Simulator">
-              <Object Name="xsim03" ObjectId="e8cc3a31-36c9-4946-a8e8-c5e86e24c67e" />
-              <Object Name="simulator" ObjectId="58484771-4ae7-4686-b08a-b3c90c27b274" />
-            </Folder>
             <Object Name="trafficLightCars" ObjectId="6c9cfcbc-87cf-42f1-a329-51e332d1b9d8" />
             <Object Name="trafficLightPed" ObjectId="ed37e448-fe2e-4c3e-bcbe-421400098762" />
+            <Object Name="gIO" ObjectId="45b9d55d-90d0-48a9-8d7e-2af6e1714d26" />
+            <Object Name="main" ObjectId="4d91704b-07a3-4bb1-8388-5c8d07f74044" />
+            <Object Name="simulator" ObjectId="58484771-4ae7-4686-b08a-b3c90c27b274">
+              <Object Name="CHECK_COLLISSIONS" ObjectId="06df541c-fc0f-4e5f-8864-eeec453b0732" />
+              <Object Name="MOVE_CARS" ObjectId="ed37403c-0a24-46dc-b7c0-a282de63709a" />
+              <Object Name="MOVE_PEDESTRIANS" ObjectId="6192887b-548d-4f46-a96d-80ca823e2952" />
+              <Object Name="UPDATE_OBJECTS" ObjectId="eea3e191-f523-4da2-a41f-bcb86b3fec17" />
+              <Object Name="CONTROL_LIGHTS" ObjectId="d6856cd7-1759-4a2c-b510-e9b300223c02" />
+            </Object>
           </Object>
         </Object>
         <Object Name="Library Manager" ObjectId="497477f5-d561-4978-840d-bbcb3520b9e4" />
-        <Object Name="CollisionDetection" ObjectId="90212427-8455-4030-88e5-8bce90b1fa00" />
-        <Object Name="MoveSprite" ObjectId="efe1e0d8-4162-41ed-bb90-87826e90fc6b" />
         <Object Name="Project Information" ObjectId="11c0fc3a-9bcf-4dd8-ac38-efb93363e521" />
         <Object Name="isSpriteColliding" ObjectId="d815f5ac-8dbf-4260-ad60-1105e7b065ec" />
         <Object Name="Sprite" ObjectId="75fe69fa-9c1b-4c2e-a08e-ab7d20dc4f5c" />

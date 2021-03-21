@@ -5,12 +5,12 @@
 ```pascal
 INTERFACE
     VAR_INPUT
-        sprite1 : Sprite; (**)
-        sprite2 : Sprite; (**)
+        sprite1 : Sprite; (*Sprite 1 function block*)
+        sprite2 : Sprite; (*Sprite 2 function block*)
     END_VAR
 END_INTERFACE
 FUNCTION isSpriteColliding :
-    
+    (*Calculate if these two sprites are overlapping*)
 IF sprite1.actX < (sprite2.actX + sprite2.init.width) AND
    (sprite1.actX + sprite1.init.width) > sprite2.actX AND
    sprite1.actY < (sprite2.actY + sprite2.init.height) AND

@@ -14,14 +14,14 @@ INTERFACE
         x : INT; (*X position of the sprite*)
         y : INT; (*Y position of the sprite*)
         atDestination : BOOL; (*Flag to say it has arrived at its destination*)
-        actX : INT; (**)
-        actY : INT; (**)
+        actX : INT; (*Actual position on the screen, X axis*)
+        actY : INT; (*Actual position on the screen, Y axis*)
     END_VAR
     VAR
         vInit : BOOL; (*Initialization flag*)
         vSpriteDef : SpriteDef_typ; (*Used sprite definition*)
-        vActualX : INT; (**)
-        vActualY : INT; (**)
+        vActualX : INT; (*Actual position on the screen, X axis*)
+        vActualY : INT; (*Actual position on the screen, Y axis*)
     END_VAR
 END_INTERFACE
 FUNCTION_BLOCK Sprite:

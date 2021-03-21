@@ -4,9 +4,9 @@
 
 ```pascal
 STRUCT trafficLightCars:
-    RedLamp : BOOL; (**)
-    YellowLamp : BOOL; (**)
-    GreenLamp : BOOL; (**)
+    RedLamp : BOOL; (*TRUE: Red lamp is on*)
+    YellowLamp : BOOL; (*TRUE: Yellow lamp is on*)
+    GreenLamp : BOOL; (*TRUE: Green lamp is on*)
   
 END_STRUCT
 ```

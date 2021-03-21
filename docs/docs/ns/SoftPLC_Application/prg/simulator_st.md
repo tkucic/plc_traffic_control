@@ -41,23 +41,35 @@ INTERFACE
         Cross2PedURL : trafficLightPed; (**)
         Cross2PedDLR : trafficLightPed; (**)
         Cross2PedDRL : trafficLightPed; (**)
-        vCounter : INT; (**)
         vCollision : BOOL; (**)
+        vDangerousCombination : BOOL; (**)
+        vPoliceControl : BOOL; (**)
         vCrashFlagX : INT; (**)
         vCrashFlagY : INT; (**)
+        Blinker : BLINK; (**)
+        vFaultReason : None; (**)
     END_VAR
 END_INTERFACE
 PROGRAM simulator:
-    
-MOVE_CARS();
+    MOVE_CARS();
 MOVE_PEDESTRIANS();
 
-(*Freeze situation if a collission has occured*)
-IF NOT vCollision THEN
+(*Blink yellow signal if the police is under control*)
+IF vPoliceControl THEN
+	UPDATE_OBJECTS();
+	BLINK_YELLOW_SIGNAL();
+(*Freeze situation if a collission or dangerous situation has occured*)
+ELSIF vCollision OR vDangerousCombination THEN
+	BLINK_DANGER_SIGNAL();
+ELSE
+	(*Everything is fine so move objects and let the main control the lights*)
 	UPDATE_OBJECTS();
 	CONTROL_LIGHTS();
+	vFaultReason := '';
 END_IF
-CHECK_COLLISSIONS();
+FAULT_MONITOR();
+gIO.PoliceModeActivated := vPoliceControl;
+Blinker(ENABLE:=TRUE, TIMELOW:=T#1S, TIMEHIGH:=T#1S);
 
 
 
@@ -65,81 +77,97 @@ END_PROGRAM
 ACTION CHECK_COLLISSIONS:
     (*Check for collisions between each car with another car and pedestrian*)
 vCollision := FALSE;
+
 (*Collission car -> car*)
 IF isSpriteColliding(carC1HR, carC1HL) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := carC1HL.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND CAR C1HL';
 END_IF
 IF isSpriteColliding(carC1HR, carC1VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := carC1VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND CAR C1VU';
 END_IF
 IF isSpriteColliding(carC1HR, carC1VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := carC1VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND CAR C1VD';
 END_IF
 IF isSpriteColliding(carC1HR, carC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := carC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND CAR C2VD';
 END_IF
 IF isSpriteColliding(carC1HR, carC2VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := carC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND CAR C2VU';
 END_IF
 IF isSpriteColliding(carC1HL, carC1VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
 	vCrashFlagY := carC1VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND CAR C1VU';
 END_IF
 IF isSpriteColliding(carC1HL, carC1VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
 	vCrashFlagY := carC1VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND CAR C1VD';
 END_IF
 IF isSpriteColliding(carC1HL, carC2VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
 	vCrashFlagY := carC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND CAR C2VU';
 END_IF
 IF isSpriteColliding(carC1HL, carC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
 	vCrashFlagY := carC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND CAR C2VD';
 END_IF
 IF isSpriteColliding(carC1VU, carC1VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VU.actX;
 	vCrashFlagY := carC1VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VU AND CAR C1VD';
 END_IF
 IF isSpriteColliding(carC1VU, carC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VU.actX;
 	vCrashFlagY := carC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VU AND CAR C2VD';
 END_IF
 IF isSpriteColliding(carC1VU, carC2VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VU.actX;
 	vCrashFlagY := carC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VU AND CAR C2VU';
 END_IF
 IF isSpriteColliding(carC1VD, carC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VD.actX;
 	vCrashFlagY := carC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VD AND CAR C2VD';
 END_IF
 IF isSpriteColliding(carC1VD, carC2VU) THEN
 	vCollision := TRUE; 
 	vCrashFlagX := carC1VD.actX;
 	vCrashFlagY := carC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VD AND CAR C2VU';
 END_IF
 IF isSpriteColliding(carC2VD, carC2VU) THEN
 	vCollision := TRUE; 
 	vCrashFlagX := carC2VD.actX;
 	vCrashFlagY := carC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VD AND CAR C2VU';
 END_IF
 
 (*Check collission car -> pedestrian*)
@@ -147,31 +175,37 @@ IF isSpriteColliding(carC1HR, pedC1HL) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := pedC1HL.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND PEDESTRIAN C1HL';
 END_IF
 IF isSpriteColliding(carC1HR, pedC1VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := pedC1VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND PEDESTRIAN C1VU';
 END_IF
 IF isSpriteColliding(carC1HR, pedC1VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := pedC1VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND PEDESTRIAN C1VD';
 END_IF
 IF isSpriteColliding(carC1HR, pedC2VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := pedC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND PEDESTRIAN C2VU';
 END_IF
 IF isSpriteColliding(carC1HR, pedC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := pedC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND PEDESTRIAN C2VD';
 END_IF
 IF isSpriteColliding(carC1HR, pedC2HR) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
-	vCrashFlagY := pedC1HL.actY;
+	vCrashFlagY := pedC2HR.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND PEDESTRIAN C2HR';
 END_IF
 
 
@@ -179,31 +213,37 @@ IF isSpriteColliding(carC1HL, pedC1HL) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
 	vCrashFlagY := pedC1HL.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND PEDESTRIAN C1HL';
 END_IF
 IF isSpriteColliding(carC1HL, pedC1VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
 	vCrashFlagY := pedC1VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND PEDESTRIAN C1VU';
 END_IF
 IF isSpriteColliding(carC1HL, pedC1VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
 	vCrashFlagY := pedC1VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND PEDESTRIAN C1VD';
 END_IF
 IF isSpriteColliding(carC1HL, pedC2VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
 	vCrashFlagY := pedC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND PEDESTRIAN C2VU';
 END_IF
 IF isSpriteColliding(carC1HL, pedC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
 	vCrashFlagY := pedC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND PEDESTRIAN C2VD';
 END_IF
 IF isSpriteColliding(carC1HL, pedC2HR) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
-	vCrashFlagY := pedC1HL.actY;
+	vCrashFlagY := pedC2HR.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND PEDESTRIAN C2HR';
 END_IF
 
 
@@ -211,31 +251,37 @@ IF isSpriteColliding(carC1VU, pedC1HL) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VU.actX;
 	vCrashFlagY := pedC1HL.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VU AND PEDESTRIAN C1HL';
 END_IF
 IF isSpriteColliding(carC1VU, pedC1VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VU.actX;
 	vCrashFlagY := pedC1VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VU AND PEDESTRIAN C1VU';
 END_IF
 IF isSpriteColliding(carC1VU, pedC1VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VU.actX;
 	vCrashFlagY := pedC1VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VU AND PEDESTRIAN C1VD';
 END_IF
 IF isSpriteColliding(carC1VU, pedC2VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VU.actX;
 	vCrashFlagY := pedC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VU AND PEDESTRIAN C2VU';
 END_IF
 IF isSpriteColliding(carC1VU, pedC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VU.actX;
 	vCrashFlagY := pedC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VU AND PEDESTRIAN C2VD';
 END_IF
 IF isSpriteColliding(carC1VU, pedC2HR) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VU.actX;
-	vCrashFlagY := pedC1HL.actY;
+	vCrashFlagY := pedC2HR.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VU AND PEDESTRIAN C2HR';
 END_IF
 
 
@@ -243,31 +289,37 @@ IF isSpriteColliding(carC1VD, pedC1HL) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VD.actX;
 	vCrashFlagY := pedC1HL.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VD AND PEDESTRIAN C1HL';
 END_IF
 IF isSpriteColliding(carC1VD, pedC1VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VD.actX;
 	vCrashFlagY := pedC1VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VD AND PEDESTRIAN C1VU';
 END_IF
 IF isSpriteColliding(carC1VD, pedC1VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VD.actX;
 	vCrashFlagY := pedC1VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VD AND PEDESTRIAN C1VD';
 END_IF
 IF isSpriteColliding(carC1VD, pedC2VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VD.actX;
 	vCrashFlagY := pedC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VD AND PEDESTRIAN C2VU';
 END_IF
 IF isSpriteColliding(carC1VD, pedC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VD.actX;
 	vCrashFlagY := pedC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VD AND PEDESTRIAN C2VD';
 END_IF
 IF isSpriteColliding(carC1VD, pedC2HR) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VD.actX;
-	vCrashFlagY := pedC1HL.actY;
+	vCrashFlagY := pedC2HR.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VD AND PEDESTRIAN C2HR';
 END_IF
 
 
@@ -275,31 +327,37 @@ IF isSpriteColliding(carC2VU, pedC1HL) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VU.actX;
 	vCrashFlagY := pedC1HL.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VU AND PEDESTRIAN C1HL';
 END_IF
 IF isSpriteColliding(carC2VU, pedC1VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VU.actX;
 	vCrashFlagY := pedC1VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VU AND PEDESTRIAN C1VU';
 END_IF
 IF isSpriteColliding(carC2VU, pedC1VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VU.actX;
 	vCrashFlagY := pedC1VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VU AND PEDESTRIAN C1VD';
 END_IF
 IF isSpriteColliding(carC2VU, pedC2VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VU.actX;
 	vCrashFlagY := pedC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VU AND PEDESTRIAN C2VU';
 END_IF
 IF isSpriteColliding(carC2VU, pedC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VU.actX;
 	vCrashFlagY := pedC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VU AND PEDESTRIAN C2VD';
 END_IF
 IF isSpriteColliding(carC2VU, pedC2HR) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VU.actX;
-	vCrashFlagY := pedC1HL.actY;
+	vCrashFlagY := pedC2HR.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VU AND PEDESTRIAN C2HR';
 END_IF
 
 
@@ -307,31 +365,37 @@ IF isSpriteColliding(carC2VD, pedC1HL) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VD.actX;
 	vCrashFlagY := pedC1HL.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VD AND PEDESTRIAN C1HL';
 END_IF
 IF isSpriteColliding(carC2VD, pedC1VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VD.actX;
 	vCrashFlagY := pedC1VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VD AND PEDESTRIAN pedC1VU';
 END_IF
 IF isSpriteColliding(carC2VD, pedC1VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VD.actX;
 	vCrashFlagY := pedC1VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VD AND PEDESTRIAN C1VD';
 END_IF
 IF isSpriteColliding(carC2VD, pedC2VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VD.actX;
 	vCrashFlagY := pedC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VD AND PEDESTRIAN C2VU';
 END_IF
 IF isSpriteColliding(carC2VD, pedC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VD.actX;
 	vCrashFlagY := pedC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VD AND PEDESTRIAN C2VD';
 END_IF
 IF isSpriteColliding(carC2VD, pedC2HR) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VD.actX;
-	vCrashFlagY := pedC1HL.actY;
+	vCrashFlagY := pedC2HR.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VD AND PEDESTRIAN C2HR';
 END_IF
 
 (*Hide the crash flag if there is no collission*)
@@ -536,13 +600,129 @@ Cross2PedURL := gIO.Cross2PedURL;
 Cross2PedDLR := gIO.Cross2PedDLR;
 Cross2PedDRL := gIO.Cross2PedDRL;
 END_ACTION
+ACTION FAULT_MONITOR:
+    (*Checks if dangerous situations occur, horizontal wave and vertical wave green at the same time*)
+vDangerousCombination := FALSE;
+(*Green vertical and horizontal pedestrians green*)
+IF Cross1CarU.GreenLamp AND (Cross1PedULR.GreenLight OR Cross1PedURL.GreenLight) THEN
+	vDangerousCombination := TRUE;
+	vFaultReason := 'DANGEROUS COMBINATION AT CROSS1 -> VERTICAL CARS AND HORIZONTAL PEDESTRIANS GREEN AT THE SAME TIME';
+END_IF
+IF Cross2CarU.GreenLamp AND (Cross2PedULR.GreenLight OR Cross2PedURL.GreenLight) THEN
+	vDangerousCombination := TRUE;
+	vFaultReason := 'DANGEROUS COMBINATION AT CROSS2 -> VERTICAL CARS AND HORIZONTAL PEDESTRIANS GREEN AT THE SAME TIME';
+END_IF
+IF Cross1CarD.GreenLamp AND (Cross1PedDLR.GreenLight OR Cross1PedDRL.GreenLight) THEN
+	vDangerousCombination := TRUE;
+	vFaultReason := 'DANGEROUS COMBINATION AT CROSS1 -> VERTICAL CARS AND HORIZONTAL PEDESTRIANS GREEN AT THE SAME TIME';
+END_IF
+IF Cross2CarD.GreenLamp AND (Cross2PedDLR.GreenLight OR Cross2PedDRL.GreenLight) THEN
+	vDangerousCombination := TRUE;
+	vFaultReason := 'DANGEROUS COMBINATION AT CROSS2 -> VERTICAL CARS AND HORIZONTAL PEDESTRIANS GREEN AT THE SAME TIME';
+END_IF
+
+(*Green horizontal and vertical pedestrians green*)
+IF Cross1CarL.GreenLamp AND (Cross1PedLUD.GreenLight OR Cross1PedLDU.GreenLight) THEN
+	vDangerousCombination := TRUE;
+	vFaultReason := 'DANGEROUS COMBINATION AT CROSS1 -> HORIZONTAL CARS AND VERTICAL PEDESTRIANS GREEN AT THE SAME TIME';
+END_IF
+IF Cross1CarR.GreenLamp AND (Cross1PedRUD.GreenLight OR Cross1PedRDU.GreenLight) THEN
+	vDangerousCombination := TRUE;
+	vFaultReason := 'DANGEROUS COMBINATION AT CROSS1 -> HORIZONTAL CARS AND VERTICAL PEDESTRIANS GREEN AT THE SAME TIME';
+END_IF
+IF Cross2CarL.GreenLamp AND (Cross2PedLUD.GreenLight OR Cross2PedLDU.GreenLight) THEN
+	vDangerousCombination := TRUE;
+	vFaultReason := 'DANGEROUS COMBINATION AT CROSS2 -> HORIZONTAL CARS AND VERTICAL PEDESTRIANS GREEN AT THE SAME TIME';
+END_IF
+IF Cross2CarR.GreenLamp AND (Cross2PedRUD.GreenLight OR Cross2PedRDU.GreenLight) THEN
+	vDangerousCombination := TRUE;
+	vFaultReason := 'DANGEROUS COMBINATION AT CROSS2 -> HORIZONTAL CARS AND VERTICAL PEDESTRIANS GREEN AT THE SAME TIME';
+END_IF
+
+(*Checks if there was a collission with car-car and ped - car*)
+CHECK_COLLISSIONS();
+END_ACTION
+ACTION BLINK_DANGER_SIGNAL:
+    Cross1CarU.GreenLamp := FALSE;
+Cross1CarU.YellowLamp := FALSE;
+Cross1CarU.RedLamp := Blinker.OUT;
+
+Cross1CarD := Cross1CarU;
+Cross1CarL := Cross1CarU;
+Cross1CarR := Cross1CarU;
+
+Cross2CarU := Cross1CarU;
+Cross2CarD := Cross1CarU;
+Cross2CarL := Cross1CarU;
+Cross2CarR := Cross1CarU;
+
+Cross1PedLUD.GreenLight := FALSE;
+Cross1PedLUD.RedLight := Blinker.OUT;
+Cross1PedLUD.TimeToSequenceChange := 0;
+
+Cross1PedLDU := Cross1PedLUD;
+Cross1PedRUD := Cross1PedLUD;
+Cross1PedRDU := Cross1PedLUD;
+
+Cross1PedULR := Cross1PedLUD;
+Cross1PedURL := Cross1PedLUD;
+Cross1PedDLR := Cross1PedLUD;
+Cross1PedDRL := Cross1PedLUD;
+
+Cross2PedLUD := Cross1PedLUD;
+Cross2PedLDU := Cross1PedLUD;
+Cross2PedRUD := Cross1PedLUD;
+Cross2PedRDU := Cross1PedLUD;
+
+Cross2PedULR := Cross1PedLUD;
+Cross2PedURL := Cross1PedLUD;
+Cross2PedDLR := Cross1PedLUD;
+Cross2PedDRL := Cross1PedLUD;
+END_ACTION
+ACTION BLINK_YELLOW_SIGNAL:
+    Cross1CarU.GreenLamp := FALSE;
+Cross1CarU.YellowLamp := Blinker.OUT;
+Cross1CarU.RedLamp := FALSE;
+
+Cross1CarD := Cross1CarU;
+Cross1CarL := Cross1CarU;
+Cross1CarR := Cross1CarU;
+
+Cross2CarU := Cross1CarU;
+Cross2CarD := Cross1CarU;
+Cross2CarL := Cross1CarU;
+Cross2CarR := Cross1CarU;
+
+Cross1PedLUD.GreenLight := FALSE;
+Cross1PedLUD.RedLight := FALSE;
+Cross1PedLUD.TimeToSequenceChange := 0;
+
+Cross1PedLDU := Cross1PedLUD;
+Cross1PedRUD := Cross1PedLUD;
+Cross1PedRDU := Cross1PedLUD;
+
+Cross1PedULR := Cross1PedLUD;
+Cross1PedURL := Cross1PedLUD;
+Cross1PedDLR := Cross1PedLUD;
+Cross1PedDRL := Cross1PedLUD;
+
+Cross2PedLUD := Cross1PedLUD;
+Cross2PedLDU := Cross1PedLUD;
+Cross2PedRUD := Cross1PedLUD;
+Cross2PedRDU := Cross1PedLUD;
+
+Cross2PedULR := Cross1PedLUD;
+Cross2PedURL := Cross1PedLUD;
+Cross2PedDLR := Cross1PedLUD;
+Cross2PedDRL := Cross1PedLUD;
+END_ACTION
 ```
 
 ## Metrics  
 
 | VAR_IN | VAR_OUT | VAR_IN_OUT | VAR_LOCAL | VAR_EXTERNAL | VAR_GLOBAL | VAR_ACCESS | VAR_TEMP | Actions | Lines of code | Maintainable size |
 | ------ | ------- | ---------- | --------- | ------------ | ---------- | ---------- | -------- | ------- | ------------- | ----------------- |
-| 0 | 0 | 0 | 40 | 0 | 0 | 0 | 0 | 5 | 475 | 515 |  
+| 0 | 0 | 0 | 43 | 0 | 0 | 0 | 0 | 8 | 646 | 689 |  
 
 ---
 Autogenerated with [ia_tools](https://github.com/tkucic/ia_tools)  

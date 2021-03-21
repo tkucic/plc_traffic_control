@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
-  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP16" creationDateTime="2021-03-21T13:04:17.9658946" />
-  <contentHeader name="Traffic control simulator" version="1.0" modificationDateTime="2021-03-21T13:03:39.6096441" organization="TK Automation" author="Toni Kucic">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP16" creationDateTime="2021-03-21T14:47:45.4338943" />
+  <contentHeader name="Traffic control simulator" version="1.0" modificationDateTime="2021-03-21T14:47:36.7542607" organization="TK Automation" author="Toni Kucic">
+    <Comment>Traffic control is often used a simple introduction into sequencing when programming PLCs. As a part of my portfolio I have written a simple timing controller and a simulator for two crossroads that are one way streets with pedestrians going in all directions. The project is meant for begginers and for educational purposes. It is published under MIT license. Written in CODESYS 3.5 and in structured text language.</Comment>
     <coordinateInfo>
       <fbd>
         <scaling x="1" y="1" />
@@ -18,6 +19,8 @@
         <ProjectInformation>
           <property name="Author" type="string">Toni Kucic</property>
           <property name="Company" type="string">TK Automation</property>
+          <property name="CompiledLibraryCompatibilityVersion" type="string">CODESYS V3.5 SP9 Patch 2</property>
+          <property name="Description" type="string">Traffic control is often used a simple introduction into sequencing when programming PLCs. As a part of my portfolio I have written a simple timing controller and a simulator for two crossroads that are one way streets with pedestrians going in all directions. The project is meant for begginers and for educational purposes. It is published under MIT license. Written in CODESYS 3.5 and in structured text language.</property>
           <property name="Project" type="string">plc_traffic_control</property>
           <property name="Title" type="string">Traffic control simulator</property>
           <property name="Version" type="version">1.0</property>
@@ -106,17 +109,23 @@
               <type>
                 <derived name="Sprite" />
               </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Sprite 1 function block</xhtml>
+              </documentation>
             </variable>
             <variable name="sprite2">
               <type>
                 <derived name="Sprite" />
               </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Sprite 2 function block</xhtml>
+              </documentation>
             </variable>
           </inputVars>
         </interface>
         <body>
           <ST>
-            <xhtml xmlns="http://www.w3.org/1999/xhtml">
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">(*Calculate if these two sprites are overlapping*)
 IF sprite1.actX &lt; (sprite2.actX + sprite2.init.width) AND
    (sprite1.actX + sprite1.init.width) &gt; sprite2.actX AND
    sprite1.actY &lt; (sprite2.actY + sprite2.init.height) AND
@@ -203,11 +212,17 @@ END_IF</xhtml>
               <type>
                 <INT />
               </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Actual position on the screen, X axis</xhtml>
+              </documentation>
             </variable>
             <variable name="actY">
               <type>
                 <INT />
               </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Actual position on the screen, Y axis</xhtml>
+              </documentation>
             </variable>
           </outputVars>
           <localVars>
@@ -234,11 +249,17 @@ END_IF</xhtml>
               <type>
                 <INT />
               </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Actual position on the screen, X axis</xhtml>
+              </documentation>
             </variable>
             <variable name="vActualY">
               <type>
                 <INT />
               </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Actual position on the screen, Y axis</xhtml>
+              </documentation>
             </variable>
           </localVars>
         </interface>
@@ -308,7 +329,7 @@ actY := vSpriteDef.y;</xhtml>
               </data>
             </addData>
           </task>
-          <task name="xsim03" interval="PT0.005S" priority="1">
+          <task name="Task" interval="PT0.005S" priority="1">
             <pouInstance name="main" typeName="">
               <documentation>
                 <xhtml xmlns="http://www.w3.org/1999/xhtml" />
@@ -331,31 +352,12 @@ actY := vSpriteDef.y;</xhtml>
             </addData>
           </task>
           <globalVars name="gIO">
-            <variable name="cfgPeriodTime">
-              <type>
-                <TIME />
-              </type>
-              <initialValue>
-                <simpleValue value="TIME#1m24s0ms" />
-              </initialValue>
-              <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Configuration</xhtml>
-              </documentation>
-            </variable>
-            <variable name="cfgStartDirection">
-              <type>
-                <DINT />
-              </type>
-              <initialValue>
-                <simpleValue value="0" />
-              </initialValue>
-            </variable>
             <variable name="Cross1CarU">
               <type>
                 <derived name="trafficLightCars" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light - Crossroad 1 - Cars going up to down</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light DO - Crossroad 1 - Cars going up to down</xhtml>
               </documentation>
             </variable>
             <variable name="Cross1CarD">
@@ -363,7 +365,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightCars" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light - Crossroad 1 - Cars going down to up</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light DO - Crossroad 1 - Cars going down to up</xhtml>
               </documentation>
             </variable>
             <variable name="Cross1CarL">
@@ -371,7 +373,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightCars" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light - Crossroad 1 - Cars going left to right</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light DO - Crossroad 1 - Cars going left to right</xhtml>
               </documentation>
             </variable>
             <variable name="Cross1CarR">
@@ -379,7 +381,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightCars" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light - Crossroad 1 - Cars going right to left</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light DO - Crossroad 1 - Cars going right to left</xhtml>
               </documentation>
             </variable>
             <variable name="Cross2CarU">
@@ -387,7 +389,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightCars" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car light - Crossroad 2 - Cars going up to down</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light DO - Crossroad 2 - Cars going up to down</xhtml>
               </documentation>
             </variable>
             <variable name="Cross2CarD">
@@ -395,7 +397,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightCars" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car light - Crossroad 2 - Cars going down to up</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light DO - Crossroad 2 - Cars going down to up</xhtml>
               </documentation>
             </variable>
             <variable name="Cross2CarL">
@@ -403,7 +405,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightCars" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car light - Crossroad 2 - Cars going left to right</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light DO - Crossroad 2 - Cars going left to right</xhtml>
               </documentation>
             </variable>
             <variable name="Cross2CarR">
@@ -411,7 +413,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightCars" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car light - Crossroad 2 - Cars going right to left</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light DO - Crossroad 2 - Cars going right to left</xhtml>
               </documentation>
             </variable>
             <variable name="Cross1PedLUD">
@@ -419,7 +421,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going up to down on left side</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light DO - Crossroad 1 - Pedestrians going up to down on left side</xhtml>
               </documentation>
             </variable>
             <variable name="Cross1PedLDU">
@@ -427,7 +429,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going down to up on left side</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light DO - Crossroad 1 - Pedestrians going down to up on left side</xhtml>
               </documentation>
             </variable>
             <variable name="Cross1PedRUD">
@@ -435,7 +437,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going up to down on right side</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light DO - Crossroad 1 - Pedestrians going up to down on right side</xhtml>
               </documentation>
             </variable>
             <variable name="Cross1PedRDU">
@@ -443,7 +445,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going down to up on right side</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light DO - Crossroad 1 - Pedestrians going down to up on right side</xhtml>
               </documentation>
             </variable>
             <variable name="Cross1PedULR">
@@ -451,7 +453,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going left to right on upper side</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light DO - Crossroad 1 - Pedestrians going left to right on upper side</xhtml>
               </documentation>
             </variable>
             <variable name="Cross1PedURL">
@@ -459,7 +461,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going right to left on upper side</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light DO - Crossroad 1 - Pedestrians going right to left on upper side</xhtml>
               </documentation>
             </variable>
             <variable name="Cross1PedDLR">
@@ -467,7 +469,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going left to right on lower side</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light DO - Crossroad 1 - Pedestrians going left to right on lower side</xhtml>
               </documentation>
             </variable>
             <variable name="Cross1PedDRL">
@@ -475,7 +477,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going right to left on lower side</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light DO - Crossroad 1 - Pedestrians going right to left on lower side</xhtml>
               </documentation>
             </variable>
             <variable name="Cross2PedLUD">
@@ -483,7 +485,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going up to down on left side</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light DO - Crossroad 2 - Pedestrians going up to down on left side</xhtml>
               </documentation>
             </variable>
             <variable name="Cross2PedLDU">
@@ -491,7 +493,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going down to up on left side</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light DO - Crossroad 2 - Pedestrians going down to up on left side</xhtml>
               </documentation>
             </variable>
             <variable name="Cross2PedRUD">
@@ -499,7 +501,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going up to down on right side</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light DO - Crossroad 2 - Pedestrians going up to down on right side</xhtml>
               </documentation>
             </variable>
             <variable name="Cross2PedRDU">
@@ -507,7 +509,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going down to up on right side</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light DO - Crossroad 2 - Pedestrians going down to up on right side</xhtml>
               </documentation>
             </variable>
             <variable name="Cross2PedULR">
@@ -515,7 +517,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going left to right on upper side</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light DO - Crossroad 2 - Pedestrians going left to right on upper side</xhtml>
               </documentation>
             </variable>
             <variable name="Cross2PedURL">
@@ -523,7 +525,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going right to left on upper side</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light DO - Crossroad 2 - Pedestrians going right to left on upper side</xhtml>
               </documentation>
             </variable>
             <variable name="Cross2PedDLR">
@@ -531,7 +533,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going left to right on lower side</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light DO - Crossroad 2 - Pedestrians going left to right on lower side</xhtml>
               </documentation>
             </variable>
             <variable name="Cross2PedDRL">
@@ -539,7 +541,7 @@ actY := vSpriteDef.y;</xhtml>
                 <derived name="trafficLightPed" />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going right to left on lower side</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light DO - Crossroad 2 - Pedestrians going right to left on lower side</xhtml>
               </documentation>
             </variable>
             <variable name="PoliceModeActivated">
@@ -547,7 +549,7 @@ actY := vSpriteDef.y;</xhtml>
                 <BOOL />
               </type>
               <documentation>
-                <xhtml xmlns="http://www.w3.org/1999/xhtml">Police mode is activated</xhtml>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">DI Police mode is activated</xhtml>
               </documentation>
             </variable>
             <addData>
@@ -570,16 +572,25 @@ actY := vSpriteDef.y;</xhtml>
                       <type>
                         <BOOL />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">TRUE: Red lamp is on</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="YellowLamp">
                       <type>
                         <BOOL />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">TRUE: Yellow lamp is on</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="GreenLamp">
                       <type>
                         <BOOL />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">TRUE: Green lamp is on</xhtml>
+                      </documentation>
                     </variable>
                   </struct>
                 </baseType>
@@ -598,16 +609,25 @@ actY := vSpriteDef.y;</xhtml>
                       <type>
                         <BOOL />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">TRUE: Red lamp is on</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="GreenLight">
                       <type>
                         <BOOL />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">TRUE: Green lamp is on</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="TimeToSequenceChange">
                       <type>
-                        <INT />
+                        <UINT />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Time in seconds until next light change</xhtml>
+                      </documentation>
                     </variable>
                   </struct>
                 </baseType>
@@ -652,6 +672,9 @@ actY := vSpriteDef.y;</xhtml>
                           </value>
                         </structValue>
                       </initialValue>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Sprite controling car C1HR</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="carC1HL">
                       <type>
@@ -683,6 +706,9 @@ actY := vSpriteDef.y;</xhtml>
                           </value>
                         </structValue>
                       </initialValue>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Sprite controling car C1HL</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="carC1VU">
                       <type>
@@ -714,6 +740,9 @@ actY := vSpriteDef.y;</xhtml>
                           </value>
                         </structValue>
                       </initialValue>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Sprite controling car C1VU</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="carC1VD">
                       <type>
@@ -745,6 +774,9 @@ actY := vSpriteDef.y;</xhtml>
                           </value>
                         </structValue>
                       </initialValue>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Sprite controling car C1VD</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="carC2VU">
                       <type>
@@ -776,6 +808,9 @@ actY := vSpriteDef.y;</xhtml>
                           </value>
                         </structValue>
                       </initialValue>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Sprite controling car C2VU</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="carC2VD">
                       <type>
@@ -807,6 +842,9 @@ actY := vSpriteDef.y;</xhtml>
                           </value>
                         </structValue>
                       </initialValue>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Sprite controling car C2VD</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="pedC1VU">
                       <type>
@@ -838,6 +876,9 @@ actY := vSpriteDef.y;</xhtml>
                           </value>
                         </structValue>
                       </initialValue>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Sprite controling pedestrian C1VU</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="pedC1VD">
                       <type>
@@ -869,6 +910,9 @@ actY := vSpriteDef.y;</xhtml>
                           </value>
                         </structValue>
                       </initialValue>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Sprite controling pedestrian C1VD</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="pedC2VU">
                       <type>
@@ -900,6 +944,9 @@ actY := vSpriteDef.y;</xhtml>
                           </value>
                         </structValue>
                       </initialValue>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Sprite controling pedestrian C2VU</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="pedC2VD">
                       <type>
@@ -931,6 +978,9 @@ actY := vSpriteDef.y;</xhtml>
                           </value>
                         </structValue>
                       </initialValue>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Sprite controling pedestrian C2VD</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="pedC1HL">
                       <type>
@@ -962,6 +1012,9 @@ actY := vSpriteDef.y;</xhtml>
                           </value>
                         </structValue>
                       </initialValue>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Sprite controling pedestrian C1HL</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="pedC2HR">
                       <type>
@@ -993,144 +1046,225 @@ actY := vSpriteDef.y;</xhtml>
                           </value>
                         </structValue>
                       </initialValue>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Sprite controling pedestrian C1HR</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross1CarU">
                       <type>
                         <derived name="trafficLightCars" />
                       </type>
                       <documentation>
-                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Lamps</xhtml>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light - Crossroad 1 - Cars going up to down</xhtml>
                       </documentation>
                     </variable>
                     <variable name="Cross1CarD">
                       <type>
                         <derived name="trafficLightCars" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light - Crossroad 1 - Cars going down to up</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross1CarL">
                       <type>
                         <derived name="trafficLightCars" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light - Crossroad 1 - Cars going left to right</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross1CarR">
                       <type>
                         <derived name="trafficLightCars" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Car traffic light - Crossroad 1 - Cars going right to left</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross2CarU">
                       <type>
                         <derived name="trafficLightCars" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Car light - Crossroad 2 - Cars going up to down</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross2CarD">
                       <type>
                         <derived name="trafficLightCars" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Car light - Crossroad 2 - Cars going down to up</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross2CarL">
                       <type>
                         <derived name="trafficLightCars" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Car light - Crossroad 2 - Cars going left to right</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross2CarR">
                       <type>
                         <derived name="trafficLightCars" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Car light - Crossroad 2 - Cars going right to left</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross1PedLUD">
                       <type>
                         <derived name="trafficLightPed" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going up to down on left side</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross1PedLDU">
                       <type>
                         <derived name="trafficLightPed" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going down to up on left side</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross1PedRUD">
                       <type>
                         <derived name="trafficLightPed" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going up to down on right side</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross1PedRDU">
                       <type>
                         <derived name="trafficLightPed" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going down to up on right side</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross1PedULR">
                       <type>
                         <derived name="trafficLightPed" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going left to right on upper side</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross1PedURL">
                       <type>
                         <derived name="trafficLightPed" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going right to left on upper side</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross1PedDLR">
                       <type>
                         <derived name="trafficLightPed" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going left to right on lower side</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross1PedDRL">
                       <type>
                         <derived name="trafficLightPed" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 1 - Pedestrians going right to left on lower side</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross2PedLUD">
                       <type>
                         <derived name="trafficLightPed" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going up to down on left side</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross2PedLDU">
                       <type>
                         <derived name="trafficLightPed" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going down to up on left side</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross2PedRUD">
                       <type>
                         <derived name="trafficLightPed" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going up to down on right side</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross2PedRDU">
                       <type>
                         <derived name="trafficLightPed" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going down to up on right side</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross2PedULR">
                       <type>
                         <derived name="trafficLightPed" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going left to right on upper side</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross2PedURL">
                       <type>
                         <derived name="trafficLightPed" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going right to left on upper side</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross2PedDLR">
                       <type>
                         <derived name="trafficLightPed" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going left to right on lower side</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Cross2PedDRL">
                       <type>
                         <derived name="trafficLightPed" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going right to left on lower side</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="vCollision">
                       <type>
                         <BOOL />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Collission has occured </xhtml>
+                      </documentation>
                     </variable>
                     <variable name="vDangerousCombination">
                       <type>
                         <BOOL />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Dangerous combination of lights has been detected </xhtml>
+                      </documentation>
                     </variable>
                     <variable name="vPoliceControl">
                       <type>
                         <BOOL />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Police control activated </xhtml>
+                      </documentation>
                     </variable>
                     <variable name="vCrashFlagX">
                       <type>
@@ -1139,6 +1273,9 @@ actY := vSpriteDef.y;</xhtml>
                       <initialValue>
                         <simpleValue value="-200" />
                       </initialValue>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">If collission is detected, holds position of collission x axis </xhtml>
+                      </documentation>
                     </variable>
                     <variable name="vCrashFlagY">
                       <type>
@@ -1147,16 +1284,25 @@ actY := vSpriteDef.y;</xhtml>
                       <initialValue>
                         <simpleValue value="-200" />
                       </initialValue>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">If collission is detected, holds position of collission y axis </xhtml>
+                      </documentation>
                     </variable>
                     <variable name="Blinker">
                       <type>
                         <derived name="BLINK" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Code that blinks a variable</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="vFaultReason">
                       <type>
                         <string length="255" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">If collission or dangerous combination detected, holds more information where it has occured</xhtml>
+                      </documentation>
                     </variable>
                   </localVars>
                 </interface>
@@ -1913,81 +2059,89 @@ Blinker(ENABLE:=TRUE, TIMELOW:=T#1S, TIMEHIGH:=T#1S);
               <pou name="main" pouType="program">
                 <interface>
                   <localVars>
-                    <variable name="vSequenceA">
-                      <type>
-                        <DINT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="1" />
-                      </initialValue>
-                    </variable>
-                    <variable name="TimerA">
-                      <type>
-                        <derived name="TOF" />
-                      </type>
-                    </variable>
-                    <variable name="vSequenceB">
-                      <type>
-                        <DINT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="0" />
-                      </initialValue>
-                    </variable>
-                    <variable name="TimerB">
-                      <type>
-                        <derived name="TOF" />
-                      </type>
-                    </variable>
-                    <variable name="Start">
-                      <type>
-                        <BOOL />
-                      </type>
-                    </variable>
-                    <variable name="StartOld">
-                      <type>
-                        <BOOL />
-                      </type>
-                    </variable>
-                    <variable name="vSequence">
-                      <type>
-                        <DINT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="0" />
-                      </initialValue>
-                    </variable>
                     <variable name="TactTimer">
                       <type>
                         <derived name="TON" />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Timer to provide tact for all lights in a synchronized system</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="vPeriodTime">
                       <type>
                         <TIME />
                       </type>
                       <initialValue>
-                        <simpleValue value="TIME#1m25s0ms" />
+                        <simpleValue value="TIME#1m2s0ms" />
                       </initialValue>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Period after the sequence repeats</xhtml>
+                      </documentation>
                     </variable>
                     <variable name="vElapsedTime">
                       <type>
                         <TIME />
                       </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Elapsed time of the sequence</xhtml>
+                      </documentation>
+                    </variable>
+                    <variable name="vTimeToSequenceChange">
+                      <type>
+                        <UDINT />
+                      </type>
+                      <documentation>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Time in seconds to next sequence change</xhtml>
+                      </documentation>
                     </variable>
                   </localVars>
                 </interface>
                 <body>
                   <ST>
-                    <xhtml xmlns="http://www.w3.org/1999/xhtml">
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml">(*Functional description:
+This is a program that needs to control two crossroads with cars and pedestrians. The crossroads are one way streets
+so cars and pedestrians move in only one direction. It needs to control the traffic lights synchronously
+so green wave is kept on the vertical and horizontal lines.
+Pedestrian lights work opposite of the car lights so if the vertical line for the cars is green,
+the horizontal pedestrians are not allowed to cross and vice versa.
+For the pedestrians a time needs to be calculated to show when the green/red light is going to change.
+
+This program implements the sequence diagram given below.
+H R   0-30
+H Y   28-30 &amp;&amp; 60-62
+H G   30-60
+V R   28-60
+V Y   26-28 &amp;&amp; 58-60
+V G   0-26  &amp;&amp; 60-62
+P H R 28-60
+P H G 0-28
+P V R 0-28
+P V G 28-60
+
+Simulator decription:
+The simulator moves the objects on the road/side walk until they reach a decision point. Decision points
+are located next to the related traffic lights. The objects will move only if the traffic light is green
+for their direction.
+In the simulator the fault monitoring is also active which will stop the objects moving and freeze the lights
+so the operator can check where it went wrong. It will also display a message on the screen with the location
+and fault reason. During collission or dangerous lights combination all red lights will blink.
+To get through the fault situation the operator must enable police control which puts all lights in blinking yellow mode.*)
+
+(*Start the timer and reset it after it expired. Basically count to 85s and then start over*)
 TactTimer(IN:=TRUE, PT:=vPeriodTime, ET =&gt; vElapsedTime);
 IF TactTimer.Q THEN
 	TactTimer(IN:=FALSE);
 END_IF
+(*Calculate next sequence change*)
+IF vElapsedTime &lt;= T#28S THEN
+	vTimeToSequenceChange := TIME_TO_UDINT(T#28S - vElapsedTime)/1000;
+ELSIF vElapsedTime &lt;= T#62S THEN
+	vTimeToSequenceChange := TIME_TO_UDINT(T#62S - vElapsedTime)/1000;
+END_IF
 (* Direction Up, Down traffic light *)
-gIO.Cross1CarU.RedLamp := vElapsedTime &lt;= T#5S OR vElapsedTime &gt;= T#37S AND vElapsedTime &lt;= T#85S;
-gIO.Cross1CarU.YellowLamp := vElapsedTime &gt; T#3S AND vElapsedTime &lt;= T#5S OR vElapsedTime &gt;= T#35S AND vElapsedTime &lt;= T#37S;
-gIO.Cross1CarU.GreenLamp := vElapsedTime &gt;= T#5S AND vElapsedTime &lt;= T#35S;
+gIO.Cross1CarU.RedLamp    := vElapsedTime &gt;= T#0S  AND vElapsedTime &lt;= T#30S;
+gIO.Cross1CarU.YellowLamp := vElapsedTime &gt;= T#28S AND vElapsedTime &lt;= T#30S OR vElapsedTime &gt;= T#60S AND vElapsedTime &lt;= T#62S;
+gIO.Cross1CarU.GreenLamp  := vElapsedTime &gt;= T#30S AND vElapsedTime &lt;= T#60S;
 
 (* Mirror the other side of the Up, Down direction *)
 gIO.Cross1CarD := gIO.Cross1CarU;
@@ -1995,9 +2149,9 @@ gIO.Cross2CarD := gIO.Cross1CarU;
 gIO.Cross2CarU := gIO.Cross1CarU;
 
 (* Direction Left, Right traffic light *)
-gIO.Cross1CarL.RedLamp := vElapsedTime &gt;= T#0S AND vElapsedTime &lt;= T#39S OR vElapsedTime &gt;= T#71S AND vElapsedTime &lt;= T#85S;
-gIO.Cross1CarL.YellowLamp := vElapsedTime &gt; T#37S AND vElapsedTime &lt;= T#39S OR vElapsedTime &gt;= T#69S AND vElapsedTime &lt;= T#71S;
-gIO.Cross1CarL.GreenLamp := vElapsedTime &gt;= T#39S AND vElapsedTime &lt;= T#69S;
+gIO.Cross1CarL.RedLamp    := vElapsedTime &gt;= T#28S AND vElapsedTime &lt;= T#60S;
+gIO.Cross1CarL.YellowLamp := vElapsedTime &gt;= T#26S AND vElapsedTime &lt;= T#28S OR vElapsedTime &gt;= T#58S AND vElapsedTime &lt;= T#60S;
+gIO.Cross1CarL.GreenLamp  := vElapsedTime &gt;= T#0S  AND vElapsedTime &lt;= T#26S OR vElapsedTime &gt;= T#60S AND vElapsedTime &lt;= T#62S;
 
 (* Mirror the other side of the Left, Right direction *)
 gIO.Cross1CarR := gIO.Cross1CarL;
@@ -2009,11 +2163,14 @@ gIO.Cross2CarL := gIO.Cross1CarL;
 IF gIO.Cross1CarL.GreenLamp OR gIO.Cross1CarL.YellowLamp  THEN
 	gIO.Cross1PedLDU.RedLight := TRUE;
 	gIO.Cross1PedLDU.GreenLight := FALSE;
-
+	
 ELSIF gIO.Cross1CarL.RedLamp THEN
 	gIO.Cross1PedLDU.RedLight := FALSE;
 	gIO.Cross1PedLDU.GreenLight := TRUE;
+
 END_IF
+gIO.Cross1PedLDU.TimeToSequenceChange := UDINT_TO_UINT(vTimeToSequenceChange);
+
 (*Just copy all of the up and downs as they behave the same*)
 gIO.Cross1PedLUD := gIO.Cross1PedLDU;
 gIO.Cross1PedRUD := gIO.Cross1PedLDU;
@@ -2032,6 +2189,8 @@ ELSIF gIO.Cross1CarU.RedLamp THEN
 	gIO.Cross1PedULR.RedLight := FALSE;
 	gIO.Cross1PedULR.GreenLight := TRUE;
 END_IF
+gIO.Cross1PedULR.TimeToSequenceChange := UDINT_TO_UINT(vTimeToSequenceChange);
+
 (*Just copy all of the lefts and rights as they behave the same*)
 gIO.Cross1PedURL := gIO.Cross1PedULR;
 gIO.Cross1PedDLR := gIO.Cross1PedULR;
@@ -2163,7 +2322,7 @@ gIO.Cross2PedDRL := gIO.Cross1PedULR;</xhtml>
           <Object Name="Application" ObjectId="e86a3aad-ca93-4d44-88a5-66019f089c92">
             <Object Name="Library Manager" ObjectId="29e9a39f-d9e1-4ae5-8462-7b18ca48243c" />
             <Object Name="VISU_TASK" ObjectId="36dd8743-addf-4031-9feb-dce731836678" />
-            <Object Name="xsim03" ObjectId="c932c134-12d7-42e6-b914-4e02f89670bf" />
+            <Object Name="Task" ObjectId="c932c134-12d7-42e6-b914-4e02f89670bf" />
             <Object Name="gIO" ObjectId="45b9d55d-90d0-48a9-8d7e-2af6e1714d26" />
             <Object Name="trafficLightCars" ObjectId="6c9cfcbc-87cf-42f1-a329-51e332d1b9d8" />
             <Object Name="trafficLightPed" ObjectId="ed37e448-fe2e-4c3e-bcbe-421400098762" />

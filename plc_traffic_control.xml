@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
-  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP16" creationDateTime="2021-03-20T20:12:35.3535748" />
-  <contentHeader name="Traffic control simulator" version="1.0" modificationDateTime="2021-03-20T20:11:53.2546118" organization="TK Automation" author="Toni Kucic">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP16" creationDateTime="2021-03-21T13:04:17.9658946" />
+  <contentHeader name="Traffic control simulator" version="1.0" modificationDateTime="2021-03-21T13:03:39.6096441" organization="TK Automation" author="Toni Kucic">
     <coordinateInfo>
       <fbd>
         <scaling x="1" y="1" />
@@ -542,6 +542,14 @@ actY := vSpriteDef.y;</xhtml>
                 <xhtml xmlns="http://www.w3.org/1999/xhtml">Pedestrian light - Crossroad 2 - Pedestrians going right to left on lower side</xhtml>
               </documentation>
             </variable>
+            <variable name="PoliceModeActivated">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Police mode is activated</xhtml>
+              </documentation>
+            </variable>
             <addData>
               <data name="http://www.3s-software.com/plcopenxml/attributes" handleUnknown="implementation">
                 <Attributes>
@@ -609,146 +617,6 @@ actY := vSpriteDef.y;</xhtml>
                   </data>
                 </addData>
               </dataType>
-            </data>
-            <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
-              <pou name="main" pouType="program">
-                <interface>
-                  <localVars>
-                    <variable name="vSequenceA">
-                      <type>
-                        <DINT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="1" />
-                      </initialValue>
-                    </variable>
-                    <variable name="TimerA">
-                      <type>
-                        <derived name="TOF" />
-                      </type>
-                    </variable>
-                    <variable name="vSequenceB">
-                      <type>
-                        <DINT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="0" />
-                      </initialValue>
-                    </variable>
-                    <variable name="TimerB">
-                      <type>
-                        <derived name="TOF" />
-                      </type>
-                    </variable>
-                    <variable name="Start">
-                      <type>
-                        <BOOL />
-                      </type>
-                    </variable>
-                    <variable name="StartOld">
-                      <type>
-                        <BOOL />
-                      </type>
-                    </variable>
-                    <variable name="vSequence">
-                      <type>
-                        <DINT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="0" />
-                      </initialValue>
-                    </variable>
-                    <variable name="TactTimer">
-                      <type>
-                        <derived name="TON" />
-                      </type>
-                    </variable>
-                    <variable name="vPeriodTime">
-                      <type>
-                        <TIME />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="TIME#1m25s0ms" />
-                      </initialValue>
-                    </variable>
-                    <variable name="vElapsedTime">
-                      <type>
-                        <TIME />
-                      </type>
-                    </variable>
-                  </localVars>
-                </interface>
-                <body>
-                  <ST>
-                    <xhtml xmlns="http://www.w3.org/1999/xhtml">
-TactTimer(IN:=TRUE, PT:=vPeriodTime, ET =&gt; vElapsedTime);
-IF TactTimer.Q THEN
-	TactTimer(IN:=FALSE);
-END_IF
-(* Direction Up, Down traffic light *)
-gIO.Cross1CarU.RedLamp := vElapsedTime &lt;= T#5S OR vElapsedTime &gt;= T#37S AND vElapsedTime &lt;= T#85S;
-gIO.Cross1CarU.YellowLamp := vElapsedTime &gt; T#3S AND vElapsedTime &lt;= T#5S OR vElapsedTime &gt;= T#35S AND vElapsedTime &lt;= T#37S;
-gIO.Cross1CarU.GreenLamp := vElapsedTime &gt;= T#5S AND vElapsedTime &lt;= T#35S;
-
-(* Mirror the other side of the Up, Down direction *)
-gIO.Cross1CarD := gIO.Cross1CarU;
-gIO.Cross2CarD := gIO.Cross1CarU;
-gIO.Cross2CarU := gIO.Cross1CarU;
-
-(* Direction Left, Right traffic light *)
-gIO.Cross1CarL.RedLamp := vElapsedTime &gt;= T#0S AND vElapsedTime &lt;= T#39S OR vElapsedTime &gt;= T#71S AND vElapsedTime &lt;= T#85S;
-gIO.Cross1CarL.YellowLamp := vElapsedTime &gt; T#37S AND vElapsedTime &lt;= T#39S OR vElapsedTime &gt;= T#69S AND vElapsedTime &lt;= T#71S;
-gIO.Cross1CarL.GreenLamp := vElapsedTime &gt;= T#39S AND vElapsedTime &lt;= T#69S;
-
-(* Mirror the other side of the Left, Right direction *)
-gIO.Cross1CarR := gIO.Cross1CarL;
-gIO.Cross2CarR := gIO.Cross1CarL;
-gIO.Cross2CarL := gIO.Cross1CarL;
-
-(*Pedestrians*)
-(*If left &lt;-&gt; right cars are going. Up &lt;-&gt; down pedestrians stop. Else go*)
-IF gIO.Cross1CarL.GreenLamp OR gIO.Cross1CarL.YellowLamp  THEN
-	gIO.Cross1PedLDU.RedLight := TRUE;
-	gIO.Cross1PedLDU.GreenLight := FALSE;
-
-ELSIF gIO.Cross1CarL.RedLamp THEN
-	gIO.Cross1PedLDU.RedLight := FALSE;
-	gIO.Cross1PedLDU.GreenLight := TRUE;
-END_IF
-(*Just copy all of the up and downs as they behave the same*)
-gIO.Cross1PedLUD := gIO.Cross1PedLDU;
-gIO.Cross1PedRUD := gIO.Cross1PedLDU;
-gIO.Cross1PedRDU := gIO.Cross1PedLDU;
-gIO.Cross2PedLDU := gIO.Cross1PedLDU;
-gIO.Cross2PedLUD := gIO.Cross1PedLDU;
-gIO.Cross2PedRUD := gIO.Cross1PedLDU;
-gIO.Cross2PedRDU := gIO.Cross1PedLDU;
-
-(*If up &lt;-&gt; Down cars are going. Left &lt;-&gt; right pedestrians stop. Else go*)
-IF gIO.Cross1CarU.GreenLamp OR gIO.Cross1CarU.YellowLamp THEN
-	gIO.Cross1PedULR.RedLight := TRUE;
-	gIO.Cross1PedULR.GreenLight := FALSE;
-
-ELSIF gIO.Cross1CarU.RedLamp THEN
-	gIO.Cross1PedULR.RedLight := FALSE;
-	gIO.Cross1PedULR.GreenLight := TRUE;
-END_IF
-(*Just copy all of the lefts and rights as they behave the same*)
-gIO.Cross1PedURL := gIO.Cross1PedULR;
-gIO.Cross1PedDLR := gIO.Cross1PedULR;
-gIO.Cross1PedDRL := gIO.Cross1PedULR;
-gIO.Cross2PedULR := gIO.Cross1PedULR;
-gIO.Cross2PedURL := gIO.Cross1PedULR;
-gIO.Cross2PedDLR := gIO.Cross1PedULR;
-gIO.Cross2PedDRL := gIO.Cross1PedULR;</xhtml>
-                  </ST>
-                </body>
-                <addData>
-                  <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
-                    <ObjectId>4d91704b-07a3-4bb1-8388-5c8d07f74044</ObjectId>
-                  </data>
-                </addData>
-              </pou>
             </data>
             <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
               <pou name="simulator" pouType="program">
@@ -1249,15 +1117,17 @@ gIO.Cross2PedDRL := gIO.Cross1PedULR;</xhtml>
                         <derived name="trafficLightPed" />
                       </type>
                     </variable>
-                    <variable name="vCounter">
-                      <type>
-                        <INT />
-                      </type>
-                      <initialValue>
-                        <simpleValue value="0" />
-                      </initialValue>
-                    </variable>
                     <variable name="vCollision">
+                      <type>
+                        <BOOL />
+                      </type>
+                    </variable>
+                    <variable name="vDangerousCombination">
+                      <type>
+                        <BOOL />
+                      </type>
+                    </variable>
+                    <variable name="vPoliceControl">
                       <type>
                         <BOOL />
                       </type>
@@ -1278,6 +1148,16 @@ gIO.Cross2PedDRL := gIO.Cross1PedULR;</xhtml>
                         <simpleValue value="-200" />
                       </initialValue>
                     </variable>
+                    <variable name="Blinker">
+                      <type>
+                        <derived name="BLINK" />
+                      </type>
+                    </variable>
+                    <variable name="vFaultReason">
+                      <type>
+                        <string length="255" />
+                      </type>
+                    </variable>
                   </localVars>
                 </interface>
                 <actions>
@@ -1286,81 +1166,97 @@ gIO.Cross2PedDRL := gIO.Cross1PedULR;</xhtml>
                       <ST>
                         <xhtml xmlns="http://www.w3.org/1999/xhtml">(*Check for collisions between each car with another car and pedestrian*)
 vCollision := FALSE;
+
 (*Collission car -&gt; car*)
 IF isSpriteColliding(carC1HR, carC1HL) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := carC1HL.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND CAR C1HL';
 END_IF
 IF isSpriteColliding(carC1HR, carC1VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := carC1VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND CAR C1VU';
 END_IF
 IF isSpriteColliding(carC1HR, carC1VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := carC1VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND CAR C1VD';
 END_IF
 IF isSpriteColliding(carC1HR, carC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := carC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND CAR C2VD';
 END_IF
 IF isSpriteColliding(carC1HR, carC2VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := carC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND CAR C2VU';
 END_IF
 IF isSpriteColliding(carC1HL, carC1VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
 	vCrashFlagY := carC1VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND CAR C1VU';
 END_IF
 IF isSpriteColliding(carC1HL, carC1VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
 	vCrashFlagY := carC1VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND CAR C1VD';
 END_IF
 IF isSpriteColliding(carC1HL, carC2VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
 	vCrashFlagY := carC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND CAR C2VU';
 END_IF
 IF isSpriteColliding(carC1HL, carC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
 	vCrashFlagY := carC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND CAR C2VD';
 END_IF
 IF isSpriteColliding(carC1VU, carC1VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VU.actX;
 	vCrashFlagY := carC1VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VU AND CAR C1VD';
 END_IF
 IF isSpriteColliding(carC1VU, carC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VU.actX;
 	vCrashFlagY := carC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VU AND CAR C2VD';
 END_IF
 IF isSpriteColliding(carC1VU, carC2VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VU.actX;
 	vCrashFlagY := carC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VU AND CAR C2VU';
 END_IF
 IF isSpriteColliding(carC1VD, carC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VD.actX;
 	vCrashFlagY := carC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VD AND CAR C2VD';
 END_IF
 IF isSpriteColliding(carC1VD, carC2VU) THEN
 	vCollision := TRUE; 
 	vCrashFlagX := carC1VD.actX;
 	vCrashFlagY := carC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VD AND CAR C2VU';
 END_IF
 IF isSpriteColliding(carC2VD, carC2VU) THEN
 	vCollision := TRUE; 
 	vCrashFlagX := carC2VD.actX;
 	vCrashFlagY := carC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VD AND CAR C2VU';
 END_IF
 
 (*Check collission car -&gt; pedestrian*)
@@ -1368,31 +1264,37 @@ IF isSpriteColliding(carC1HR, pedC1HL) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := pedC1HL.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND PEDESTRIAN C1HL';
 END_IF
 IF isSpriteColliding(carC1HR, pedC1VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := pedC1VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND PEDESTRIAN C1VU';
 END_IF
 IF isSpriteColliding(carC1HR, pedC1VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := pedC1VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND PEDESTRIAN C1VD';
 END_IF
 IF isSpriteColliding(carC1HR, pedC2VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := pedC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND PEDESTRIAN C2VU';
 END_IF
 IF isSpriteColliding(carC1HR, pedC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
 	vCrashFlagY := pedC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND PEDESTRIAN C2VD';
 END_IF
 IF isSpriteColliding(carC1HR, pedC2HR) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HR.actX;
-	vCrashFlagY := pedC1HL.actY;
+	vCrashFlagY := pedC2HR.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HR AND PEDESTRIAN C2HR';
 END_IF
 
 
@@ -1400,31 +1302,37 @@ IF isSpriteColliding(carC1HL, pedC1HL) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
 	vCrashFlagY := pedC1HL.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND PEDESTRIAN C1HL';
 END_IF
 IF isSpriteColliding(carC1HL, pedC1VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
 	vCrashFlagY := pedC1VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND PEDESTRIAN C1VU';
 END_IF
 IF isSpriteColliding(carC1HL, pedC1VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
 	vCrashFlagY := pedC1VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND PEDESTRIAN C1VD';
 END_IF
 IF isSpriteColliding(carC1HL, pedC2VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
 	vCrashFlagY := pedC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND PEDESTRIAN C2VU';
 END_IF
 IF isSpriteColliding(carC1HL, pedC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
 	vCrashFlagY := pedC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND PEDESTRIAN C2VD';
 END_IF
 IF isSpriteColliding(carC1HL, pedC2HR) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1HL.actX;
-	vCrashFlagY := pedC1HL.actY;
+	vCrashFlagY := pedC2HR.actY;
+	vFaultReason := 'COLLISSION AT CAR C1HL AND PEDESTRIAN C2HR';
 END_IF
 
 
@@ -1432,31 +1340,37 @@ IF isSpriteColliding(carC1VU, pedC1HL) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VU.actX;
 	vCrashFlagY := pedC1HL.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VU AND PEDESTRIAN C1HL';
 END_IF
 IF isSpriteColliding(carC1VU, pedC1VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VU.actX;
 	vCrashFlagY := pedC1VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VU AND PEDESTRIAN C1VU';
 END_IF
 IF isSpriteColliding(carC1VU, pedC1VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VU.actX;
 	vCrashFlagY := pedC1VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VU AND PEDESTRIAN C1VD';
 END_IF
 IF isSpriteColliding(carC1VU, pedC2VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VU.actX;
 	vCrashFlagY := pedC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VU AND PEDESTRIAN C2VU';
 END_IF
 IF isSpriteColliding(carC1VU, pedC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VU.actX;
 	vCrashFlagY := pedC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VU AND PEDESTRIAN C2VD';
 END_IF
 IF isSpriteColliding(carC1VU, pedC2HR) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VU.actX;
-	vCrashFlagY := pedC1HL.actY;
+	vCrashFlagY := pedC2HR.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VU AND PEDESTRIAN C2HR';
 END_IF
 
 
@@ -1464,31 +1378,37 @@ IF isSpriteColliding(carC1VD, pedC1HL) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VD.actX;
 	vCrashFlagY := pedC1HL.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VD AND PEDESTRIAN C1HL';
 END_IF
 IF isSpriteColliding(carC1VD, pedC1VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VD.actX;
 	vCrashFlagY := pedC1VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VD AND PEDESTRIAN C1VU';
 END_IF
 IF isSpriteColliding(carC1VD, pedC1VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VD.actX;
 	vCrashFlagY := pedC1VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VD AND PEDESTRIAN C1VD';
 END_IF
 IF isSpriteColliding(carC1VD, pedC2VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VD.actX;
 	vCrashFlagY := pedC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VD AND PEDESTRIAN C2VU';
 END_IF
 IF isSpriteColliding(carC1VD, pedC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VD.actX;
 	vCrashFlagY := pedC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VD AND PEDESTRIAN C2VD';
 END_IF
 IF isSpriteColliding(carC1VD, pedC2HR) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC1VD.actX;
-	vCrashFlagY := pedC1HL.actY;
+	vCrashFlagY := pedC2HR.actY;
+	vFaultReason := 'COLLISSION AT CAR C1VD AND PEDESTRIAN C2HR';
 END_IF
 
 
@@ -1496,31 +1416,37 @@ IF isSpriteColliding(carC2VU, pedC1HL) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VU.actX;
 	vCrashFlagY := pedC1HL.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VU AND PEDESTRIAN C1HL';
 END_IF
 IF isSpriteColliding(carC2VU, pedC1VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VU.actX;
 	vCrashFlagY := pedC1VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VU AND PEDESTRIAN C1VU';
 END_IF
 IF isSpriteColliding(carC2VU, pedC1VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VU.actX;
 	vCrashFlagY := pedC1VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VU AND PEDESTRIAN C1VD';
 END_IF
 IF isSpriteColliding(carC2VU, pedC2VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VU.actX;
 	vCrashFlagY := pedC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VU AND PEDESTRIAN C2VU';
 END_IF
 IF isSpriteColliding(carC2VU, pedC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VU.actX;
 	vCrashFlagY := pedC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VU AND PEDESTRIAN C2VD';
 END_IF
 IF isSpriteColliding(carC2VU, pedC2HR) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VU.actX;
-	vCrashFlagY := pedC1HL.actY;
+	vCrashFlagY := pedC2HR.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VU AND PEDESTRIAN C2HR';
 END_IF
 
 
@@ -1528,31 +1454,37 @@ IF isSpriteColliding(carC2VD, pedC1HL) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VD.actX;
 	vCrashFlagY := pedC1HL.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VD AND PEDESTRIAN C1HL';
 END_IF
 IF isSpriteColliding(carC2VD, pedC1VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VD.actX;
 	vCrashFlagY := pedC1VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VD AND PEDESTRIAN pedC1VU';
 END_IF
 IF isSpriteColliding(carC2VD, pedC1VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VD.actX;
 	vCrashFlagY := pedC1VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VD AND PEDESTRIAN C1VD';
 END_IF
 IF isSpriteColliding(carC2VD, pedC2VU) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VD.actX;
 	vCrashFlagY := pedC2VU.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VD AND PEDESTRIAN C2VU';
 END_IF
 IF isSpriteColliding(carC2VD, pedC2VD) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VD.actX;
 	vCrashFlagY := pedC2VD.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VD AND PEDESTRIAN C2VD';
 END_IF
 IF isSpriteColliding(carC2VD, pedC2HR) THEN
 	vCollision := TRUE;
 	vCrashFlagX := carC2VD.actX;
-	vCrashFlagY := pedC1HL.actY;
+	vCrashFlagY := pedC2HR.actY;
+	vFaultReason := 'COLLISSION AT CAR C2VD AND PEDESTRIAN C2HR';
 END_IF
 
 (*Hide the crash flag if there is no collission*)
@@ -1800,19 +1732,171 @@ Cross2PedDRL := gIO.Cross2PedDRL;</xhtml>
                       </data>
                     </addData>
                   </action>
+                  <action name="FAULT_MONITOR">
+                    <body>
+                      <ST>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">(*Checks if dangerous situations occur, horizontal wave and vertical wave green at the same time*)
+vDangerousCombination := FALSE;
+(*Green vertical and horizontal pedestrians green*)
+IF Cross1CarU.GreenLamp AND (Cross1PedULR.GreenLight OR Cross1PedURL.GreenLight) THEN
+	vDangerousCombination := TRUE;
+	vFaultReason := 'DANGEROUS COMBINATION AT CROSS1 -&gt; VERTICAL CARS AND HORIZONTAL PEDESTRIANS GREEN AT THE SAME TIME';
+END_IF
+IF Cross2CarU.GreenLamp AND (Cross2PedULR.GreenLight OR Cross2PedURL.GreenLight) THEN
+	vDangerousCombination := TRUE;
+	vFaultReason := 'DANGEROUS COMBINATION AT CROSS2 -&gt; VERTICAL CARS AND HORIZONTAL PEDESTRIANS GREEN AT THE SAME TIME';
+END_IF
+IF Cross1CarD.GreenLamp AND (Cross1PedDLR.GreenLight OR Cross1PedDRL.GreenLight) THEN
+	vDangerousCombination := TRUE;
+	vFaultReason := 'DANGEROUS COMBINATION AT CROSS1 -&gt; VERTICAL CARS AND HORIZONTAL PEDESTRIANS GREEN AT THE SAME TIME';
+END_IF
+IF Cross2CarD.GreenLamp AND (Cross2PedDLR.GreenLight OR Cross2PedDRL.GreenLight) THEN
+	vDangerousCombination := TRUE;
+	vFaultReason := 'DANGEROUS COMBINATION AT CROSS2 -&gt; VERTICAL CARS AND HORIZONTAL PEDESTRIANS GREEN AT THE SAME TIME';
+END_IF
+
+(*Green horizontal and vertical pedestrians green*)
+IF Cross1CarL.GreenLamp AND (Cross1PedLUD.GreenLight OR Cross1PedLDU.GreenLight) THEN
+	vDangerousCombination := TRUE;
+	vFaultReason := 'DANGEROUS COMBINATION AT CROSS1 -&gt; HORIZONTAL CARS AND VERTICAL PEDESTRIANS GREEN AT THE SAME TIME';
+END_IF
+IF Cross1CarR.GreenLamp AND (Cross1PedRUD.GreenLight OR Cross1PedRDU.GreenLight) THEN
+	vDangerousCombination := TRUE;
+	vFaultReason := 'DANGEROUS COMBINATION AT CROSS1 -&gt; HORIZONTAL CARS AND VERTICAL PEDESTRIANS GREEN AT THE SAME TIME';
+END_IF
+IF Cross2CarL.GreenLamp AND (Cross2PedLUD.GreenLight OR Cross2PedLDU.GreenLight) THEN
+	vDangerousCombination := TRUE;
+	vFaultReason := 'DANGEROUS COMBINATION AT CROSS2 -&gt; HORIZONTAL CARS AND VERTICAL PEDESTRIANS GREEN AT THE SAME TIME';
+END_IF
+IF Cross2CarR.GreenLamp AND (Cross2PedRUD.GreenLight OR Cross2PedRDU.GreenLight) THEN
+	vDangerousCombination := TRUE;
+	vFaultReason := 'DANGEROUS COMBINATION AT CROSS2 -&gt; HORIZONTAL CARS AND VERTICAL PEDESTRIANS GREEN AT THE SAME TIME';
+END_IF
+
+(*Checks if there was a collission with car-car and ped - car*)
+CHECK_COLLISSIONS();</xhtml>
+                      </ST>
+                    </body>
+                    <addData>
+                      <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+                        <ObjectId>218e8ada-f249-4eba-bc00-610b6cba06ca</ObjectId>
+                      </data>
+                    </addData>
+                  </action>
+                  <action name="BLINK_DANGER_SIGNAL">
+                    <body>
+                      <ST>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Cross1CarU.GreenLamp := FALSE;
+Cross1CarU.YellowLamp := FALSE;
+Cross1CarU.RedLamp := Blinker.OUT;
+
+Cross1CarD := Cross1CarU;
+Cross1CarL := Cross1CarU;
+Cross1CarR := Cross1CarU;
+
+Cross2CarU := Cross1CarU;
+Cross2CarD := Cross1CarU;
+Cross2CarL := Cross1CarU;
+Cross2CarR := Cross1CarU;
+
+Cross1PedLUD.GreenLight := FALSE;
+Cross1PedLUD.RedLight := Blinker.OUT;
+Cross1PedLUD.TimeToSequenceChange := 0;
+
+Cross1PedLDU := Cross1PedLUD;
+Cross1PedRUD := Cross1PedLUD;
+Cross1PedRDU := Cross1PedLUD;
+
+Cross1PedULR := Cross1PedLUD;
+Cross1PedURL := Cross1PedLUD;
+Cross1PedDLR := Cross1PedLUD;
+Cross1PedDRL := Cross1PedLUD;
+
+Cross2PedLUD := Cross1PedLUD;
+Cross2PedLDU := Cross1PedLUD;
+Cross2PedRUD := Cross1PedLUD;
+Cross2PedRDU := Cross1PedLUD;
+
+Cross2PedULR := Cross1PedLUD;
+Cross2PedURL := Cross1PedLUD;
+Cross2PedDLR := Cross1PedLUD;
+Cross2PedDRL := Cross1PedLUD;</xhtml>
+                      </ST>
+                    </body>
+                    <addData>
+                      <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+                        <ObjectId>87d62bc1-fd3f-4af8-b468-432e2cb03c33</ObjectId>
+                      </data>
+                    </addData>
+                  </action>
+                  <action name="BLINK_YELLOW_SIGNAL">
+                    <body>
+                      <ST>
+                        <xhtml xmlns="http://www.w3.org/1999/xhtml">Cross1CarU.GreenLamp := FALSE;
+Cross1CarU.YellowLamp := Blinker.OUT;
+Cross1CarU.RedLamp := FALSE;
+
+Cross1CarD := Cross1CarU;
+Cross1CarL := Cross1CarU;
+Cross1CarR := Cross1CarU;
+
+Cross2CarU := Cross1CarU;
+Cross2CarD := Cross1CarU;
+Cross2CarL := Cross1CarU;
+Cross2CarR := Cross1CarU;
+
+Cross1PedLUD.GreenLight := FALSE;
+Cross1PedLUD.RedLight := FALSE;
+Cross1PedLUD.TimeToSequenceChange := 0;
+
+Cross1PedLDU := Cross1PedLUD;
+Cross1PedRUD := Cross1PedLUD;
+Cross1PedRDU := Cross1PedLUD;
+
+Cross1PedULR := Cross1PedLUD;
+Cross1PedURL := Cross1PedLUD;
+Cross1PedDLR := Cross1PedLUD;
+Cross1PedDRL := Cross1PedLUD;
+
+Cross2PedLUD := Cross1PedLUD;
+Cross2PedLDU := Cross1PedLUD;
+Cross2PedRUD := Cross1PedLUD;
+Cross2PedRDU := Cross1PedLUD;
+
+Cross2PedULR := Cross1PedLUD;
+Cross2PedURL := Cross1PedLUD;
+Cross2PedDLR := Cross1PedLUD;
+Cross2PedDRL := Cross1PedLUD;</xhtml>
+                      </ST>
+                    </body>
+                    <addData>
+                      <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+                        <ObjectId>8b909b29-f96c-4e34-bb68-efb6ea190a22</ObjectId>
+                      </data>
+                    </addData>
+                  </action>
                 </actions>
                 <body>
                   <ST>
-                    <xhtml xmlns="http://www.w3.org/1999/xhtml">
-MOVE_CARS();
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml">MOVE_CARS();
 MOVE_PEDESTRIANS();
 
-(*Freeze situation if a collission has occured*)
-IF NOT vCollision THEN
+(*Blink yellow signal if the police is under control*)
+IF vPoliceControl THEN
+	UPDATE_OBJECTS();
+	BLINK_YELLOW_SIGNAL();
+(*Freeze situation if a collission or dangerous situation has occured*)
+ELSIF vCollision OR vDangerousCombination THEN
+	BLINK_DANGER_SIGNAL();
+ELSE
+	(*Everything is fine so move objects and let the main control the lights*)
 	UPDATE_OBJECTS();
 	CONTROL_LIGHTS();
+	vFaultReason := '';
 END_IF
-CHECK_COLLISSIONS();
+FAULT_MONITOR();
+gIO.PoliceModeActivated := vPoliceControl;
+Blinker(ENABLE:=TRUE, TIMELOW:=T#1S, TIMEHIGH:=T#1S);
 
 
 </xhtml>
@@ -1821,6 +1905,146 @@ CHECK_COLLISSIONS();
                 <addData>
                   <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
                     <ObjectId>58484771-4ae7-4686-b08a-b3c90c27b274</ObjectId>
+                  </data>
+                </addData>
+              </pou>
+            </data>
+            <data name="http://www.3s-software.com/plcopenxml/pou" handleUnknown="implementation">
+              <pou name="main" pouType="program">
+                <interface>
+                  <localVars>
+                    <variable name="vSequenceA">
+                      <type>
+                        <DINT />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="1" />
+                      </initialValue>
+                    </variable>
+                    <variable name="TimerA">
+                      <type>
+                        <derived name="TOF" />
+                      </type>
+                    </variable>
+                    <variable name="vSequenceB">
+                      <type>
+                        <DINT />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="0" />
+                      </initialValue>
+                    </variable>
+                    <variable name="TimerB">
+                      <type>
+                        <derived name="TOF" />
+                      </type>
+                    </variable>
+                    <variable name="Start">
+                      <type>
+                        <BOOL />
+                      </type>
+                    </variable>
+                    <variable name="StartOld">
+                      <type>
+                        <BOOL />
+                      </type>
+                    </variable>
+                    <variable name="vSequence">
+                      <type>
+                        <DINT />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="0" />
+                      </initialValue>
+                    </variable>
+                    <variable name="TactTimer">
+                      <type>
+                        <derived name="TON" />
+                      </type>
+                    </variable>
+                    <variable name="vPeriodTime">
+                      <type>
+                        <TIME />
+                      </type>
+                      <initialValue>
+                        <simpleValue value="TIME#1m25s0ms" />
+                      </initialValue>
+                    </variable>
+                    <variable name="vElapsedTime">
+                      <type>
+                        <TIME />
+                      </type>
+                    </variable>
+                  </localVars>
+                </interface>
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml">
+TactTimer(IN:=TRUE, PT:=vPeriodTime, ET =&gt; vElapsedTime);
+IF TactTimer.Q THEN
+	TactTimer(IN:=FALSE);
+END_IF
+(* Direction Up, Down traffic light *)
+gIO.Cross1CarU.RedLamp := vElapsedTime &lt;= T#5S OR vElapsedTime &gt;= T#37S AND vElapsedTime &lt;= T#85S;
+gIO.Cross1CarU.YellowLamp := vElapsedTime &gt; T#3S AND vElapsedTime &lt;= T#5S OR vElapsedTime &gt;= T#35S AND vElapsedTime &lt;= T#37S;
+gIO.Cross1CarU.GreenLamp := vElapsedTime &gt;= T#5S AND vElapsedTime &lt;= T#35S;
+
+(* Mirror the other side of the Up, Down direction *)
+gIO.Cross1CarD := gIO.Cross1CarU;
+gIO.Cross2CarD := gIO.Cross1CarU;
+gIO.Cross2CarU := gIO.Cross1CarU;
+
+(* Direction Left, Right traffic light *)
+gIO.Cross1CarL.RedLamp := vElapsedTime &gt;= T#0S AND vElapsedTime &lt;= T#39S OR vElapsedTime &gt;= T#71S AND vElapsedTime &lt;= T#85S;
+gIO.Cross1CarL.YellowLamp := vElapsedTime &gt; T#37S AND vElapsedTime &lt;= T#39S OR vElapsedTime &gt;= T#69S AND vElapsedTime &lt;= T#71S;
+gIO.Cross1CarL.GreenLamp := vElapsedTime &gt;= T#39S AND vElapsedTime &lt;= T#69S;
+
+(* Mirror the other side of the Left, Right direction *)
+gIO.Cross1CarR := gIO.Cross1CarL;
+gIO.Cross2CarR := gIO.Cross1CarL;
+gIO.Cross2CarL := gIO.Cross1CarL;
+
+(*Pedestrians*)
+(*If left &lt;-&gt; right cars are going. Up &lt;-&gt; down pedestrians stop. Else go*)
+IF gIO.Cross1CarL.GreenLamp OR gIO.Cross1CarL.YellowLamp  THEN
+	gIO.Cross1PedLDU.RedLight := TRUE;
+	gIO.Cross1PedLDU.GreenLight := FALSE;
+
+ELSIF gIO.Cross1CarL.RedLamp THEN
+	gIO.Cross1PedLDU.RedLight := FALSE;
+	gIO.Cross1PedLDU.GreenLight := TRUE;
+END_IF
+(*Just copy all of the up and downs as they behave the same*)
+gIO.Cross1PedLUD := gIO.Cross1PedLDU;
+gIO.Cross1PedRUD := gIO.Cross1PedLDU;
+gIO.Cross1PedRDU := gIO.Cross1PedLDU;
+gIO.Cross2PedLDU := gIO.Cross1PedLDU;
+gIO.Cross2PedLUD := gIO.Cross1PedLDU;
+gIO.Cross2PedRUD := gIO.Cross1PedLDU;
+gIO.Cross2PedRDU := gIO.Cross1PedLDU;
+
+(*If up &lt;-&gt; Down cars are going. Left &lt;-&gt; right pedestrians stop. Else go*)
+IF gIO.Cross1CarU.GreenLamp OR gIO.Cross1CarU.YellowLamp THEN
+	gIO.Cross1PedULR.RedLight := TRUE;
+	gIO.Cross1PedULR.GreenLight := FALSE;
+
+ELSIF gIO.Cross1CarU.RedLamp THEN
+	gIO.Cross1PedULR.RedLight := FALSE;
+	gIO.Cross1PedULR.GreenLight := TRUE;
+END_IF
+(*Just copy all of the lefts and rights as they behave the same*)
+gIO.Cross1PedURL := gIO.Cross1PedULR;
+gIO.Cross1PedDLR := gIO.Cross1PedULR;
+gIO.Cross1PedDRL := gIO.Cross1PedULR;
+gIO.Cross2PedULR := gIO.Cross1PedULR;
+gIO.Cross2PedURL := gIO.Cross1PedULR;
+gIO.Cross2PedDLR := gIO.Cross1PedULR;
+gIO.Cross2PedDRL := gIO.Cross1PedULR;</xhtml>
+                  </ST>
+                </body>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/objectid" handleUnknown="discard">
+                    <ObjectId>4d91704b-07a3-4bb1-8388-5c8d07f74044</ObjectId>
                   </data>
                 </addData>
               </pou>
@@ -1940,17 +2164,20 @@ CHECK_COLLISSIONS();
             <Object Name="Library Manager" ObjectId="29e9a39f-d9e1-4ae5-8462-7b18ca48243c" />
             <Object Name="VISU_TASK" ObjectId="36dd8743-addf-4031-9feb-dce731836678" />
             <Object Name="xsim03" ObjectId="c932c134-12d7-42e6-b914-4e02f89670bf" />
+            <Object Name="gIO" ObjectId="45b9d55d-90d0-48a9-8d7e-2af6e1714d26" />
             <Object Name="trafficLightCars" ObjectId="6c9cfcbc-87cf-42f1-a329-51e332d1b9d8" />
             <Object Name="trafficLightPed" ObjectId="ed37e448-fe2e-4c3e-bcbe-421400098762" />
-            <Object Name="gIO" ObjectId="45b9d55d-90d0-48a9-8d7e-2af6e1714d26" />
-            <Object Name="main" ObjectId="4d91704b-07a3-4bb1-8388-5c8d07f74044" />
             <Object Name="simulator" ObjectId="58484771-4ae7-4686-b08a-b3c90c27b274">
               <Object Name="CHECK_COLLISSIONS" ObjectId="06df541c-fc0f-4e5f-8864-eeec453b0732" />
               <Object Name="MOVE_CARS" ObjectId="ed37403c-0a24-46dc-b7c0-a282de63709a" />
               <Object Name="MOVE_PEDESTRIANS" ObjectId="6192887b-548d-4f46-a96d-80ca823e2952" />
               <Object Name="UPDATE_OBJECTS" ObjectId="eea3e191-f523-4da2-a41f-bcb86b3fec17" />
               <Object Name="CONTROL_LIGHTS" ObjectId="d6856cd7-1759-4a2c-b510-e9b300223c02" />
+              <Object Name="FAULT_MONITOR" ObjectId="218e8ada-f249-4eba-bc00-610b6cba06ca" />
+              <Object Name="BLINK_DANGER_SIGNAL" ObjectId="87d62bc1-fd3f-4af8-b468-432e2cb03c33" />
+              <Object Name="BLINK_YELLOW_SIGNAL" ObjectId="8b909b29-f96c-4e34-bb68-efb6ea190a22" />
             </Object>
+            <Object Name="main" ObjectId="4d91704b-07a3-4bb1-8388-5c8d07f74044" />
           </Object>
         </Object>
         <Object Name="Library Manager" ObjectId="497477f5-d561-4978-840d-bbcb3520b9e4" />

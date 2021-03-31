@@ -26,38 +26,38 @@ INTERFACE
 END_INTERFACE
 FUNCTION_BLOCK Sprite:
     (*Initialize sprite on first scan*)
-IF vInit THEN
-	vSpriteDef := init;
-	vInit := FALSE;
-END_IF
+    IF vInit THEN
+    	vSpriteDef := init;
+    	vInit := FALSE;
+    END_IF
 
-(* Actual moving of the coordinates *)
-vSpriteDef.x := vSpriteDef.x + moveX;
-vSpriteDef.y := vSpriteDef.y + moveY;
+    (* Actual moving of the coordinates *)
+    vSpriteDef.x := vSpriteDef.x + moveX;
+    vSpriteDef.y := vSpriteDef.y + moveY;
 
-(* Reseting the position if sprite goes off screen *)
-(* If moving left to right *)
-IF vSpriteDef.x > vSpriteDef.screenWidth THEN
-	vSpriteDef.x := -vSpriteDef.width;
-(* If moving right to left *)
-ELSIF vSpriteDef.x < -vSpriteDef.width THEN
-	vSpriteDef.x := vSpriteDef.screenWidth;	
-END_IF
-(* If moving from up, down *)
-IF vSpriteDef.y > vSpriteDef.screenHeight THEN
-	vSpriteDef.y := -vSpriteDef.height;
-(* If moving from down, up *)
-ELSIF vSpriteDef.y < -vSpriteDef.height THEN
-	vSpriteDef.y := vSpriteDef.screenHeight;	
-END_IF
+    (* Reseting the position if sprite goes off screen *)
+    (* If moving left to right *)
+    IF vSpriteDef.x > vSpriteDef.screenWidth THEN
+    	vSpriteDef.x := -vSpriteDef.width;
+    (* If moving right to left *)
+    ELSIF vSpriteDef.x < -vSpriteDef.width THEN
+    	vSpriteDef.x := vSpriteDef.screenWidth;	
+    END_IF
+    (* If moving from up, down *)
+    IF vSpriteDef.y > vSpriteDef.screenHeight THEN
+    	vSpriteDef.y := -vSpriteDef.height;
+    (* If moving from down, up *)
+    ELSIF vSpriteDef.y < -vSpriteDef.height THEN
+    	vSpriteDef.y := vSpriteDef.screenHeight;	
+    END_IF
 
-(*x, y will be used to connect to absoulte movements of the graphic element*)
-x := vSpriteDef.x - init.x;
-y := vSpriteDef.y - init.y;
+    (*x, y will be used to connect to absoulte movements of the graphic element*)
+    x := vSpriteDef.x - init.x;
+    y := vSpriteDef.y - init.y;
 
-(*ActX and ActY will be used in the logic for e.g. object collision detection*)
-actX := vSpriteDef.x;
-actY := vSpriteDef.y;
+    (*ActX and ActY will be used in the logic for e.g. object collision detection*)
+    actX := vSpriteDef.x;
+    actY := vSpriteDef.y;
 END_FUNCTION_BLOCK
 ```
 

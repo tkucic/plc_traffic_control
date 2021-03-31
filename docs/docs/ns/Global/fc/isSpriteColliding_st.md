@@ -11,14 +11,14 @@ INTERFACE
 END_INTERFACE
 FUNCTION isSpriteColliding :
     (*Calculate if these two sprites are overlapping*)
-IF sprite1.actX < (sprite2.actX + sprite2.init.width) AND
-   (sprite1.actX + sprite1.init.width) > sprite2.actX AND
-   sprite1.actY < (sprite2.actY + sprite2.init.height) AND
-  ( sprite1.init.height + sprite1.actY) > sprite2.actY THEN
-   isSpriteColliding := TRUE;
-ELSE
-	isSpriteColliding := FALSE;
-END_IF
+    IF sprite1.actX < (sprite2.actX + sprite2.init.width) AND
+       (sprite1.actX + sprite1.init.width) > sprite2.actX AND
+       sprite1.actY < (sprite2.actY + sprite2.init.height) AND
+      ( sprite1.init.height + sprite1.actY) > sprite2.actY THEN
+       isSpriteColliding := TRUE;
+    ELSE
+    	isSpriteColliding := FALSE;
+    END_IF
 END_FUNCTION
 ```
 

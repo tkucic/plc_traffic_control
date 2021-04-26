@@ -2,7 +2,7 @@
 
 Traffic control is often used a simple introduction into sequencing when programming PLCs. As a part of my portfolio I have written a simple timing controller and a simulator for two crossroads that are one way streets with pedestrians going in all directions. The project is meant for begginers and for educational purposes. It is published under MIT license. Written in CODESYS 3.5 and in structured text language.
 
-![Screenshot of the programs HMI](screenshot.png)
+![Screenshot of the programs HMI](screenshot.gif)
 
 ## USAGE
 

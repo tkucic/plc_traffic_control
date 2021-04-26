@@ -4,7 +4,7 @@
 
 ```pascal
 INTERFACE
-    VAR
+    VAR 
         carC1HR : Sprite; (*Sprite controling car C1HR*)
         carC1HL : Sprite; (*Sprite controling car C1HL*)
         carC1VU : Sprite; (*Sprite controling car C1VU*)
@@ -720,9 +720,7 @@ END_ACTION
 
 ## Metrics  
 
-| VAR_IN | VAR_OUT | VAR_IN_OUT | VAR_LOCAL | VAR_EXTERNAL | VAR_GLOBAL | VAR_ACCESS | VAR_TEMP |
-| ------ | ------- | ---------- | --------- | ------------ | ---------- | ---------- | -------- |
-| 0 | 0 | 0 | 43 | 0 | 0 | 0 | 0 |
+- VAR : 43
 
 | Actions | Lines of code | Maintainable size |
 | ------- | ------------- | ----------------- |

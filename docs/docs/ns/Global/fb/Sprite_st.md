@@ -4,20 +4,20 @@
 
 ```pascal
 INTERFACE
-    VAR_INPUT
+    VAR_INPUT 
         init : SpriteDef_typ; (*Sprite initialization pars*)
         goTo : ARRAY[0..1] OF INT; (*Sprite moves to x,y destination*)
         moveX : INT; (*Moves the sprite by given ammount on the X axis*)
         moveY : INT; (*Moves the sprite by given ammount on the Y axis*)
     END_VAR
-    VAR_OUTPUT
+    VAR_OUTPUT 
         x : INT; (*X position of the sprite*)
         y : INT; (*Y position of the sprite*)
         atDestination : BOOL; (*Flag to say it has arrived at its destination*)
         actX : INT; (*Actual position on the screen, X axis*)
         actY : INT; (*Actual position on the screen, Y axis*)
     END_VAR
-    VAR
+    VAR 
         vInit : BOOL := TRUE; (*Initialization flag*)
         vSpriteDef : SpriteDef_typ; (*Used sprite definition*)
         vActualX : INT; (*Actual position on the screen, X axis*)
@@ -63,9 +63,9 @@ END_FUNCTION_BLOCK
 
 ## Metrics  
 
-| VAR_IN | VAR_OUT | VAR_IN_OUT | VAR_LOCAL | VAR_EXTERNAL | VAR_TEMP |
-| ------ | ------- | ---------- | --------- | ------------ | -------- |
-| 4 | 5 | 0 | 4 | 0 | 0 |
+- VAR_INPUT : 4
+- VAR_OUTPUT : 5
+- VAR : 4
 
 | Actions | Lines of code | Maintainable size |
 | ------- | ------------- | ----------------- |

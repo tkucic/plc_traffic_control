@@ -4,7 +4,7 @@
 
 ```pascal
 INTERFACE
-    VAR_INPUT
+    VAR_INPUT 
         sprite1 : Sprite; (*Sprite 1 function block*)
         sprite2 : Sprite; (*Sprite 2 function block*)
     END_VAR
@@ -24,9 +24,7 @@ END_FUNCTION
 
 ## Metrics  
 
-| VAR_IN | VAR_OUT | VAR_IN_OUT | VAR_TEMP | VAR_LOCAL |
-| ------ | ------- | ---------- | --------- | -------- |
-| 2 | 0 | 0 | 0 | 0 |  
+- VAR_INPUT : 2
 
 | Lines of code | Maintainable size |
 | ------------- | ----------------- |

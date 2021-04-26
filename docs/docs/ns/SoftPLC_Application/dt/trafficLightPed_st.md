@@ -7,7 +7,6 @@ STRUCT trafficLightPed:
     RedLight : BOOL; (*TRUE: Red lamp is on*)
     GreenLight : BOOL; (*TRUE: Green lamp is on*)
     TimeToSequenceChange : UINT; (*Time in seconds until next light change*)
-  
 END_STRUCT
 ```
 

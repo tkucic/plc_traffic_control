@@ -11,7 +11,6 @@ STRUCT SpriteDef_typ:
     height : INT; (*Sprites height*)
     screenWidth : INT; (*Screen width*)
     screenHeight : INT; (*Screen height*)
-  
 END_STRUCT
 ```
 

@@ -7,7 +7,6 @@ STRUCT trafficLightCars:
     RedLamp : BOOL; (*TRUE: Red lamp is on*)
     YellowLamp : BOOL; (*TRUE: Yellow lamp is on*)
     GreenLamp : BOOL; (*TRUE: Green lamp is on*)
-  
 END_STRUCT
 ```
 

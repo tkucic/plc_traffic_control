@@ -4,7 +4,7 @@
 
 ```pascal
 INTERFACE
-    VAR
+    VAR 
         TactTimer : TON; (*Timer to provide tact for all lights in a synchronized system*)
         vPeriodTime : TIME := TIME#1m2s0ms; (*Period after the sequence repeats*)
         vElapsedTime : TIME; (*Elapsed time of the sequence*)
@@ -118,9 +118,7 @@ END_PROGRAM
 
 ## Metrics  
 
-| VAR_IN | VAR_OUT | VAR_IN_OUT | VAR_LOCAL | VAR_EXTERNAL | VAR_GLOBAL | VAR_ACCESS | VAR_TEMP |
-| ------ | ------- | ---------- | --------- | ------------ | ---------- | ---------- | -------- |
-| 0 | 0 | 0 | 4 | 0 | 0 | 0 | 0 |
+- VAR : 4
 
 | Actions | Lines of code | Maintainable size |
 | ------- | ------------- | ----------------- |
